@@ -37,29 +37,29 @@ const router = express.Router();
  *         avatar: https://lh3.googleusercontent.com/a/AEdFTp4508ZdzGjVRFFIwb0ULZXYm5V5_vyRsiKq-cfA=s96-c
  */
 
-/**
- * @swagger
- * /api/v1/users:
- *   get:
- *     security: 
- *         - BearerAuth: []
- *     summary: Returns the list of all the users
- *     tags: [user-controller]
- *     responses:
- *       200:
- *         description: For get the list of the users
- *         content:
- *           application/json:
- *             schema:
- *               type: array
- *               items:
- *                 $ref: '#/components/schemas/User'
- */
-router.get("/", verifyToken, verifyRole, controllers.getAllUser);
+// /**
+//  * @swagger
+//  * /api/v1/users:
+//  *   get:
+//  *     security: 
+//  *         - BearerAuth: []
+//  *     summary: Returns the list of all the users
+//  *     tags: [user-controller]
+//  *     responses:
+//  *       200:
+//  *         description: For get the list of the users
+//  *         content:
+//  *           application/json:
+//  *             schema:
+//  *               type: array
+//  *               items:
+//  *                 $ref: '#/components/schemas/User'
+//  */
+// router.get("/", verifyToken, verifyRole, controllers.getAllUser);
 
 /**
  * @swagger
- * /api/v1/users/paging:
+ * /api/v1/users:
  *   get:
  *     security: 
  *         - BearerAuth: []
@@ -101,7 +101,7 @@ router.get("/", verifyToken, verifyRole, controllers.getAllUser);
  *               items:
  *                 $ref: '#/components/schemas/User'
  */
-router.get("/paging/", verifyToken, verifyRole, controllers.getAllUserPaging);
+router.get("/", verifyToken, verifyRole, controllers.getAllUserPaging);
 
 /**
  * @swagger

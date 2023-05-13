@@ -5,62 +5,62 @@ const bcrypt = require('bcryptjs');
 
 const hashPassword = password => bcrypt.hashSync(password, bcrypt.genSaltSync(8));
 
-const getAllUser = () =>
-  new Promise(async (resolve, reject) => {
-    try {
-      redisClient.get("users", async (error, user) => {
-        if (error) console.error(error);
-        if (user != null) {
-          resolve({
-            msg: user ? `Got user` : "Cannot find user",
-            user: JSON.parse(user),
-          });
-        } else {
-          const users = await db.User.findAndCountAll({
-            raw: true,
-            nest: true,
-            where: {
-              status: {
-                [Op.ne]: "Deactive",
-              }
-            },
-            order: [
-              ['updatedAt', 'DESC']
-            ],
-            attributes: {
-              exclude: [
-                "role_id",
-                "major_id",
-                "createAt",
-                "updateAt",
-                "refresh_token",
-              ],
-            },
-            include: [
-              {
-                model: db.Role,
-                as: "user_role",
-                attributes: ["role_id", "role_name"],
-              }
-            ],
-          });
-          redisClient.setEx("users", 3600, JSON.stringify(users));
+// const getAllUser = () =>
+//   new Promise(async (resolve, reject) => {
+//     try {
+//       redisClient.get("users", async (error, user) => {
+//         if (error) console.error(error);
+//         if (user != null) {
+//           resolve({
+//             msg: user ? `Got user` : "Cannot find user",
+//             user: JSON.parse(user),
+//           });
+//         } else {
+//           const users = await db.User.findAndCountAll({
+//             raw: true,
+//             nest: true,
+//             where: {
+//               status: {
+//                 [Op.ne]: "Deactive",
+//               }
+//             },
+//             order: [
+//               ['updatedAt', 'DESC']
+//             ],
+//             attributes: {
+//               exclude: [
+//                 "role_id",
+//                 "major_id",
+//                 "createAt",
+//                 "updateAt",
+//                 "refresh_token",
+//               ],
+//             },
+//             include: [
+//               {
+//                 model: db.Role,
+//                 as: "user_role",
+//                 attributes: ["role_id", "role_name"],
+//               }
+//             ],
+//           });
+//           redisClient.setEx("users", 3600, JSON.stringify(users));
 
-          resolve({
-            msg: users ? `Got user` : "Cannot find user",
-            users: users,
-          });
-        }
-      });
-    } catch (error) {
-      reject(error);
-    }
-  });
+//           resolve({
+//             msg: users ? `Got user` : "Cannot find user",
+//             users: users,
+//           });
+//         }
+//       });
+//     } catch (error) {
+//       reject(error);
+//     }
+//   });
 
 const getAllUserPaging = ({ page, limit, order, user_name, ...query}) =>
   new Promise(async (resolve, reject) => {
     try {
-      redisClient.get(`user_paging_${page}`, async (error, user_paging) => {
+      redisClient.get(`user_paging_${page}_${limit}_${order}_${user_name}`, async (error, user_paging) => {
         if (error) console.error(error);
         if (user_paging != null) {
           resolve({
@@ -75,7 +75,7 @@ const getAllUserPaging = ({ page, limit, order, user_name, ...query}) =>
           queries.limit = flimit;
           if (order) queries.order = [order];
           if (user_name) query.user_name = { [Op.substring]: user_name };
-          query.status = { [Op.ne]: "Deactive" };
+          // query.status = { [Op.ne]: "Deactive" };
 
           const users = await db.User.findAndCountAll({
             where: query,
@@ -97,7 +97,7 @@ const getAllUserPaging = ({ page, limit, order, user_name, ...query}) =>
               },
             ],
           });
-          redisClient.setEx(`user_paging_${page}`, 3600, JSON.stringify(users));
+          redisClient.setEx(`user_paging_${page}_${limit}_${order}_${user_name}`, 3600, JSON.stringify(users));
 
           resolve({
             msg: users ? `Got user` : "Cannot find user",
@@ -239,7 +239,6 @@ const getUserById = (user_id) =>
   });
 
 module.exports = {
-  getAllUser,
   updateUser,
   deleteUser,
   getUserById,
