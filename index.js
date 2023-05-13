@@ -8,7 +8,6 @@ const swaggerUi = require("swagger-ui-express");
 const swaggerJSDoc = require("swagger-jsdoc");
 require("./config/connection_database");
 const controllers = require('./controllers');
-const serverless = require("serverless-http");
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static("client"));
