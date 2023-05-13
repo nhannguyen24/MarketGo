@@ -1,6 +1,6 @@
 require('express-async-errors');
 const auth = require('./auth');
-// const student = require('./student');
+const user = require('./user');
 // const firebaseService = require('./firebaseService');
 // const project = require('./project');
 // const major = require('./major');
@@ -16,7 +16,7 @@ const errorHandlerMiddleware = require('../middlewares/error_handler');
 
 const initRoutes = (app) => {
     app.use('/api/v1/auth', auth);
-    // app.use('/api/v1/students', student);
+    app.use('/api/v1/users', user);
     // app.use('/api/v1', firebaseService);
     // app.use('/api/v1/projects', project);
     // app.use('/api/v1/majors', major);

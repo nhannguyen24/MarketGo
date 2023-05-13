@@ -58,13 +58,30 @@ const login = ({ email, password }) => new Promise(async (resolve, reject) => {
           ],
       })
       const isChecked = response && bcrypt.compareSync(password, response.password)
-      const accessToken = isChecked
-            ? jwt.sign({ id: response.id, email: response.email, role_code: response.role_code }, process.env.JWT_SECRET, { expiresIn: '1h' })
-            : null
-        // JWT_SECRET_REFRESH_TOKEN
-        const refreshToken = isChecked
-            ? jwt.sign({ id: response.id }, process.env.JWT_SECRET_REFRESH, { expiresIn: '1d' })
-            : null
+      // const accessToken = isChecked
+      //       ? jwt.sign({ id: response.id, email: response.email, role_code: response.role_code }, process.env.JWT_SECRET, { expiresIn: '1h' })
+      //       : null
+      //   // JWT_SECRET_REFRESH_TOKEN
+      //   const refreshToken = isChecked
+      //       ? jwt.sign({ id: response.id }, process.env.JWT_SECRET_REFRESH, { expiresIn: '1d' })
+      //       : null
+
+            const [accessToken, refreshToken] = await Promise.all([
+              jwt.sign(
+                {
+                  user_id: response.user_id,
+                  email: response.email,
+                  role_name: response.user_role.role_name,
+                },
+                process.env.JWT_SECRET,
+                { expiresIn: "1h" }
+              ),
+              jwt.sign(
+                { user_id: response.user_id },
+                process.env.JWT_SECRET_REFRESH,
+                { expiresIn: "5d" }
+              ),
+            ]);
         resolve({
             mes: accessToken ? 'Login successfully' : response ? 'Password is wrong' : 'Not found account',
             'access_token': accessToken ? `Bearer ${accessToken}` : accessToken,

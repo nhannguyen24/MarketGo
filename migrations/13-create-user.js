@@ -21,7 +21,7 @@ module.exports = {
         allowNull: false,
       },
       birthday: {
-        type: Sequelize.STRING,
+        type: Sequelize.DATEONLY,
       },
       avatar: {
         type: Sequelize.STRING(500),
@@ -30,10 +30,11 @@ module.exports = {
         type: Sequelize.STRING,
       },
       phone: {
-        type: Sequelize.STRING,
+        type: Sequelize.STRING(10),
       },
       accessChangePassword: {
         type: Sequelize.BOOLEAN,
+        defaultValue: false,
       },
       refresh_token: {
         type: Sequelize.STRING,
