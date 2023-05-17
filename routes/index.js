@@ -3,9 +3,9 @@ const auth = require('./auth');
 const user = require('./user');
 const city = require('./city');
 const store = require('./store');
+const role = require('./role');
 
 // const firebaseService = require('./firebaseService');
-// const role = require('./role');
 // const category = require('./category');
 // const statistic = require('./statistic')
 // const stripe = require('./payment');
@@ -19,11 +19,12 @@ const initRoutes = (app) => {
     app.use('/api/v1/users', user);
     app.use('/api/v1/cities', city);
     app.use('/api/v1/stores', store);
-
+    app.use('/api/v1/roles', role);
+    
     // app.use('/api/v1', firebaseService);
     
     // app.use('/api/v1/categories', category);
-    // app.use('/api/v1/roles', role);
+    
     // app.use('/api/v1/statistic', statistic);
     // app.use('/api/v1/stripe', stripe);
     // app.use('/api/v1/forgotpass', mail);

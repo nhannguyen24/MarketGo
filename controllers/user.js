@@ -3,16 +3,6 @@ const {BadRequestError, InternalServerError} = require('../errors');
 const joi = require('joi');
 const {user_id, user_ids, user_name, email, avatar, role_id, password} = require('../helpers/joi_schema');
 
-// const getAllUser = async (req, res) => {
-//     try {
-//         const response = await services.getAllUser();
-//         return res.status(200).json(response);
-//     } catch (error) {
-//         console.log(error);
-//         throw new InternalServerError(error);
-//     }
-// };
-
 const getAllUsers = async (req, res) => {
     try {
         const { role_name } = req.user;
