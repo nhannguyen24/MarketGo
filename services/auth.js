@@ -68,7 +68,7 @@ const login = ({ email, password }) => new Promise(async (resolve, reject) => {
       mes: accessToken ? 'Login is successfully' : response ? 'Password is wrong' : 'Not found account',
       'access_token': accessToken ? `Bearer ${accessToken}` : accessToken,
       'refresh_token': refreshToken,
-      user: response,
+      user: isChecked ? response : null
     })
 
     if (refreshToken) {
