@@ -2,8 +2,8 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('Order_details', {
-      order_detail_id: {
+    await queryInterface.createTable('Transactions', {
+      transaction_id: {
         type: Sequelize.UUID,
         defaultValue: Sequelize.UUIDV4,
         primaryKey: true,
@@ -12,30 +12,15 @@ module.exports = {
         type: Sequelize.DOUBLE,
         allowNull: false
       },
-      quantity: {
-        type: Sequelize.INTEGER,
-        allowNull: false
-      },
       order_id: {
         type: Sequelize.UUID,
-        defaultValue: Sequelize.UUIDV4,
         references: {
           model: 'orders',
           key: 'order_id'
         }
       },
-      ingredient_id: {
-        type: Sequelize.UUID,
-        defaultValue: Sequelize.UUIDV4,
-        references: {
-          model: 'ingredients',
-          key: 'ingredient_id'
-        }
-      },
       status: {
-        type: Sequelize.ENUM,
-        values: ['Active', 'Deactive'],
-        defaultValue: 'Active',
+        type: Sequelize.STRING
       },
       createdAt: {
         allowNull: false,
@@ -46,10 +31,10 @@ module.exports = {
         allowNull: false,
         type: "TIMESTAMP",
         defaultValue: Sequelize.literal("CURRENT_TIMESTAMP"),
-      },
+      }
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('Order_details');
+    await queryInterface.dropTable('Transactions');
   }
 };

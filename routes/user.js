@@ -1,7 +1,7 @@
 const controllers = require('../controllers');
 const express = require('express');
 const verifyToken = require('../middlewares/verify_token');
-const verifyRole = require('../middlewares/verify_role');
+const {isAdmin} = require('../middlewares/verify_role');
 
 const router = express.Router();
 
@@ -35,6 +35,10 @@ const router = express.Router();
  *         user_name: Nhan Nguyen
  *         email: dnhan2426@gmail.com
  *         avatar: https://lh3.googleusercontent.com/a/AEdFTp4508ZdzGjVRFFIwb0ULZXYm5V5_vyRsiKq-cfA=s96-c
+ *         address: D1 
+ *         birthday: 11-08-2000
+ *         phone: 089x
+ *         role: Admin
  */
 
 // /**
@@ -47,7 +51,7 @@ const router = express.Router();
 //  *     tags: [user-controller]
 //  *     responses:
 //  *       200:
-//  *         description: For get the list of the users
+//  *         description: Get the list of the users successfully
 //  *         content:
 //  *           application/json:
 //  *             schema:
@@ -93,7 +97,7 @@ const router = express.Router();
  *         description: Sort ASC/DESC
  *     responses:
  *       200:
- *         description: For get the list of the users paging
+ *         description: Get the list of the users paging successfully
  *         content:
  *           application/json:
  *             schema:
@@ -101,7 +105,7 @@ const router = express.Router();
  *               items:
  *                 $ref: '#/components/schemas/User'
  */
-router.get("/", verifyToken, verifyRole, controllers.getAllUserPaging);
+router.get("/", verifyToken, isAdmin, controllers.getAllUsers);
 
 /**
  * @swagger
@@ -119,7 +123,7 @@ router.get("/", verifyToken, verifyRole, controllers.getAllUserPaging);
  *         description: Find user by user_id
  *     responses:
  *       200:
- *         description: For get the users by id
+ *         description: Get the users by id successfully
  *         content:
  *           application/json:
  *             schema:
@@ -158,9 +162,8 @@ router.get("/:id", verifyToken, controllers.getUserById);
  *               type: array
  *               items:
  *                 $ref: '#/components/schemas/User'
-
  */
-router.post("/", verifyToken, verifyRole, controllers.createUser);
+router.post("/", verifyToken, isAdmin, controllers.createUser);
 
 /**
  * @swagger
@@ -187,7 +190,7 @@ router.post("/", verifyToken, verifyRole, controllers.createUser);
  *              status: Active
  *     responses:
  *       200:
- *         description: For get the list of the users
+ *         description: Update the user successfully
  *         content:
  *           application/json:
  *             schema:
@@ -195,7 +198,7 @@ router.post("/", verifyToken, verifyRole, controllers.createUser);
  *               items:
  *                 $ref: '#/components/schemas/User'
  */
-router.put("/", verifyToken, verifyRole, controllers.updateUser);
+router.put("/", verifyToken, isAdmin, controllers.updateUser);
 
 /**
  * @swagger
@@ -220,7 +223,7 @@ router.put("/", verifyToken, verifyRole, controllers.updateUser);
  *              address: 1/1 D1 HCM
  *     responses:
  *       200:
- *         description: For get the list of the users
+ *         description: Update profile successfully
  *         content:
  *           application/json:
  *             schema:
@@ -246,7 +249,7 @@ router.put("/profile/", verifyToken, controllers.updateProfile);
  *         description: Input user_id to delete
  *     responses:
  *       200:
- *         description: Delete the user by id
+ *         description: Delete the user by id successfully
  *         content:
  *           application/json:
  *             schema:
@@ -254,6 +257,6 @@ router.put("/profile/", verifyToken, controllers.updateProfile);
  *               items:
  *                 $ref: '#/components/schemas/User'
  */
-router.delete("/delete", verifyToken, verifyRole, controllers.deleteUser);
+router.delete("/delete", verifyToken, isAdmin, controllers.deleteUser);
 
 module.exports = router;

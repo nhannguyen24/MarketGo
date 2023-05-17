@@ -26,7 +26,12 @@ module.exports = (sequelize, DataTypes) => {
         targetKey: 'promotion_id',
         as: "ingredient_promotion",
       });
-      Ingredient.hasMany(models.Feedback, { as: 'ingredient_feedback', foreignKey: 'promotion_id'});
+      Ingredient.belongsTo(models.Store, {
+        foreignKey: "store_id",
+        targetKey: 'store_id',
+        as: "ingredient_store",
+      });
+      Ingredient.hasMany(models.Feedback, { as: 'ingredient_feedback', foreignKey: 'ingredient_id'});
       Ingredient.belongsToMany(models.Order, {
         through: 'Order_detail',
         foreignKey: 'ingredient_id',
@@ -48,6 +53,9 @@ module.exports = (sequelize, DataTypes) => {
     quantitative: DataTypes.STRING,
     quantity: DataTypes.INTEGER,
     user_id: {
+      type: DataTypes.UUID,
+    },
+    store_id: {
       type: DataTypes.UUID,
     },
     promotion_id: {

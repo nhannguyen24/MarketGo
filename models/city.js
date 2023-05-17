@@ -3,7 +3,7 @@ const {
   Model
 } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
-  class Recipe extends Model {
+  class City extends Model {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
@@ -11,37 +11,29 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      Recipe.belongsTo(models.Food, {
-        foreignKey: "food_id",
-        targetKey: 'food_id',
-        as: "recipe_food",
-      });
+      City.hasMany(models.Store, { as: 'city_store', foreignKey: 'city_id'});
     }
   }
-  Recipe.init({
-    recipe_id: {
+  City.init({
+    city_id: {
       type: DataTypes.UUID,
       defaultValue: DataTypes.UUIDV4,
       primaryKey: true,
     },
-    ingredient_description: DataTypes.STRING,
-    implementation_guide: DataTypes.STRING,
-    food_id: {
-      type: DataTypes.UUID,
-    },
+    city_name: DataTypes.STRING,
     status: {
       type: DataTypes.ENUM,
-      values: ['Active', 'Deactive'],
+      values: ["Active", "Deactive"],
       validate: {
         isIn: {
-          args: [['Active', 'Deactive']],
-          msg: 'Invalid value for recipe.status (Active, Deactive)'
+          args: [["Active", "Deactive"]],
+          msg: 'Invalid value for city.status (Active, Deactive)'
         }
       }
-    }
+    },
   }, {
     sequelize,
-    modelName: 'Recipe',
+    modelName: 'City',
   });
-  return Recipe;
+  return City;
 };

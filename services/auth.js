@@ -7,7 +7,6 @@ const hashPassword = password => bcrypt.hashSync(password, bcrypt.genSaltSync(8)
 
 const register = ({ email, password, confirm_pass }) => new Promise(async (resolve, reject) => {
   try {
-    console.log(hashPassword(password));
     if (confirm_pass !== password) {
       resolve({
         mes: 'Confirm password does not match with password',

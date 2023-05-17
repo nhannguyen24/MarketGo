@@ -2,54 +2,34 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('Ingredients', {
-      ingredient_id: {
+    await queryInterface.createTable('Foods', {
+      food_id: {
         type: Sequelize.UUID,
         defaultValue: Sequelize.UUIDV4,
         primaryKey: true,
       },
-      ingredient_name: {
+      food_name: {
         type: Sequelize.STRING,
-        allowNull: false
+        allowNull: false,
       },
       description: {
-        type: Sequelize.STRING,
-        allowNull: false
+        type: Sequelize.STRING
       },
       image: {
         type: Sequelize.STRING(500),
       },
-      price: {
-        type: Sequelize.DOUBLE,
-        allowNull: false
-      },
-      quantity: {
-        type: Sequelize.INTEGER,
-        allowNull: false
-      },
       quantitative: {
-        type: Sequelize.DECIMAL,
-        allowNull: false
+        type: Sequelize.STRING
       },
       user_id: {
         type: Sequelize.UUID,
-        defaultValue: Sequelize.UUIDV4,
         references: {
           model: 'users',
           key: 'user_id'
         }
       },
-      promotion_id: {
-        type: Sequelize.UUID,
-        defaultValue: Sequelize.UUIDV4,
-        references: {
-          model: 'promotions',
-          key: 'promotion_id'
-        }
-      },
       cate_detail_id: {
         type: Sequelize.UUID,
-        defaultValue: Sequelize.UUIDV4,
         references: {
           model: 'category_details',
           key: 'cate_detail_id'
@@ -57,7 +37,7 @@ module.exports = {
       },
       status: {
         type: Sequelize.ENUM,
-        values: ['Active', 'Deactive'],
+        values: ["Active", "Deactive"],
         defaultValue: 'Active',
       },
       createdAt: {
@@ -73,6 +53,6 @@ module.exports = {
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('Ingredients');
+    await queryInterface.dropTable('Foods');
   }
 };

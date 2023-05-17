@@ -2,27 +2,19 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('Recipes', {
-      recipe_id: {
+    await queryInterface.createTable('Cities', {
+      city_id: {
         type: Sequelize.UUID,
         defaultValue: Sequelize.UUIDV4,
         primaryKey: true,
       },
-      description: {
+      city_name: {
         type: Sequelize.STRING,
         allowNull: false
       },
-      food_id: {
-        type: Sequelize.UUID,
-        defaultValue: Sequelize.UUIDV4,
-        references: {
-          model: 'food',
-          key: 'food_id'
-        }
-      },
       status: {
         type: Sequelize.ENUM,
-        values: ['Active', 'Deactive'],
+        values: ["Active", "Deactive"],
         defaultValue: 'Active',
       },
       createdAt: {
@@ -38,6 +30,6 @@ module.exports = {
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('Recipes');
+    await queryInterface.dropTable('Cities');
   }
 };

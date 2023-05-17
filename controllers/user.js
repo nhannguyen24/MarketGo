@@ -13,10 +13,10 @@ const {user_id, user_ids, user_name, email, avatar, role_id, password} = require
 //     }
 // };
 
-const getAllUserPaging = async (req, res) => {
+const getAllUsers = async (req, res) => {
     try {
         const { role_name } = req.user;
-        const response = await services.getAllUserPaging(req.query, role_name);
+        const response = await services.getAllUsers(req.query, role_name);
         return res.status(200).json(response);
     } catch (error) {
         console.log(error);
@@ -87,4 +87,4 @@ const getUserById = async (req, res) => {
     }
 };
 
-module.exports = {updateUser, deleteUser, getUserById, createUser, getAllUserPaging, updateProfile};
+module.exports = {updateUser, deleteUser, getUserById, createUser, getAllUsers, updateProfile};

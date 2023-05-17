@@ -1,5 +1,7 @@
 const {refreshAccessToken, logout, login, register } = require("./auth");
-const {updateUser, deleteUser, getUserById, createUser, getAllUserPaging, updateProfile} = require("./user");
+const {updateUser, deleteUser, getUserById, createUser, getAllUsers, updateProfile} = require("./user");
+const {updateCity, deleteCity, getCityById, createCity, getAllCities} = require("./city");
+const {updateStore, deleteStore, getStoreById, createStore, getAllStores,} = require("./store");
 
 module.exports = {
   logout,
@@ -10,7 +12,17 @@ module.exports = {
   deleteUser, 
   getUserById, 
   createUser, 
-  getAllUserPaging, 
+  getAllUsers, 
   updateProfile,
+  updateCity, 
+  deleteCity, 
+  getCityById, 
+  createCity, 
+  getAllCities,
+  updateStore,
+  deleteStore,
+  getStoreById,
+  createStore,
+  getAllStores,
   
 };

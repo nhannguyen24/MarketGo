@@ -5,59 +5,7 @@ const bcrypt = require('bcryptjs');
 
 const hashPassword = password => bcrypt.hashSync(password, bcrypt.genSaltSync(8));
 
-// const getAllUser = () =>
-//   new Promise(async (resolve, reject) => {
-//     try {
-//       redisClient.get("users", async (error, user) => {
-//         if (error) console.error(error);
-//         if (user != null) {
-//           resolve({
-//             msg: user ? `Got user` : "Cannot find user",
-//             user: JSON.parse(user),
-//           });
-//         } else {
-//           const users = await db.User.findAndCountAll({
-//             raw: true,
-//             nest: true,
-//             where: {
-//               status: {
-//                 [Op.ne]: "Deactive",
-//               }
-//             },
-//             order: [
-//               ['updatedAt', 'DESC']
-//             ],
-//             attributes: {
-//               exclude: [
-//                 "role_id",
-//                 "major_id",
-//                 "createAt",
-//                 "updateAt",
-//                 "refresh_token",
-//               ],
-//             },
-//             include: [
-//               {
-//                 model: db.Role,
-//                 as: "user_role",
-//                 attributes: ["role_id", "role_name"],
-//               }
-//             ],
-//           });
-//           redisClient.setEx("users", 3600, JSON.stringify(users));
-
-//           resolve({
-//             msg: users ? `Got user` : "Cannot find user",
-//             users: users,
-//           });
-//         }
-//       });
-//     } catch (error) {
-//       reject(error);
-//     }
-//   });
-
-const getAllUserPaging = ({ page, limit, order, user_name, ...query}) =>
+const getAllUsers = ({ page, limit, order, user_name, ...query}) =>
   new Promise(async (resolve, reject) => {
     try {
       redisClient.get(`user_paging_${page}_${limit}_${order}_${user_name}`, async (error, user_paging) => {
@@ -83,7 +31,6 @@ const getAllUserPaging = ({ page, limit, order, user_name, ...query}) =>
             attributes: {
               exclude: [
                 "role_id",
-                "major_id",
                 "createAt",
                 "updateAt",
                 "refresh_token",
@@ -94,6 +41,11 @@ const getAllUserPaging = ({ page, limit, order, user_name, ...query}) =>
                 model: db.Role,
                 as: "user_role",
                 attributes: ["role_id", "role_name"],
+              },
+              {
+                model: db.Store,
+                as: "user_store",
+                attributes: ["store_id", "store_name","address"],
               },
             ],
           });
@@ -114,7 +66,6 @@ const getAllUserPaging = ({ page, limit, order, user_name, ...query}) =>
 const createUser = ({password, ...body}) =>
   new Promise(async (resolve, reject) => {
     try {
-      console.log(body);
       const user = await db.User.findOrCreate({
         where: { email: body?.email },
         defaults: {
@@ -126,6 +77,22 @@ const createUser = ({password, ...body}) =>
         msg: user[1]
           ? "Create new user successfully"
           : "Cannot create new user/ Email already exists",
+      });
+      redisClient.keys('user_paging*', (error, keys) => {
+        if (error) {
+          console.error('Error retrieving keys:', error);
+          return;
+        }
+        // Delete each key individually
+        keys.forEach((key) => {
+          redisClient.del(key, (deleteError, reply) => {
+            if (deleteError) {
+              console.error(`Error deleting key ${key}:`, deleteError);
+            } else {
+              console.log(`Key ${key} deleted successfully`);
+            }
+          });
+        });
       });
     } catch (error) {
       reject(error);
@@ -144,7 +111,22 @@ const updateUser = ({ user_id, ...body }) =>
             ? `${users[0]} user update`
             : "Cannot update user/ user_id not found",
       });
-      redisClient.del('users');
+      redisClient.keys('user_paging*', (error, keys) => {
+        if (error) {
+          console.error('Error retrieving keys:', error);
+          return;
+        }
+        // Delete each key individually
+        keys.forEach((key) => {
+          redisClient.del(key, (deleteError, reply) => {
+            if (deleteError) {
+              console.error(`Error deleting key ${key}:`, deleteError);
+            } else {
+              console.log(`Key ${key} deleted successfully`);
+            }
+          });
+        });
+      });
     } catch (error) {
       reject(error.message);
     }
@@ -166,6 +148,22 @@ const updateUser = ({ user_id, ...body }) =>
             users[0] > 0
               ? "Update profile successfully"
               : "Cannot update user/ user_id not found",
+        });
+        redisClient.keys('user_paging*', (error, keys) => {
+          if (error) {
+            console.error('Error retrieving keys:', error);
+            return;
+          }
+          // Delete each key individually
+          keys.forEach((key) => {
+            redisClient.del(key, (deleteError, reply) => {
+              if (deleteError) {
+                console.error(`Error deleting key ${key}:`, deleteError);
+              } else {
+                console.log(`Key ${key} deleted successfully`);
+              }
+            });
+          });
         });
       }
     } catch (error) {
@@ -193,7 +191,22 @@ const deleteUser = (user_ids, user_id) =>
               ? `${users} user delete`
               : "Cannot delete user/ user_id not found",
         });
-        redisClient.del('users');
+        redisClient.keys('user_paging*', (error, keys) => {
+          if (error) {
+            console.error('Error retrieving keys:', error);
+            return;
+          }
+          // Delete each key individually
+          keys.forEach((key) => {
+            redisClient.del(key, (deleteError, reply) => {
+              if (deleteError) {
+                console.error(`Error deleting key ${key}:`, deleteError);
+              } else {
+                console.log(`Key ${key} deleted successfully`);
+              }
+            });
+          });
+        });
       }
     } catch (error) {
       reject(error);
@@ -210,7 +223,6 @@ const getUserById = (user_id) =>
         attributes: {
           exclude: [
             "role_id",
-            "major_id",
             "createdAt",
             "updatedAt",
             "refresh_token",
@@ -221,7 +233,12 @@ const getUserById = (user_id) =>
             model: db.Role,
             as: "user_role",
             attributes: ["role_id", "role_name"],
-          }
+          },
+          {
+            model: db.Store,
+            as: "user_store",
+            attributes: ["store_id", "store_name","address"],
+          },
         ],
       });
       if (user) {
@@ -243,7 +260,7 @@ module.exports = {
   deleteUser,
   getUserById,
   createUser,
-  getAllUserPaging,
+  getAllUsers,
   updateProfile,
 
 };

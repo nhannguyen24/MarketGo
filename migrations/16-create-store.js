@@ -2,29 +2,37 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('Orders', {
-      order_id: {
+    await queryInterface.createTable('Stores', {
+      store_id: {
         type: Sequelize.UUID,
         defaultValue: Sequelize.UUIDV4,
         primaryKey: true,
       },
-      total_price: {
-        type: Sequelize.DOUBLE
+      store_name: {
+        type: Sequelize.STRING,
+        allowNull: false
       },
-      order_date: {
-        type: Sequelize.DOUBLE
+      address: {
+        type: Sequelize.STRING,
+        allowNull: false
       },
       user_id: {
         type: Sequelize.UUID,
-        defaultValue: Sequelize.UUIDV4,
         references: {
           model: 'users',
           key: 'user_id'
         }
       },
+      city_id: {
+        type: Sequelize.UUID,
+        references: {
+          model: 'cities',
+          key: 'city_id'
+        }
+      },
       status: {
         type: Sequelize.ENUM,
-        values: ['Active', 'Deactive'],
+        values: ["Active", "Deactive"],
         defaultValue: 'Active',
       },
       createdAt: {
@@ -40,6 +48,6 @@ module.exports = {
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('Orders');
+    await queryInterface.dropTable('Stores');
   }
 };

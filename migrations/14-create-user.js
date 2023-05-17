@@ -34,14 +34,13 @@ module.exports = {
       },
       accessChangePassword: {
         type: Sequelize.BOOLEAN,
-        defaultValue: false,
+        defaultValue: 0,
       },
       refresh_token: {
         type: Sequelize.STRING,
       },
       role_id: {
         type: Sequelize.UUID,
-        defaultValue: Sequelize.UUIDV4,
         references: {
           model: 'roles',
           key: 'role_id'
