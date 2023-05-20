@@ -23,7 +23,7 @@ const initRoutes = (app) => {
     app.use('/api/v1/stores', store);
     app.use('/api/v1/roles', role);
     app.use('/api/v1/ingredients', ingredient);
-    app.use('/api/v1/foods', food);
+    // app.use('/api/v1/foods', food);
 
     // app.use('/api/v1', firebaseService);
     // app.use('/api/v1/statistic', statistic);
