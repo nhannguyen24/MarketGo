@@ -16,9 +16,6 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: false
       },
-      image: {
-        type: Sequelize.STRING(500),
-      },
       price: {
         type: Sequelize.DOUBLE,
         allowNull: false
@@ -28,14 +25,14 @@ module.exports = {
         allowNull: false
       },
       quantitative: {
-        type: Sequelize.DECIMAL,
+        type: Sequelize.STRING,
         allowNull: false
       },
-      user_id: {
+      store_id: {
         type: Sequelize.UUID,
         references: {
-          model: 'users',
-          key: 'user_id'
+          model: 'stores',
+          key: 'store_id'
         }
       },
       promotion_id: {

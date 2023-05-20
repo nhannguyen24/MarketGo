@@ -16,6 +16,23 @@ const verifyToken = require('../middlewares/verify_token');
  *           description: The auto-generated token
  */
 
+/**
+ * @swagger
+ * /api/v1/auth/login-google:
+ *   post:
+ *     summary: For login with google returns the token
+ *     security: 
+ *         - BearerAuth: []
+ *     tags: [auth-controller]
+ *     responses:
+ *       200:
+ *         description: For login with google returns the token
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ */
+router.post('/login-google', firebase_auth, controllers.loginGoogle);
 
 /**
  * @swagger

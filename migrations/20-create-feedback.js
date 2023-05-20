@@ -29,7 +29,7 @@ module.exports = {
       food_id: {
         type: Sequelize.UUID,
         references: {
-          model: 'food',
+          model: 'foods',
           key: 'food_id'
         }
       },

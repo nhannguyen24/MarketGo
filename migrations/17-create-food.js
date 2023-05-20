@@ -15,9 +15,6 @@ module.exports = {
       description: {
         type: Sequelize.STRING
       },
-      image: {
-        type: Sequelize.STRING(500),
-      },
       quantitative: {
         type: Sequelize.STRING
       },

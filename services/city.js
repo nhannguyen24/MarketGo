@@ -29,7 +29,7 @@ const getAllCities = (
         redisClient.setEx(`admin_cities_${city_name}`, 3600, JSON.stringify(cities));
       }
       resolve({
-        msg: cities ? `Got cities` : "Cannot find cities",
+        msg: cities ? "Got cities" : "Cannot find cities",
         cities: cities,
       });
     } catch (error) {
@@ -51,7 +51,7 @@ const createCity = (body) =>
       resolve({
         msg: city[1]
           ? "Create new city successfully"
-          : "Cannot create new city",
+          : "Cannot create new city/City name already exists",
       });
     } catch (error) {
       reject(error);
@@ -61,16 +61,24 @@ const createCity = (body) =>
 const updateCity = ({ city_id, ...body }) =>
   new Promise(async (resolve, reject) => {
     try {
-      const cities = await db.City.update(body, {
-        where: { city_id },
-      });
-      resolve({
-        msg:
-          cities[0] > 0
-            ? `${cities[0]} city update`
-            : "Cannot update city/ city_id not found",
-      });
-
+      const city = await db.City.findAll({
+        where: { city_name: body?.city_name }
+      })
+      if (city) {
+        resolve({
+          msg: "City name already exists"
+        });
+      } else {
+        const cities = await db.City.update(body, {
+          where: { city_id },
+        });
+        resolve({
+          msg:
+            cities[0] > 0
+              ? `${cities[0]} city update`
+              : "Cannot update city/ city_id not found",
+        });
+      }
     } catch (error) {
       reject(error.message);
     }
@@ -112,7 +120,7 @@ const getCityById = (city_id) =>
         },
       });
       resolve({
-        msg: city ? `Got city` : "Cannot find city",
+        msg: city ? "Got city" : `Cannot find city with id ${city_id}`,
         city: city,
       });
     } catch (error) {

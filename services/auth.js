@@ -56,9 +56,9 @@ const login = ({ email, password }) => new Promise(async (resolve, reject) => {
         },
       ],
     })
-    const isChecked = response && bcrypt.compareSync(password, response.password)
+    const isChecked = response && bcrypt.compareSync(password, response.password);
     const accessToken = isChecked
-      ? jwt.sign({ id: response.id, email: response.email, role_code: response.role_code }, process.env.JWT_SECRET, { expiresIn: '1h' })
+      ? jwt.sign({ user_id: response.user_id, email: response.email, role_name: response.user_role.role_name }, process.env.JWT_SECRET, { expiresIn: '1h' })
       : null
     // JWT_SECRET_REFRESH_TOKEN
     const refreshToken = isChecked
@@ -84,83 +84,84 @@ const login = ({ email, password }) => new Promise(async (resolve, reject) => {
   }
 })
 
-// const loginGoogle = ({ name, picture, user_id, email }) =>
-//   new Promise(async (resolve, reject) => {
-//     try {
-//       const response = await db.User.findOrCreate({
-//         where: { email },
-//         raw: true,
-//         nest: true,
-//         defaults: {
-//           user_id: user_id,
-//           user_name: name,
-//           email: email,
-//           avatar: picture,
-//           role_id: "5826d1d9-c33a-45c5-b93e-894e1dde10bd",
-//         },
-//       });
-//       // console.log("0",response);
-//       // console.log("1", response[0]);
-//       const user = await db.User.findOne({
-//         where: { email: email },
-//         raw: true,
-//         nest: true,
-//         attributes: {
-//           exclude: [
-//             "role_id",
-//             "status",
-//             "createdAt",
-//             "updatedAt",
-//             "major_id",
-//             "refresh_token",
-//           ],
-//         },
-//         include: [
-//           {
-//             model: db.Role,
-//             as: "user_role",
-//             attributes: ["role_id", "role_name"],
-//           },
-//         ],
-//       });
+const loginGoogle = ({ name, picture, user_id, email }) =>
+  new Promise(async (resolve, reject) => {
+    try {
+      const response = await db.User.findOrCreate({
+        where: { email },
+        raw: true,
+        nest: true,
+        defaults: {
+          user_id: user_id,
+          user_name: name,
+          email: email,
+          avatar: picture,
+          role_id: "58c10546-5d71-47a6-842e-84f5d2f72ec3",
+        },
+      });
+      // console.log("0",response);
+      // console.log("1", response[0]);
+      const user = await db.User.findOne({
+        where: { email: email },
+        raw: true,
+        nest: true,
+        attributes: {
+          exclude: [
+            "role_id",
+            "status",
+            "createdAt",
+            "updatedAt",
+            "major_id",
+            "refresh_token",
+          ],
+        },
+        include: [
+          {
+            model: db.Role,
+            as: "user_role",
+            attributes: ["role_id", "role_name"],
+          },
+        ],
+      });
 
-//       const [accessToken, refreshToken] = await Promise.all([
-//         jwt.sign(
-//           {
-//             user_id: response[0].user_id,
-//             email: response[0].email,
-//             role_name: user.user_role.role_name,
-//           },
-//           process.env.JWT_SECRET,
-//           { expiresIn: "1h" }
-//         ),
-//         jwt.sign(
-//           { user_id: response[0].user_id },
-//           process.env.JWT_SECRET_REFRESH,
-//           { expiresIn: "5d" }
-//         ),
-//       ]);
+      const [accessToken, refreshToken] = await Promise.all([
+        jwt.sign(
+          {
+            user_id: response[0].user_id,
+            email: response[0].email,
+            role_name: user.user_role.role_name,
+          },
+          process.env.JWT_SECRET,
+          { expiresIn: "1h" }
+        ),
+        jwt.sign(
+          { user_id: response[0].user_id },
+          process.env.JWT_SECRET_REFRESH,
+          { expiresIn: "5d" }
+        ),
+      ]);
 
-//       if (refreshToken) {
-//         await db.User.update(
-//           {
-//             refresh_token: refreshToken,
-//           },
-//           { where: { user_id: response[0].user_id } }
-//         );
-//       }
+      if (refreshToken) {
+        await db.User.update(
+          {
+            refresh_token: refreshToken,
+          },
+          { where: { user_id: response[0].user_id } }
+        );
+      }
 
-//       resolve({
-//         mes: "Login successfully",
-//         access_token: accessToken ? `Bearer ${accessToken}` : accessToken,
-//         refresh_token: refreshToken,
-//         user: user,
-//       });
-//     } catch (error) {
-//       console.log(error);
-//       reject(error);
-//     }
-//   });
+      resolve({
+        mes: "Login successfully",
+        access_token: accessToken ? `Bearer ${accessToken}` : accessToken,
+        refresh_token: refreshToken,
+        user: user,
+      });
+      
+    } catch (error) {
+      console.log(error);
+      reject(error);
+    }
+  });
 
 const refreshAccessToken = (refresh_token) =>
   new Promise(async (resolve, reject) => {
@@ -245,4 +246,4 @@ const logout = (user_id) =>
     }
   });
 
-module.exports = { refreshAccessToken, logout, login, register };
+module.exports = { refreshAccessToken, logout, login, register, loginGoogle };

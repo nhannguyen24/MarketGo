@@ -5,14 +5,14 @@ const bcrypt = require('bcryptjs');
 
 const hashPassword = password => bcrypt.hashSync(password, bcrypt.genSaltSync(8));
 
-const getAllUsers = ({ page, limit, order, user_name, ...query}) =>
+const getAllUsers = ({ page, limit, order, user_name, ...query }) =>
   new Promise(async (resolve, reject) => {
     try {
       redisClient.get(`user_paging_${page}_${limit}_${order}_${user_name}`, async (error, user_paging) => {
         if (error) console.error(error);
         if (user_paging != null) {
           resolve({
-            msg: user_paging ? `Got user` : "Cannot find user",
+            msg: "Got user",
             user_paging: JSON.parse(user_paging),
           });
         } else {
@@ -45,14 +45,14 @@ const getAllUsers = ({ page, limit, order, user_name, ...query}) =>
               {
                 model: db.Store,
                 as: "user_store",
-                attributes: ["store_id", "store_name","address"],
+                attributes: ["store_id", "store_name", "address"],
               },
             ],
           });
           redisClient.setEx(`user_paging_${page}_${limit}_${order}_${user_name}`, 3600, JSON.stringify(users));
 
           resolve({
-            msg: users ? `Got user` : "Cannot find user",
+            msg: users ? "Got user" : "Cannot find user",
             users: users,
           });
         }
@@ -63,7 +63,7 @@ const getAllUsers = ({ page, limit, order, user_name, ...query}) =>
   });
 
 
-const createUser = ({password, ...body}) =>
+const createUser = ({ password, ...body }) =>
   new Promise(async (resolve, reject) => {
     try {
       const user = await db.User.findOrCreate({
@@ -99,54 +99,24 @@ const createUser = ({password, ...body}) =>
     }
   });
 
-const updateUser = ({ user_id, ...body }) =>
+const updateUser = ({ user_id, email, ...body }) =>
   new Promise(async (resolve, reject) => {
     try {
-      const users = await db.User.update(body, {
-        where: { user_id },
-      });
-      resolve({
-        msg:
-          users[0] > 0
-            ? `${users[0]} user update`
-            : "Cannot update user/ user_id not found",
-      });
-      redisClient.keys('user_paging*', (error, keys) => {
-        if (error) {
-          console.error('Error retrieving keys:', error);
-          return;
-        }
-        // Delete each key individually
-        keys.forEach((key) => {
-          redisClient.del(key, (deleteError, reply) => {
-            if (deleteError) {
-              console.error(`Error deleting key ${key}:`, deleteError);
-            } else {
-              console.log(`Key ${key} deleted successfully`);
-            }
-          });
-        });
-      });
-    } catch (error) {
-      reject(error.message);
-    }
-  });
-
-  const updateProfile = (body, user_id) =>
-  new Promise(async (resolve, reject) => {
-    try {
-      if (body.user_id !== user_id) {
+      const user = await db.User.findAll({
+        where: { email: email }
+      })
+      if (user) {
         resolve({
-          msg: "Can't update other people's account"
+          msg: "Email already exists"
         });
       } else {
         const users = await db.User.update(body, {
-          where: { user_id: user_id},
+          where: { user_id },
         });
         resolve({
           msg:
             users[0] > 0
-              ? "Update profile successfully"
+              ? `${users[0]} user update`
               : "Cannot update user/ user_id not found",
         });
         redisClient.keys('user_paging*', (error, keys) => {
@@ -171,12 +141,60 @@ const updateUser = ({ user_id, ...body }) =>
     }
   });
 
+const updateProfile = (body, user_id) =>
+  new Promise(async (resolve, reject) => {
+    try {
+      if (body.user_id !== user_id) {
+        resolve({
+          msg: "Can't update other people's account"
+        });
+      } else {
+        const user = await db.User.findAll({
+          where: { email: body?.email }
+        })
+        if (user) {
+          resolve({
+            msg: "Email already exists"
+          });
+        } else {
+          const users = await db.User.update(body, {
+            where: { user_id: user_id },
+          });
+          resolve({
+            msg:
+              users[0] > 0
+                ? "Update profile successfully"
+                : "Cannot update user/ user_id not found",
+          });
+          redisClient.keys('user_paging*', (error, keys) => {
+            if (error) {
+              console.error('Error retrieving keys:', error);
+              return;
+            }
+            // Delete each key individually
+            keys.forEach((key) => {
+              redisClient.del(key, (deleteError, reply) => {
+                if (deleteError) {
+                  console.error(`Error deleting key ${key}:`, deleteError);
+                } else {
+                  console.log(`Key ${key} deleted successfully`);
+                }
+              });
+            });
+          });
+        }
+      }
+    } catch (error) {
+      reject(error.message);
+    }
+  });
+
 const deleteUser = (user_ids, user_id) =>
   new Promise(async (resolve, reject) => {
     try {
       if (user_ids.includes(user_id)) {
         resolve({
-          msg: "Cannot delete user/ Account is in use",
+          msg: `Cannot delete user/ Account ${user_id} is in use`,
         });
       } else {
         const users = await db.User.update(
@@ -237,19 +255,14 @@ const getUserById = (user_id) =>
           {
             model: db.Store,
             as: "user_store",
-            attributes: ["store_id", "store_name","address"],
+            attributes: ["store_id", "store_name", "address"],
           },
         ],
       });
-      if (user) {
-        resolve({
-          user: user,
-        });
-      } else {
-        resolve({
-          msg: `Cannot find user with id: ${user_id}`,
-        });
-      }
+      resolve({
+        msg: user ? "Got user" : `Cannot find user with id: ${user_id}`,
+        user: user,
+      });
     } catch (error) {
       reject(error);
     }

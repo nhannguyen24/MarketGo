@@ -8,18 +8,18 @@ const getAllStores = (
 ) =>
     new Promise(async (resolve, reject) => {
         try {
-            redisClient.get(`stores_${page}_${limit}_${order}_${store_name}`, async (error, store) => {
+            redisClient.get(`stores_${page}_${limit}_${order}_${store_name}_${user_id}_${city_id}`, async (error, store) => {
                 if (error) console.error(error);
                 if (store != null && store != "") {
                     resolve({
-                        msg: store ? `Got stores` : "Cannot find stores",
+                        msg: "Got stores",
                         stores: JSON.parse(store),
                     });
                 } else {
-                    redisClient.get(`admin_stores_${page}_${limit}_${order}_${store_name}`, async (error, adminStore) => {
+                    redisClient.get(`admin_stores_${page}_${limit}_${order}_${store_name}_${user_id}_${city_id}`, async (error, adminStore) => {
                         if (adminStore != null && adminStore != "") {
                             resolve({
-                                msg: adminStore ? `Got stores` : "Cannot find stores",
+                                msg: "Got stores",
                                 stores: JSON.parse(adminStore),
                             });
                         } else {
@@ -44,22 +44,22 @@ const getAllStores = (
                                 },
                                 include: [
                                     {
-                                      model: db.City,
-                                      as: "store_city",
-                                      attributes: ["city_id", "city_name"],
+                                        model: db.City,
+                                        as: "store_city",
+                                        attributes: ["city_id", "city_name"],
                                     },
                                     {
-                                      model: db.User,
-                                      as: "store_user",
-                                      attributes: ["user_id", "user_name", "email", "address", "phone", "role_id"],
+                                        model: db.User,
+                                        as: "store_user",
+                                        attributes: ["user_id", "user_name", "email", "address", "phone", "role_id"],
                                     },
-                                  ],
+                                ],
                             });
 
                             if (role_name !== "Admin") {
-                                redisClient.setEx(`stores_${page}_${limit}_${order}_${store_name}`, 3600, JSON.stringify(stores));
+                                redisClient.setEx(`stores_${page}_${limit}_${order}_${store_name}_${user_id}_${city_id}`, 3600, JSON.stringify(stores));
                             } else {
-                                redisClient.setEx(`admin_stores_${page}_${limit}_${order}_${store_name}`, 3600, JSON.stringify(stores));
+                                redisClient.setEx(`admin_stores_${page}_${limit}_${order}_${store_name}_${user_id}_${city_id}`, 3600, JSON.stringify(stores));
                             }
                             resolve({
                                 msg: stores ? `Got stores` : "Cannot find stores",
@@ -88,7 +88,7 @@ const createStore = (body) =>
             resolve({
                 msg: store[1]
                     ? "Create new store successfully"
-                    : "Cannot create new store",
+                    : "Cannot create new store/Store name already exists",
             });
 
             redisClient.keys('*stores_*', (error, keys) => {
@@ -116,32 +116,41 @@ const createStore = (body) =>
 const updateStore = ({ store_id, ...body }) =>
     new Promise(async (resolve, reject) => {
         try {
-            const stores = await db.Store.update(body, {
-                where: { store_id },
-            });
-            resolve({
-                msg:
-                    stores[0] > 0
-                        ? `${stores[0]} store update`
-                        : "Cannot update store/ store_id not found",
-            });
+            const store = await db.Store.findAll({
+                where: { store_name: body?.store_name }
+            })
+            if (store) {
+                resolve({
+                    msg: "Store name already exists"
+                });
+            } else {
+                const stores = await db.Store.update(body, {
+                    where: { store_id },
+                });
+                resolve({
+                    msg:
+                        stores[0] > 0
+                            ? `${stores[0]} store update`
+                            : "Cannot update store/ store_id not found",
+                });
 
-            redisClient.keys('*stores_*', (error, keys) => {
-                if (error) {
-                    console.error('Error retrieving keys:', error);
-                    return;
-                }
-                // Delete each key individually
-                keys.forEach((key) => {
-                    redisClient.del(key, (deleteError, reply) => {
-                        if (deleteError) {
-                            console.error(`Error deleting key ${key}:`, deleteError);
-                        } else {
-                            console.log(`Key ${key} deleted successfully`);
-                        }
+                redisClient.keys('*stores_*', (error, keys) => {
+                    if (error) {
+                        console.error('Error retrieving keys:', error);
+                        return;
+                    }
+                    // Delete each key individually
+                    keys.forEach((key) => {
+                        redisClient.del(key, (deleteError, reply) => {
+                            if (deleteError) {
+                                console.error(`Error deleting key ${key}:`, deleteError);
+                            } else {
+                                console.log(`Key ${key} deleted successfully`);
+                            }
+                        });
                     });
                 });
-            });
+            }
 
         } catch (error) {
             reject(error.message);
@@ -202,19 +211,19 @@ const getStoreById = (store_id) =>
                 },
                 include: [
                     {
-                      model: db.City,
-                      as: "store_city",
-                      attributes: ["city_id", "city_name"],
+                        model: db.City,
+                        as: "store_city",
+                        attributes: ["city_id", "city_name"],
                     },
                     {
-                      model: db.User,
-                      as: "store_user",
-                      attributes: ["user_id", "user_name", "email", "address", "phone", "role_id"],
+                        model: db.User,
+                        as: "store_user",
+                        attributes: ["user_id", "user_name", "email", "address", "phone", "role_id"],
                     },
-                  ],
+                ],
             });
             resolve({
-                msg: store ? `Got store` : "Cannot find store",
+                msg: store ? "Got store" : `Cannot find store with id ${store_id}`,
                 store: store,
             });
         } catch (error) {

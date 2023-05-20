@@ -15,7 +15,7 @@ const getAllCities = async (req, res) => {
 
 const createCity = async (req, res) => {
     try {
-        const {city_name: city_name} = req.body;
+        const {city_name} = req.body;
         if(!city_name) {
             throw new BadRequestError('Please provide city_name');
         }

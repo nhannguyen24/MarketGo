@@ -4,8 +4,8 @@ const serviceAccount = require("./serviceAccount.json");
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
-  storageBucket: "react-auth-bc0a4.appspot.com"
+  storageBucket: "gs://wallet-fpt.appspot.com"
 });
 
-const bucket = admin.storage().bucket()
-module.exports = {admin, bucket};
+const bucket = admin.storage().bucket();
+module.exports = { admin, bucket };

@@ -15,7 +15,7 @@ const getAllStores = async (req, res) => {
 
 const createStore = async (req, res) => {
     try {
-        const {store_name: store_name, address: address} = req.body;
+        const {store_name, address} = req.body;
         if(!store_name) {
             throw new BadRequestError('Please provide store_name');
         }

@@ -11,11 +11,6 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      Ingredient.belongsTo(models.User, {
-        foreignKey: "user_id",
-        targetKey: 'user_id',
-        as: "ingredient_user",
-      });
       Ingredient.belongsTo(models.Category_detail, {
         foreignKey: "cate_detail_id",
         targetKey: 'cate_detail_id',
@@ -32,6 +27,9 @@ module.exports = (sequelize, DataTypes) => {
         as: "ingredient_store",
       });
       Ingredient.hasMany(models.Feedback, { as: 'ingredient_feedback', foreignKey: 'ingredient_id'});
+      
+      Ingredient.hasMany(models.Image, { as: 'ingredient_image', foreignKey: 'ingredient_id'});
+      
       Ingredient.belongsToMany(models.Order, {
         through: 'Order_detail',
         foreignKey: 'ingredient_id',
@@ -48,13 +46,9 @@ module.exports = (sequelize, DataTypes) => {
     },
     ingredient_name: DataTypes.STRING,
     description: DataTypes.STRING,
-    image: DataTypes.STRING,
     price: DataTypes.DOUBLE,
     quantitative: DataTypes.STRING,
     quantity: DataTypes.INTEGER,
-    user_id: {
-      type: DataTypes.UUID,
-    },
     store_id: {
       type: DataTypes.UUID,
     },

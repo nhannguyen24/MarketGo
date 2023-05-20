@@ -3,18 +3,18 @@ const {BadRequestError, InternalServerError} = require('../errors');
 // const joi = require('joi');
 // const {refresh_token, student_id} = require('../helpers/joi_schema');
 
-// const loginGoogle = async (req, res) => {
-//     try {
-//         const {email: email} = req.user;
-//         if(!email) {
-//             throw new BadRequestError('Please provide email');
-//         }
-//         const response = await services.loginGoogle(req.user);
-//         return res.status(200).json(response);
-//     } catch (error) {
-//         throw new InternalServerError(error);
-//     }
-// };
+const loginGoogle = async (req, res) => {
+    try {
+        const {email: email} = req.user;
+        if(!email) {
+            throw new BadRequestError('Please provide email');
+        }
+        const response = await services.loginGoogle(req.user);
+        return res.status(200).json(response);
+    } catch (error) {
+        throw new InternalServerError(error);
+    }
+};
 
 const refreshAccessToken = async (req, res) => {
     try {
@@ -69,6 +69,7 @@ const register = async (req, res) => {
         throw new InternalServerError(error);
     }
 }
+
 const login = async (req, res) => {
     try {
         const {email: email, password: password} = req.body;
@@ -79,11 +80,15 @@ const login = async (req, res) => {
             throw new BadRequestError('Please provide password');
         }
         const response = await services.login(req.body)
-        return res.status(200).json(response)
+        if (response.mes == 'Not found account' || response.mes == 'Password is wrong') {
+            return res.status(401).json(response)
+        } else {
+            return res.status(200).json(response)
+        }
     } catch (error) {
         console.log(error);
         throw new InternalServerError(error);
     }
 }
 
-module.exports = {refreshAccessToken, logout, login, register };
+module.exports = {refreshAccessToken, logout, login, register, loginGoogle };

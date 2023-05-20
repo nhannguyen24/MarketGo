@@ -46,6 +46,14 @@ const city_ids = joi.array().required().messages({
   'any.required': 'user_ids are required'
 });
 
+const ingredient_id = joi.string().required().messages({
+  "string.empty": `major_id is not allowed to be empty`,
+});
+
+const ingredient_ids = joi.array().required().messages({
+  'any.required': 'user_ids are required'
+});
+
 const user_ids = joi.array().required().messages({
   'any.required': 'user_ids are required'
 });
@@ -103,5 +111,7 @@ module.exports = {
   city_ids,
   store_id, 
   store_ids,
-
+  ingredient_id,
+  ingredient_ids,
+  
 };
