@@ -66,7 +66,7 @@ const login = ({ email, password }) => new Promise(async (resolve, reject) => {
       : null
     resolve({
       mes: accessToken ? 'Login is successfully' : response ? 'Password is wrong' : 'Not found account',
-      'access_token': accessToken ? `Bearer ${accessToken}` : accessToken,
+      'access_token': accessToken ? `${accessToken}` : accessToken,
       'refresh_token': refreshToken,
       user: isChecked ? response : null
     })
@@ -152,7 +152,7 @@ const loginGoogle = ({ name, picture, user_id, email }) =>
 
       resolve({
         mes: "Login successfully",
-        access_token: accessToken ? `Bearer ${accessToken}` : accessToken,
+        access_token: accessToken ? `${accessToken}` : accessToken,
         refresh_token: refreshToken,
         user: user,
       });
@@ -201,7 +201,7 @@ const refreshAccessToken = (refresh_token) =>
               mes: accessToken
                 ? "Create refresh token successfully"
                 : "Create refresh token unsuccessfully",
-              access_token: accessToken ? `Bearer ${accessToken}` : accessToken,
+              access_token: accessToken ? `${accessToken}` : accessToken,
               refresh_token: refresh_token,
             });
           }
