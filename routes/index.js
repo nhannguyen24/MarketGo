@@ -6,9 +6,11 @@ const store = require('./store');
 const role = require('./role');
 const ingredient = require('./ingredient');
 const food = require('./food');
+const category = require('./category');
+const category_detail = require('./category_detail');
+const recipe = require('./recipe');
 
 // const firebaseService = require('./firebaseService');
-// const category = require('./category');
 // const statistic = require('./statistic')
 // const stripe = require('./payment');
 // const mail = require('./forgotPassword');
@@ -23,7 +25,10 @@ const initRoutes = (app) => {
     app.use('/api/v1/stores', store);
     app.use('/api/v1/roles', role);
     app.use('/api/v1/ingredients', ingredient);
-    // app.use('/api/v1/foods', food);
+    app.use('/api/v1/foods', food);
+    app.use('/api/v1/categories', category);
+    app.use('/api/v1/categories_detail', category_detail);
+    app.use('/api/v1/recipes', recipe);
 
     // app.use('/api/v1', firebaseService);
     // app.use('/api/v1/statistic', statistic);

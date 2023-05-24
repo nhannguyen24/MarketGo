@@ -5,6 +5,9 @@ const { updateStore, deleteStore, getStoreById, createStore, getAllStores, } = r
 const { getAllRoles } = require("./role");
 const { updateIngredient, deleteIngredient, getIngredientById, createIngredient, getAllIngredients, } = require("./ingredient");
 const { updateFood, deleteFood, getFoodById, createFood, getAllFoods, } = require("./food");
+const { updateCategory, deleteCategory, getCategoryById, createCategory, getAllCategories, } = require("./category");
+const { updateCategoryDetail, deleteCategoryDetail, getCategoryDetailById, createCategoryDetail, getAllCategoryDetail, } = require("./category_detail");
+const { updateRecipe, deleteRecipe, getRecipeById, createRecipe, getAllRecipes} = require("./recipe");
 
 module.exports = {
   loginGoogle,
@@ -39,5 +42,20 @@ module.exports = {
   getFoodById,
   createFood,
   getAllFoods,
+  updateCategory,
+  deleteCategory,
+  getCategoryById,
+  createCategory,
+  getAllCategories,
+  updateCategoryDetail,
+  deleteCategoryDetail,
+  getCategoryDetailById,
+  createCategoryDetail,
+  getAllCategoryDetail,
+  updateRecipe,
+  deleteRecipe,
+  getRecipeById,
+  createRecipe,
+  getAllRecipes,
 
 };

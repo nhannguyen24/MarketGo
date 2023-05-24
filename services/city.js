@@ -23,11 +23,6 @@ const getAllCities = (
         },
       });
 
-      if (role_name !== "Admin") {
-        redisClient.setEx(`cities_${city_name}`, 3600, JSON.stringify(cities));
-      } else {
-        redisClient.setEx(`admin_cities_${city_name}`, 3600, JSON.stringify(cities));
-      }
       resolve({
         msg: cities ? "Got cities" : "Cannot find cities",
         cities: cities,
@@ -85,7 +80,7 @@ const updateCity = ({ city_id, ...body }) =>
   });
 
 
-const deleteCity = (city_ids, city_id) =>
+const deleteCity = (city_ids) =>
   new Promise(async (resolve, reject) => {
     try {
       const cities = await db.City.update(

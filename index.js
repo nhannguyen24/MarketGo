@@ -23,7 +23,7 @@ app.use(
     definition: {
       openapi: "3.0.0",
       info: {
-        title: "Capstone Matching API",
+        title: "MarketGo API",
         version: "1.0.0",
       },
       servers: [

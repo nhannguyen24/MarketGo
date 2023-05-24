@@ -1,7 +1,8 @@
 const controllers = require('../controllers');
 const express = require('express');
 const verifyToken = require('../middlewares/verify_token');
-const {uploadFile} = require('../middlewares/firebase_service')
+const {uploadFile} = require('../middlewares/firebase_service');
+const {isAdminOrSeller} = require('../middlewares/verify_role');
 const router = express.Router();
 
 /**
@@ -177,16 +178,11 @@ router.get("/:id", verifyToken, controllers.getIngredientById);
  *                 format: uuid
  *                 example:
  *                   c5aca043-dfd6-47ae-a8ad-5fbf830c295e
- *               promotion_id:            
- *                 type: string
- *                 format: uuid
- *                 example:
- *                   9a3dbef2-a705-45aa-9dcd-b23b3d7c12f9
  *               cate_detail_id:            
  *                 type: string
  *                 format: uuid
  *                 example:
- *                   9a3dbef2-a705-45aa-9dcd-b23b3d7c12f9
+ *                   d45e5fd1-cdc6-4b83-8365-d3cab24b0e10
  *               files:  
  *                   type: array
  *                   items:
@@ -202,7 +198,7 @@ router.get("/:id", verifyToken, controllers.getIngredientById);
  *               items:
  *                 $ref: '#/components/schemas/Ingredient'
  */
-router.post("/", uploadFile, controllers.createIngredient);
+router.post("/", verifyToken, isAdminOrSeller, uploadFile, controllers.createIngredient);
 
 /**
  * @swagger
@@ -231,7 +227,7 @@ router.post("/", uploadFile, controllers.createIngredient);
  *               status: Active
  *     responses:
  *       200:
- *         description: For update the list of the ingredients
+ *         description: For update the ingredient
  *         content:
  *           application/json:
  *             schema:
@@ -239,12 +235,12 @@ router.post("/", uploadFile, controllers.createIngredient);
  *               items:
  *                 $ref: '#/components/schemas/Ingredient'
  */
-router.put("/", verifyToken, controllers.updateIngredient);
+router.put("/", verifyToken, isAdminOrSeller, controllers.updateIngredient);
 
 /**
  * @swagger
  * /api/v1/ingredients/delete:
- *   put:
+ *   delete:
  *     security: 
  *         - BearerAuth: []
  *     summary: Delete the ingredients by id
@@ -265,6 +261,6 @@ router.put("/", verifyToken, controllers.updateIngredient);
  *               items:
  *                 $ref: '#/components/schemas/Ingredient'
  */
-router.put("/delete", verifyToken, controllers.deleteIngredient);
+router.delete("/delete", verifyToken, isAdminOrSeller, controllers.deleteIngredient);
 
 module.exports = router;

@@ -53,7 +53,7 @@ module.exports = (sequelize, DataTypes) => {
     }
   }, {
     sequelize,
-    modelName: 'Food',
+    modelName: 'Foods',
   });
   return Food;
 };

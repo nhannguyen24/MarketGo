@@ -31,7 +31,7 @@ const router = express.Router();
  *   get:
  *     security: 
  *         - BearerAuth: []
- *     summary: Returns the list of all the citys
+ *     summary: Returns the list of all the cities
  *     tags: [city-controller]
  *     parameters:
  *       - name: city_name
@@ -41,7 +41,7 @@ const router = express.Router();
  *         description: Find city by city_name
  *     responses:
  *       200:
- *         description: Get the list of the citys successfully
+ *         description: Get the list of the cities successfully
  *         content:
  *           application/json:
  *             schema:
@@ -139,7 +139,7 @@ router.put("/", verifyToken, isAdmin, controllers.updateCity);
 /**
  * @swagger
  * /api/v1/cities/delete:
- *   put:
+ *   delete:
  *     security: 
  *         - BearerAuth: []
  *     summary: Delete the citys by id
@@ -160,6 +160,6 @@ router.put("/", verifyToken, isAdmin, controllers.updateCity);
  *               items:
  *                 $ref: '#/components/schemas/City'
  */
-router.put("/delete", verifyToken, isAdmin, controllers.deleteCity);
+router.delete("/delete", verifyToken, isAdmin, controllers.deleteCity);
 
 module.exports = router;

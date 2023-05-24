@@ -37,45 +37,31 @@ const uploadFile = async (req, res, next) => {
 
         blobWriter.on("finish", () => {
           console.log(`File upload ${file.originalname}`);
-          resolve();
         });
+
+        blobWriter.end(file.buffer);
 
         blob.getSignedUrl({
           action: "read",
           expires: "10-17-2023", // expiration date in mm-dd-yyyy format
         })
           .then(([url]) => {
-            console.log(url);
-            blob.download()
-              .then((data) => {
-                const pathImg = parentDirectory + "/public/" + file.originalname;
-                fs.writeFile(pathImg, data[0], (err) => {
-                  if (err) {
-                    console.log(err);
-                    reject(new Error("Get file from Firebase error!"));
-                  } else {
-                    console.log(`File written to disk ${file.originalname}`);
-                    resolve(url);
-                  }
-                });
-              })
-              .catch((err) => {
-                console.log(err);
-                reject(new Error("Download file from Firebase error!"));
-              });
+            resolve(url);
           })
           .catch((err) => {
             console.log(err);
             reject(new Error("Get signed URL from Firebase error!"));
           });
-
-        blobWriter.end(file.buffer);
-        
       });
     });
-      const results = await Promise.all(uploadPromises);
-      req.file_image = results;
+
+    try {
+      const urls = await Promise.all(uploadPromises);
+      req.file_image = urls;
       next();
+    } catch (error) {
+      return res.status(500).json({ message: error.message });
+    }
   });
 };
 

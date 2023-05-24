@@ -16,7 +16,7 @@ module.exports = (sequelize, DataTypes) => {
         targetKey: 'ingredient_id',
         as: "image_ingredient",
       });
-      Image.belongsTo(models.Food, {
+      Image.belongsTo(models.Foods, {
         foreignKey: "food_id",
         targetKey: 'food_id',
         as: "image_food",

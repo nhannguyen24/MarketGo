@@ -46,6 +46,38 @@ const city_ids = joi.array().required().messages({
   'any.required': 'user_ids are required'
 });
 
+const category_id = joi.string().required().messages({
+  "string.empty": `major_id is not allowed to be empty`,
+});
+
+const category_ids = joi.array().required().messages({
+  'any.required': 'user_ids are required'
+});
+
+const cate_detail_id = joi.string().required().messages({
+  "string.empty": `major_id is not allowed to be empty`,
+});
+
+const cate_detail_ids = joi.array().required().messages({
+  'any.required': 'user_ids are required'
+});
+
+const recipe_id = joi.string().required().messages({
+  "string.empty": `major_id is not allowed to be empty`,
+});
+
+const recipe_ids = joi.array().required().messages({
+  'any.required': 'user_ids are required'
+});
+
+const food_id = joi.string().required().messages({
+  "string.empty": `major_id is not allowed to be empty`,
+});
+
+const food_ids = joi.array().required().messages({
+  'any.required': 'user_ids are required'
+});
+
 const ingredient_id = joi.string().required().messages({
   "string.empty": `major_id is not allowed to be empty`,
 });
@@ -113,5 +145,13 @@ module.exports = {
   store_ids,
   ingredient_id,
   ingredient_ids,
+  category_id, 
+  category_ids,
+  cate_detail_id,
+  cate_detail_ids,
+  recipe_id,
+  recipe_ids,
+  food_id, 
+  food_ids,
   
 };

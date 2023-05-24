@@ -169,7 +169,7 @@ router.post("/", verifyToken, isAdminOrSeller, controllers.createStore);
  *              status: Active
  *     responses:
  *       200:
- *         description: Update new stores successfully
+ *         description: Update stores successfully
  *         content:
  *           application/json:
  *             schema:

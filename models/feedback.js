@@ -16,7 +16,7 @@ module.exports = (sequelize, DataTypes) => {
         targetKey: 'user_id',
         as: "feedback_user",
       });
-      Feedback.belongsTo(models.Food, {
+      Feedback.belongsTo(models.Foods, {
         foreignKey: "food_id",
         targetKey: 'food_id',
         as: "feedback_food",

@@ -31,13 +31,12 @@ const getAllFoods = (
                             if (order) queries.order = [order];
                             if (food_name) query.food_name = { [Op.substring]: food_name };
                             queries.order = [['updatedAt', 'DESC']];
-                            if (store_id) query.store_id = { [Op.eq]: store_id };
-                            if (promotion_id) query.promotion_id = { [Op.eq]: promotion_id };
+                            if (user_id) query.user_id = { [Op.eq]: user_id };
                             if (cate_detail_id) query.cate_detail_id = { [Op.eq]: cate_detail_id };
                             if (role_name !== "Admin") {
                                 query.status = { [Op.notIn]: ['Deactive'] };
                             }
-                            const foods = await db.Food.findAndCountAll({
+                            const foods = await db.Foods.findAndCountAll({
                                 where: query,
                                 ...queries,
                                 attributes: {
@@ -47,14 +46,7 @@ const getAllFoods = (
                                     {
                                         model: db.User,
                                         as: "food_user",
-                                        attributes: {
-                                            exclude: [
-                                                "role_id",
-                                                "createAt",
-                                                "updateAt",
-                                                "refresh_token",
-                                            ],
-                                        },
+                                        attributes: ["user_id", "user_name", "email" ],
                                     },
                                     {
                                         model: db.Category_detail,
@@ -94,7 +86,7 @@ const getAllFoods = (
 const createFood = (body, fileData) =>
     new Promise(async (resolve, reject) => {
         try {
-            const food = await db.Food.findOrCreate({
+            const food = await db.Foods.findOrCreate({
                 where: {
                     food_name: body?.food_name
                 },
@@ -143,7 +135,7 @@ const createFood = (body, fileData) =>
 const updateFood = ({ food_id, ...body }) =>
     new Promise(async (resolve, reject) => {
         try {
-            const food = await db.Food.findAll({
+            const food = await db.Foods.findAll({
                 where: { food_name: body?.food_name }
             })
             if (food) {
@@ -151,7 +143,7 @@ const updateFood = ({ food_id, ...body }) =>
                     msg: "Food name already exists"
                 });
             } else {
-                const foods = await db.Food.update(body, {
+                const foods = await db.Foods.update(body, {
                     where: { food_id },
                 });
                 resolve({
@@ -184,10 +176,10 @@ const updateFood = ({ food_id, ...body }) =>
     });
 
 
-const deleteFood = (food_ids, food_id) =>
+const deleteFood = (food_ids) =>
     new Promise(async (resolve, reject) => {
         try {
-            const foods = await db.Food.update(
+            const foods = await db.Foods.update(
                 { status: "Deactive" },
                 {
                     where: { food_id: food_ids },
@@ -225,7 +217,7 @@ const deleteFood = (food_ids, food_id) =>
 const getFoodById = (food_id) =>
     new Promise(async (resolve, reject) => {
         try {
-            const food = await db.Food.findOne({
+            const food = await db.Foods.findOne({
                 where: { food_id: food_id },
                 raw: true,
                 nest: true,
@@ -242,6 +234,7 @@ const getFoodById = (food_id) =>
                                 "createAt",
                                 "updateAt",
                                 "refresh_token",
+                                "status",
                             ],
                         },
                     },

@@ -16,11 +16,11 @@ module.exports = (sequelize, DataTypes) => {
         targetKey: 'cate_detail_id',
         as: "ingredient_cate_detail",
       });
-      Ingredient.belongsTo(models.Promotion, {
-        foreignKey: "promotion_id",
-        targetKey: 'promotion_id',
-        as: "ingredient_promotion",
-      });
+      // Ingredient.belongsTo(models.Promotion, {
+      //   foreignKey: "promotion_id",
+      //   targetKey: 'promotion_id',
+      //   as: "ingredient_promotion",
+      // });
       Ingredient.belongsTo(models.Store, {
         foreignKey: "store_id",
         targetKey: 'store_id',

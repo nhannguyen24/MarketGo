@@ -2,68 +2,50 @@ const db = require("../models");
 const { Op } = require("sequelize");
 const redisClient = require("../config/redis_config");
 
-const getAllStores = (
-    { page, limit, order, store_name, user_id, city_id, ...query },
+const getAllCategories = (
+    { cate_name, ...query },
     role_name
 ) =>
     new Promise(async (resolve, reject) => {
         try {
-            redisClient.get(`stores_${page}_${limit}_${order}_${store_name}_${user_id}_${city_id}`, async (error, store) => {
+            redisClient.get(`categories_${cate_name}`, async (error, category) => {
                 if (error) console.error(error);
-                if (store != null && store != "") {
+                if (category != null && category != "") {
                     resolve({
-                        msg: "Got stores",
-                        stores: JSON.parse(store),
+                        msg: "Got categories",
+                        categories: JSON.parse(category),
                     });
                 } else {
-                    redisClient.get(`admin_stores_${page}_${limit}_${order}_${store_name}_${user_id}_${city_id}`, async (error, adminStore) => {
-                        if (adminStore != null && adminStore != "") {
+                    redisClient.get(`admin_categories_${cate_name}`, async (error, adminCategory) => {
+                        if (adminCategory != null && adminCategory != "") {
                             resolve({
-                                msg: "Got stores",
-                                stores: JSON.parse(adminStore),
+                                msg: "Got categories",
+                                categories: JSON.parse(adminCategory),
                             });
                         } else {
                             const queries = { raw: true, nest: true };
-                            const offset = !page || +page <= 1 ? 0 : +page - 1;
-                            const flimit = +limit || +process.env.LIMIT_POST;
-                            queries.offset = offset * flimit;
-                            queries.limit = flimit;
-                            if (order) queries.order = [order];
-                            if (store_name) query.store_name = { [Op.substring]: store_name };
                             queries.order = [['updatedAt', 'DESC']];
-                            if (user_id) query.user_id = { [Op.eq]: user_id };
-                            if (city_id) query.city_id = { [Op.eq]: city_id };
+                            if (cate_name)
+                                query.cate_name = { [Op.substring]: cate_name };
                             if (role_name !== "Admin") {
                                 query.status = { [Op.notIn]: ['Deactive'] };
                             }
-                            const stores = await db.Store.findAndCountAll({
+                            const categories = await db.Category.findAndCountAll({
                                 where: query,
                                 ...queries,
                                 attributes: {
                                     exclude: ["createdAt", "updatedAt"],
                                 },
-                                include: [
-                                    {
-                                        model: db.City,
-                                        as: "store_city",
-                                        attributes: ["city_id", "city_name"],
-                                    },
-                                    {
-                                        model: db.User,
-                                        as: "store_user",
-                                        attributes: ["user_id", "user_name", "email", "address", "phone", "role_id"],
-                                    },
-                                ],
                             });
 
                             if (role_name !== "Admin") {
-                                redisClient.setEx(`stores_${page}_${limit}_${order}_${store_name}_${user_id}_${city_id}`, 3600, JSON.stringify(stores));
+                                redisClient.setEx(`categories_${cate_name}`, 3600, JSON.stringify(categories));
                             } else {
-                                redisClient.setEx(`admin_stores_${page}_${limit}_${order}_${store_name}_${user_id}_${city_id}`, 3600, JSON.stringify(stores));
+                                redisClient.setEx(`admin_categories_${cate_name}`, 3600, JSON.stringify(categories));
                             }
                             resolve({
-                                msg: stores ? `Got stores` : "Cannot find stores",
-                                stores: stores,
+                                msg: categories ? "Got categories" : "Cannot find categories",
+                                categories: categories,
                             });
                         }
                     })
@@ -76,22 +58,22 @@ const getAllStores = (
     });
 
 
-const createStore = (body) =>
+const createCategory = (body) =>
     new Promise(async (resolve, reject) => {
         try {
-            const store = await db.Store.findOrCreate({
-                where: { store_name: body?.store_name },
+            const category = await db.Category.findOrCreate({
+                where: { cate_name: body?.cate_name },
                 defaults: {
                     ...body,
                 },
             });
             resolve({
-                msg: store[1]
-                    ? "Create new store successfully"
-                    : "Cannot create new store/Store name already exists",
+                msg: category[1]
+                    ? "Create new category successfully"
+                    : "Cannot create new category/Category name already exists",
             });
 
-            redisClient.keys('*stores_*', (error, keys) => {
+            redisClient.keys('*categories_*', (error, keys) => {
                 if (error) {
                     console.error('Error retrieving keys:', error);
                     return;
@@ -113,28 +95,28 @@ const createStore = (body) =>
         }
     });
 
-const updateStore = ({ store_id, ...body }) =>
+const updateCategory = ({ cate_id, ...body }) =>
     new Promise(async (resolve, reject) => {
         try {
-            const store = await db.Store.findAll({
-                where: { store_name: body?.store_name }
+            const category = await db.Category.findAll({
+                where: { cate_name: body?.cate_name }
             })
-            if (store) {
+            if (category) {
                 resolve({
-                    msg: "Store name already exists"
+                    msg: "Category name already exists"
                 });
             } else {
-                const stores = await db.Store.update(body, {
-                    where: { store_id },
+                const categories = await db.Category.update(body, {
+                    where: { cate_id },
                 });
                 resolve({
                     msg:
-                        stores[0] > 0
-                            ? `${stores[0]} store update`
-                            : "Cannot update store/ store_id not found",
+                        categories[0] > 0
+                            ? `${categories[0]} category update`
+                            : "Cannot update category/ cate_id not found",
                 });
 
-                redisClient.keys('*stores_*', (error, keys) => {
+                redisClient.keys('*categories_*', (error, keys) => {
                     if (error) {
                         console.error('Error retrieving keys:', error);
                         return;
@@ -151,30 +133,28 @@ const updateStore = ({ store_id, ...body }) =>
                     });
                 });
             }
-
         } catch (error) {
             reject(error.message);
         }
     });
 
 
-const deleteStore = (store_ids) =>
+const deleteCategory = (cate_ids) =>
     new Promise(async (resolve, reject) => {
         try {
-            const stores = await db.Store.update(
+            const categories = await db.Category.update(
                 { status: "Deactive" },
                 {
-                    where: { store_id: store_ids },
+                    where: { cate_id: cate_ids },
                 }
             );
             resolve({
                 msg:
-                    stores > 0
-                        ? `${stores} store delete`
-                        : "Cannot delete store/ store_id not found",
+                    categories > 0
+                        ? `${categories} category delete`
+                        : "Cannot delete category/ cate_id not found",
             });
-
-            redisClient.keys('*stores_*', (error, keys) => {
+            redisClient.keys('*categories_*', (error, keys) => {
                 if (error) {
                     console.error('Error retrieving keys:', error);
                     return;
@@ -190,17 +170,16 @@ const deleteStore = (store_ids) =>
                     });
                 });
             });
-
         } catch (error) {
             reject(error);
         }
     });
 
-const getStoreById = (store_id) =>
+const getCategoryById = (cate_id) =>
     new Promise(async (resolve, reject) => {
         try {
-            const store = await db.Store.findOne({
-                where: { store_id: store_id },
+            const category = await db.Category.findOne({
+                where: { cate_id: cate_id },
                 raw: true,
                 nest: true,
                 attributes: {
@@ -209,22 +188,10 @@ const getStoreById = (store_id) =>
                         "updatedAt",
                     ],
                 },
-                include: [
-                    {
-                        model: db.City,
-                        as: "store_city",
-                        attributes: ["city_id", "city_name"],
-                    },
-                    {
-                        model: db.User,
-                        as: "store_user",
-                        attributes: ["user_id", "user_name", "email", "address", "phone", "role_id"],
-                    },
-                ],
             });
             resolve({
-                msg: store ? "Got store" : `Cannot find store with id ${store_id}`,
-                store: store,
+                msg: category ? "Got category" : `Cannot find category with id ${cate_id}`,
+                category: category,
             });
         } catch (error) {
             reject(error);
@@ -232,11 +199,11 @@ const getStoreById = (store_id) =>
     });
 
 module.exports = {
-    updateStore,
-    deleteStore,
-    getStoreById,
-    createStore,
-    getAllStores,
+    updateCategory,
+    deleteCategory,
+    getCategoryById,
+    createCategory,
+    getAllCategories,
 
 };
 

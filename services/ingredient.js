@@ -50,22 +50,10 @@ const getAllIngredients = (
                                         attributes: ["store_id", "store_name", "address"],
                                     },
                                     {
-                                        model: db.Promotion,
-                                        as: "ingredient_promotion",
-                                        attributes: {
-                                            exclude: [
-                                                "createdAt",
-                                                "updatedAt",
-                                                "status"
-                                            ],
-                                        },
-                                    },
-                                    {
                                         model: db.Category_detail,
                                         as: "ingredient_cate_detail",
                                         attributes: {
                                             exclude: [
-                                                "cate_id",
                                                 "createdAt",
                                                 "updatedAt",
                                                 "status",
@@ -188,7 +176,7 @@ const updateIngredient = ({ ingredient_id, ...body }) =>
     });
 
 
-const deleteIngredient = (ingredient_ids, ingredient_id) =>
+const deleteIngredient = (ingredient_ids) =>
     new Promise(async (resolve, reject) => {
         try {
             const ingredients = await db.Ingredient.update(
@@ -235,8 +223,7 @@ const getIngredientById = (ingredient_id) =>
                 nest: true,
                 attributes: {
                     exclude: [
-                        "createdAt",
-                        "updatedAt",
+                        ["store_id", "promotion_id", "cate_detail_id", "createdAt", "updatedAt"]
                     ],
                 },
                 include: [
@@ -246,22 +233,10 @@ const getIngredientById = (ingredient_id) =>
                         attributes: ["store_id", "store_name", "address"],
                     },
                     {
-                        model: db.Promotion,
-                        as: "ingredient_promotion",
-                        attributes: {
-                            exclude: [
-                                "createdAt",
-                                "updatedAt",
-                                "status"
-                            ],
-                        },
-                    },
-                    {
                         model: db.Category_detail,
                         as: "ingredient_cate_detail",
                         attributes: {
                             exclude: [
-                                "cate_id",
                                 "createdAt",
                                 "updatedAt",
                                 "status",
