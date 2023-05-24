@@ -42,11 +42,6 @@ const getAllUsers = ({ page, limit, order, user_name, ...query }) =>
                 as: "user_role",
                 attributes: ["role_id", "role_name"],
               },
-              {
-                model: db.Store,
-                as: "user_store",
-                attributes: ["store_id", "store_name", "address"],
-              },
             ],
           });
           redisClient.setEx(`user_paging_${page}_${limit}_${order}_${user_name}`, 3600, JSON.stringify(users));
@@ -251,11 +246,6 @@ const getUserById = (user_id) =>
             model: db.Role,
             as: "user_role",
             attributes: ["role_id", "role_name"],
-          },
-          {
-            model: db.Store,
-            as: "user_store",
-            attributes: ["store_id", "store_name", "address"],
           },
         ],
       });
