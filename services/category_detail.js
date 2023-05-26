@@ -113,7 +113,12 @@ const updateCategoryDetail = ({ cate_detail_id, ...body }) =>
     new Promise(async (resolve, reject) => {
         try {
             const cate_detail = await db.Category_detail.findAll({
-                where: { cate_detail_name: body?.cate_detail_name }
+                where: { 
+                    cate_detail_name: body?.cate_detail_name,
+                    cate_detail_id: {
+                        [Op.ne]: cate_detail_id
+                    }
+                }
             })
             if (cate_detail) {
                 resolve({

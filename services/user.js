@@ -98,7 +98,12 @@ const updateUser = ({ user_id, email, ...body }) =>
   new Promise(async (resolve, reject) => {
     try {
       const user = await db.User.findAll({
-        where: { email: email }
+        where: { 
+          email: email,
+          user_id: {
+            [Op.ne]: user_id
+          }
+        }
       })
       if (user) {
         resolve({

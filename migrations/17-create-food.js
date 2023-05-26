@@ -18,6 +18,14 @@ module.exports = {
       quantitative: {
         type: Sequelize.STRING
       },
+      ingredient_description: {
+        type: Sequelize.STRING,
+        allowNull: false
+      },
+      implementation_guide: {
+        type: Sequelize.STRING,
+        allowNull: false
+      },
       user_id: {
         type: Sequelize.UUID,
         references: {

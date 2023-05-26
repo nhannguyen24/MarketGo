@@ -57,7 +57,12 @@ const updateCity = ({ city_id, ...body }) =>
   new Promise(async (resolve, reject) => {
     try {
       const city = await db.City.findAll({
-        where: { city_name: body?.city_name }
+        where: { 
+          city_name: body?.city_name,
+          city_id: {
+            [Op.ne]: city_id
+          }
+         }
       })
       if (city) {
         resolve({

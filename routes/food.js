@@ -145,6 +145,28 @@ router.get("/:id", verifyToken, controllers.getFoodById);
  *                 format: string
  *                 example:
  *                   2 người
+ *               ingredient_description:            
+ *                 type: string
+ *                 format: string
+ *                 example: |
+ *                   1. Bột Gia Vị Canh Chua Chay CookyMADE 90g 
+ *                   2. Đậu Hũ Ta Vị Nguyên 280g 
+ *                   3. Rau Nấu Canh Chua (Cà Chua, Đậu Bắp, Thơm, Bạc Hà, Giá, Hành Tím, Tỏi, Ngò Om, Ngò Gai, Ớt,...) 395g 
+ *                   4. (Lựa chọn) +Me Chua Vắt Hộp 60g 
+ *                   5. (Lựa chọn) +Bún Tươi Sợi Nhỏ Ba Khánh 500g
+ *               implementation_guide:             
+ *                 type: string
+ *                 format: string
+ *                 example: |
+ *                   Bước 1: 
+ *                   Rửa sạch các nguyên liệu đã sơ chế, để ráo nước. Rau om, ngò gai cắt nhỏ, cà chua cắt múi cau.Bắp cải bào mỏng hoặc thái thành khối tùy thích. Đậu hũ trắng cắt miếng nhỏ vừa ăn. 
+ *                   Bước 2: 
+ *                   Bật bếp lên cho 2 thìa canh dầu ăn vào nồi, đợi dầu nóng cho thơm và cà chua vào đảo nhẹ 1 phút để lấy màu sắc cho canh. Rót 750ml nước lọc vào nồi đun sôi, sau đó cho đậu hũ vào nấu 5 - 7 phút.
+ *                   Bước 3: 
+ *                   Tiếp đến, thêm bắp cải, đậu bắp, bạc hà và giá vào nấu tiếp 3 - 4 phút nữa. Từ từ cho gói gia vị hoàn chỉnh món canh chua chay vào khuấy đều. Cho rau om, ngò gai, tỏi phi lên mặt, nêm nếm lại cho vừa ăn rồi tắt bếp. 
+ *                   Bí quyết: Thêm nước mắm làm dậy mùi thơm và canh thêm đậm đà 
+ *                   Bước 4: 
+ *                   Bày món ăn ra tô và thưởng thức. Ngon hơn khi ăn nóng cùng cơm trắng, chấm kèm nước mắm ớt chay.
  *               user_id:            
  *                 type: string
  *                 format: uuid
@@ -193,6 +215,22 @@ router.post("/", verifyToken, uploadFile, controllers.createFood);
  *               quantitative: 2 người
  *               user_id: c2020fb8-de08-472d-902e-450191968513
  *               cate_detail_id: d45e5fd1-cdc6-4b83-8365-d3cab24b0e10
+ *               ingredient_description: |
+ *                   1. Bột Gia Vị Canh Chua Chay CookyMADE 90g 
+ *                   2. Đậu Hũ Ta Vị Nguyên 280g 
+ *                   3. Rau Nấu Canh Chua (Cà Chua, Đậu Bắp, Thơm, Bạc Hà, Giá, Hành Tím, Tỏi, Ngò Om, Ngò Gai, Ớt,...) 395g 
+ *                   4. (Lựa chọn) +Me Chua Vắt Hộp 60g 
+ *                   5. (Lựa chọn) +Bún Tươi Sợi Nhỏ Ba Khánh 500g
+ *               implementation_guide: |
+ *                   Bước 1:
+ *                   Rửa sạch các nguyên liệu đã sơ chế, để ráo nước. Rau om, ngò gai cắt nhỏ, cà chua cắt múi cau.Bắp cải bào mỏng hoặc thái thành khối tùy thích. Đậu hũ trắng cắt miếng nhỏ vừa ăn. 
+ *                   Bước 2: 
+ *                   Bật bếp lên cho 2 thìa canh dầu ăn vào nồi, đợi dầu nóng cho thơm và cà chua vào đảo nhẹ 1 phút để lấy màu sắc cho canh. Rót 750ml nước lọc vào nồi đun sôi, sau đó cho đậu hũ vào nấu 5 - 7 phút. 
+ *                   Bước 3: 
+ *                   Tiếp đến, thêm bắp cải, đậu bắp, bạc hà và giá vào nấu tiếp 3 - 4 phút nữa. Từ từ cho gói gia vị hoàn chỉnh món canh chua chay vào khuấy đều. Cho rau om, ngò gai, tỏi phi lên mặt, nêm nếm lại cho vừa ăn rồi tắt bếp. 
+ *                   Bí quyết: Thêm nước mắm làm dậy mùi thơm và canh thêm đậm đà 
+ *                   Bước 4: 
+ *                   Bày món ăn ra tô và thưởng thức. Ngon hơn khi ăn nóng cùng cơm trắng, chấm kèm nước mắm ớt chay.
  *               status: Active
  *     responses:
  *       200:

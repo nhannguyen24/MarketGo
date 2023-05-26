@@ -23,7 +23,7 @@ const getAllFoods = (
                                 foods: JSON.parse(adminFood),
                             });
                         } else {
-                            const queries = { raw: true, nest: true };
+                            const queries = { nest: true };
                             const offset = !page || +page <= 1 ? 0 : +page - 1;
                             const flimit = +limit || +process.env.LIMIT_POST;
                             queries.offset = offset * flimit;
@@ -36,11 +36,11 @@ const getAllFoods = (
                             if (role_name !== "Admin") {
                                 query.status = { [Op.notIn]: ['Deactive'] };
                             }
-                            const foods = await db.Foods.findAndCountAll({
+                            const foods = await db.Foods.findAll({
                                 where: query,
                                 ...queries,
                                 attributes: {
-                                    exclude: ["user_id", "cate_detail_id", "createdAt", "updatedAt"],
+                                    exclude: ["user_id", "cate_detail_id"],
                                 },
                                 include: [
                                     {
@@ -54,6 +54,19 @@ const getAllFoods = (
                                         attributes: {
                                             exclude: [
                                                 "cate_id",
+                                                "createdAt",
+                                                "updatedAt",
+                                                "status",
+                                            ],
+                                        },
+                                    },
+                                    {
+                                        model: db.Image,
+                                        as: "food_image",
+                                        attributes: {
+                                            exclude: [
+                                                "ingredient_id",
+                                                "food_id",
                                                 "createdAt",
                                                 "updatedAt",
                                                 "status",
@@ -136,9 +149,14 @@ const updateFood = ({ food_id, ...body }) =>
     new Promise(async (resolve, reject) => {
         try {
             const food = await db.Foods.findAll({
-                where: { food_name: body?.food_name }
+                where: { 
+                    food_name: body?.food_name,
+                    food_id: {
+                        [Op.ne]: food_id
+                    }
+                }
             })
-            if (food) {
+            if (food.length > 0) {
                 resolve({
                     msg: "Food name already exists"
                 });

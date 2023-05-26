@@ -99,7 +99,12 @@ const updateCategory = ({ cate_id, ...body }) =>
     new Promise(async (resolve, reject) => {
         try {
             const category = await db.Category.findAll({
-                where: { cate_name: body?.cate_name }
+                where: { 
+                    cate_name: body?.cate_name,
+                    cate_id: {
+                        [Op.ne]: cate_id
+                    }
+                }
             })
             if (category) {
                 resolve({

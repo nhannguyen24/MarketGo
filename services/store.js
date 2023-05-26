@@ -117,7 +117,12 @@ const updateStore = ({ store_id, ...body }) =>
     new Promise(async (resolve, reject) => {
         try {
             const store = await db.Store.findAll({
-                where: { store_name: body?.store_name }
+                where: { 
+                    store_name: body?.store_name,
+                    store_id: {
+                        [Op.ne]: user_id
+                    }
+                }
             })
             if (store) {
                 resolve({

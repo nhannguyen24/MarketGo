@@ -23,7 +23,7 @@ const getAllIngredients = (
                                 ingredients: JSON.parse(adminIngredient),
                             });
                         } else {
-                            const queries = { raw: true, nest: true };
+                            const queries = { nest: true };
                             const offset = !page || +page <= 1 ? 0 : +page - 1;
                             const flimit = +limit || +process.env.LIMIT_POST;
                             queries.offset = offset * flimit;
@@ -37,11 +37,11 @@ const getAllIngredients = (
                             if (role_name !== "Admin") {
                                 query.status = { [Op.notIn]: ['Deactive'] };
                             }
-                            const ingredients = await db.Ingredient.findAndCountAll({
+                            const ingredients = await db.Ingredient.findAll({
                                 where: query,
                                 ...queries,
                                 attributes: {
-                                    exclude: ["store_id", "promotion_id", "cate_detail_id", "createdAt", "updatedAt"],
+                                    exclude: ["store_id", "promotion_id", "cate_detail_id"],
                                 },
                                 include: [
                                     {
@@ -54,6 +54,19 @@ const getAllIngredients = (
                                         as: "ingredient_cate_detail",
                                         attributes: {
                                             exclude: [
+                                                "createdAt",
+                                                "updatedAt",
+                                                "status",
+                                            ],
+                                        },
+                                    },
+                                    {
+                                        model: db.Image,
+                                        as: "ingredient_image",
+                                        attributes: {
+                                            exclude: [
+                                                "ingredient_id",
+                                                "food_id",
                                                 "createdAt",
                                                 "updatedAt",
                                                 "status",
@@ -136,7 +149,12 @@ const updateIngredient = ({ ingredient_id, ...body }) =>
     new Promise(async (resolve, reject) => {
         try {
             const ingredient = await db.Ingredient.findAll({
-                where: { ingredient_name: body?.ingredient_name }
+                where: { 
+                    ingredient_name: body?.ingredient_name,
+                    ingredient_id: {
+                        [Op.ne]: ingredient_id
+                    }
+                }
             })
             if (ingredient) {
                 resolve({
