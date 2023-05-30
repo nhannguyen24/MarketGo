@@ -28,9 +28,9 @@ const getAllFoods = (
                             const flimit = +limit || +process.env.LIMIT_POST;
                             queries.offset = offset * flimit;
                             queries.limit = flimit;
-                            if (order) queries.order = [order];
+                            if (order) queries.order = [order]
+                            else queries.order = [['updatedAt', 'DESC']];
                             if (food_name) query.food_name = { [Op.substring]: food_name };
-                            queries.order = [['updatedAt', 'DESC']];
                             if (user_id) query.user_id = { [Op.eq]: user_id };
                             if (cate_detail_id) query.cate_detail_id = { [Op.eq]: cate_detail_id };
                             if (role_name !== "Admin") {

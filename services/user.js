@@ -22,6 +22,7 @@ const getAllUsers = ({ page, limit, order, user_name, ...query }) =>
           queries.offset = offset * flimit;
           queries.limit = flimit;
           if (order) queries.order = [order];
+          else queries.order = [['updatedAt', 'DESC']];
           if (user_name) query.user_name = { [Op.substring]: user_name };
           // query.status = { [Op.ne]: "Deactive" };
 
@@ -40,7 +41,7 @@ const getAllUsers = ({ page, limit, order, user_name, ...query }) =>
               {
                 model: db.Role,
                 as: "user_role",
-                attributes: ["role_id", "role_name"],
+                attributes: ["role_name"],
               },
             ],
           });

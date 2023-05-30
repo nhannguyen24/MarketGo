@@ -29,8 +29,8 @@ const getAllStores = (
                             queries.offset = offset * flimit;
                             queries.limit = flimit;
                             if (order) queries.order = [order];
+                            else queries.order = [['updatedAt', 'DESC']];
                             if (store_name) query.store_name = { [Op.substring]: store_name };
-                            queries.order = [['updatedAt', 'DESC']];
                             if (user_id) query.user_id = { [Op.eq]: user_id };
                             if (city_id) query.city_id = { [Op.eq]: city_id };
                             if (role_name !== "Admin") {
