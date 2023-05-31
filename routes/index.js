@@ -8,6 +8,7 @@ const ingredient = require('./ingredient');
 const food = require('./food');
 const category = require('./category');
 const category_detail = require('./category_detail');
+const upload_image = require('./uploadFile');
 
 // const firebaseService = require('./firebaseService');
 // const statistic = require('./statistic')
@@ -27,6 +28,7 @@ const initRoutes = (app) => {
     app.use('/api/v1/foods', food);
     app.use('/api/v1/categories', category);
     app.use('/api/v1/categories_detail', category_detail);
+    app.use('/api/v1/upload-image', upload_image);
 
     // app.use('/api/v1', firebaseService);
     // app.use('/api/v1/statistic', statistic);

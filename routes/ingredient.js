@@ -145,49 +145,42 @@ router.get("/:id", verifyToken, controllers.getIngredientById);
  *     tags: [ingredient-controller]
  *     requestBody:
  *       content:
- *         multipart/form-data: 
- *           schema:            
- *             type: object
- *             properties:      
- *               ingredient_name:            
- *                 type: string
- *                 example:
- *                   Cà chua
- *               description:             
- *                 type: string
- *                 format: string
- *                 example:
- *                   Đồ tươi
- *               price:            
- *                 type: number
- *                 format: number
- *                 example:
- *                   20000
- *               quantity:            
- *                 type: number
- *                 format: number
- *                 example:
- *                   20
- *               quantitative:            
- *                 type: string
- *                 format: string
- *                 example:
- *                   2 người
- *               store_id:            
- *                 type: string
- *                 format: uuid
- *                 example:
- *                   c5aca043-dfd6-47ae-a8ad-5fbf830c295e
- *               cate_detail_id:            
- *                 type: string
- *                 format: uuid
- *                 example:
- *                   d45e5fd1-cdc6-4b83-8365-d3cab24b0e10
- *               files:  
- *                   type: array
- *                   items:
- *                     type: string
- *                     format: binary
+ *          application/x-www-form-urlencoded:
+ *            schema:
+ *              type: object
+ *              properties:   
+ *                ingredient_name:            
+ *                  type: string
+ *                  format: string
+ *                  example: Cà chua
+ *                description:             
+ *                  type: string
+ *                  format: string
+ *                  example: Đồ tươi
+ *                price:            
+ *                  type: number
+ *                  format: number
+ *                  example: 20000
+ *                quantity:            
+ *                  type: number
+ *                  format: number
+ *                  example: 20
+ *                quantitative:            
+ *                  type: string
+ *                  format: string
+ *                  example: 200 g
+ *                store_id:            
+ *                  type: string
+ *                  format: uuid
+ *                  example: c5aca043-dfd6-47ae-a8ad-5fbf830c295e
+ *                cate_detail_id:            
+ *                  type: string
+ *                  format: uuid
+ *                  example: d45e5fd1-cdc6-4b83-8365-d3cab24b0e10
+ *                images:
+ *                  type: array
+ *                  items:
+ *                    type: string
  *     responses:
  *       200:
  *         description: Create new ingredient successfully
@@ -198,7 +191,7 @@ router.get("/:id", verifyToken, controllers.getIngredientById);
  *               items:
  *                 $ref: '#/components/schemas/Ingredient'
  */
-router.post("/", verifyToken, isAdminOrSeller, uploadFile, controllers.createIngredient);
+router.post("/", verifyToken, isAdminOrSeller, controllers.createIngredient);
 
 /**
  * @swagger

@@ -37,7 +37,6 @@ module.exports = (sequelize, DataTypes) => {
     },
     price: DataTypes.DOUBLE,
     quantity: DataTypes.INTEGER,
-    order_date: DataTypes.DATE,
     status: {
       type: DataTypes.ENUM,
       values: ['Active', 'Deactive'],

@@ -15,7 +15,6 @@ const getAllFoods = async (req, res) => {
 
 const createFood = async (req, res) => {
     try {
-        const fileData = req.file_image;
         const {food_name, quantitative} = req.body;
         if(!food_name) {
             throw new BadRequestError('Please provide food_name');
@@ -23,7 +22,7 @@ const createFood = async (req, res) => {
         if(!quantitative) {
             throw new BadRequestError('Please provide quantitative');
         }
-        const response = await services.createFood(req.body, fileData);
+        const response = await services.createFood(req.body);
         return res.status(200).json(response);
     } catch (error) {
         console.log(error);

@@ -264,6 +264,7 @@ const getUserById = (user_id) =>
     }
   });
 
+
 module.exports = {
   updateUser,
   deleteUser,
@@ -271,6 +272,6 @@ module.exports = {
   createUser,
   getAllUsers,
   updateProfile,
-
+  
 };
 

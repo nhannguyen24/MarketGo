@@ -127,61 +127,56 @@ router.get("/:id", verifyToken, controllers.getFoodById);
  *     tags: [food-controller]
  *     requestBody:
  *       content:
- *         multipart/form-data: 
- *           schema:            
- *             type: object
- *             properties:      
- *               food_name:            
- *                 type: string
- *                 example:
- *                   Canh Chua Chay
- *               description:             
- *                 type: string
- *                 format: string
- *                 example:
- *                   Đã bao giờ bạn chờ mong đến ngày rằm hằng tháng, ghé qua chùa ăn bữa cơm chay với tô Canh chua nóng hổi nghi ngút khói? Ắt hẳn tuổi thơ bạn đã từng ít nhất một lần như thế đúng không. Thôi thì, ăn "chùa" mãi cũng ngại, hay là, mình thử đặt hàng Pack nguyên liệu sơ chế Canh chua chay về trổ tài chiêu đãi cả nhà, sẵn dịp ôn lại tí kỷ niệm xưa nhé.
- *               quantitative:            
- *                 type: string
- *                 format: string
- *                 example:
- *                   2 người
- *               ingredient_description:            
- *                 type: string
- *                 format: string
- *                 example: |
+ *          application/x-www-form-urlencoded:
+ *            schema:
+ *              type: object
+ *              properties:
+ *                food_name:
+ *                  type: string
+ *                  format: string
+ *                  example: Canh Chua Chay
+ *                description:
+ *                  type: string
+ *                  format: string
+ *                  example: Đã bao giờ bạn chờ mong đến ngày rằm hằng tháng, ghé qua chùa ăn bữa cơm chay với tô Canh chua nóng hổi nghi ngút khói? Ắt hẳn tuổi thơ bạn đã từng ít nhất một lần như thế đúng không. Thôi thì, ăn "chùa" mãi cũng ngại, hay là, mình thử đặt hàng Pack nguyên liệu sơ chế Canh chua chay về trổ tài chiêu đãi cả nhà, sẵn dịp ôn lại tí kỷ niệm xưa nhé.
+ *                quantitative:
+ *                  type: string
+ *                  format: string
+ *                  example: 2 người
+ *                user_id:
+ *                  type: string
+ *                  format: uuid
+ *                  example: c2020fb8-de08-472d-902e-450191968513
+ *                cate_detail_id:
+ *                  type: string
+ *                  format: uuid
+ *                  example: d45e5fd1-cdc6-4b83-8365-d3cab24b0e10
+ *                ingredient_description:
+ *                  type: string
+ *                  format: string
+ *                  example: |
  *                   1. Bột Gia Vị Canh Chua Chay CookyMADE 90g 
  *                   2. Đậu Hũ Ta Vị Nguyên 280g 
  *                   3. Rau Nấu Canh Chua (Cà Chua, Đậu Bắp, Thơm, Bạc Hà, Giá, Hành Tím, Tỏi, Ngò Om, Ngò Gai, Ớt,...) 395g 
  *                   4. (Lựa chọn) +Me Chua Vắt Hộp 60g 
  *                   5. (Lựa chọn) +Bún Tươi Sợi Nhỏ Ba Khánh 500g
- *               implementation_guide:             
- *                 type: string
- *                 format: string
- *                 example: |
- *                   Bước 1: 
+ *                implementation_guide:
+ *                  type: string
+ *                  format: string
+ *                  example: |
+ *                   Bước 1:
  *                   Rửa sạch các nguyên liệu đã sơ chế, để ráo nước. Rau om, ngò gai cắt nhỏ, cà chua cắt múi cau.Bắp cải bào mỏng hoặc thái thành khối tùy thích. Đậu hũ trắng cắt miếng nhỏ vừa ăn. 
  *                   Bước 2: 
- *                   Bật bếp lên cho 2 thìa canh dầu ăn vào nồi, đợi dầu nóng cho thơm và cà chua vào đảo nhẹ 1 phút để lấy màu sắc cho canh. Rót 750ml nước lọc vào nồi đun sôi, sau đó cho đậu hũ vào nấu 5 - 7 phút.
+ *                   Bật bếp lên cho 2 thìa canh dầu ăn vào nồi, đợi dầu nóng cho thơm và cà chua vào đảo nhẹ 1 phút để lấy màu sắc cho canh. Rót 750ml nước lọc vào nồi đun sôi, sau đó cho đậu hũ vào nấu 5 - 7 phút. 
  *                   Bước 3: 
  *                   Tiếp đến, thêm bắp cải, đậu bắp, bạc hà và giá vào nấu tiếp 3 - 4 phút nữa. Từ từ cho gói gia vị hoàn chỉnh món canh chua chay vào khuấy đều. Cho rau om, ngò gai, tỏi phi lên mặt, nêm nếm lại cho vừa ăn rồi tắt bếp. 
  *                   Bí quyết: Thêm nước mắm làm dậy mùi thơm và canh thêm đậm đà 
  *                   Bước 4: 
  *                   Bày món ăn ra tô và thưởng thức. Ngon hơn khi ăn nóng cùng cơm trắng, chấm kèm nước mắm ớt chay.
- *               user_id:            
- *                 type: string
- *                 format: uuid
- *                 example:
- *                   c2020fb8-de08-472d-902e-450191968513
- *               cate_detail_id:            
- *                 type: string
- *                 format: uuid
- *                 example:
- *                   d45e5fd1-cdc6-4b83-8365-d3cab24b0e10
- *               files:  
- *                   type: array
- *                   items:
- *                     type: string
- *                     format: binary
+ *                images:
+ *                  type: array
+ *                  items:
+ *                    type: string
  *     responses:
  *       200:
  *         description: Create new food successfully
@@ -192,7 +187,7 @@ router.get("/:id", verifyToken, controllers.getFoodById);
  *               items:
  *                 $ref: '#/components/schemas/Food'
  */
-router.post("/", verifyToken, uploadFile, controllers.createFood);
+router.post("/", verifyToken, controllers.createFood);
 
 /**
  * @swagger

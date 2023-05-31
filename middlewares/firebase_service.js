@@ -57,8 +57,7 @@ const uploadFile = async (req, res, next) => {
 
     try {
       const urls = await Promise.all(uploadPromises);
-      req.file_image = urls;
-      next();
+      return res.status(200).json({ files: urls });
     } catch (error) {
       return res.status(500).json({ message: error.message });
     }
