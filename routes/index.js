@@ -8,6 +8,7 @@ const ingredient = require('./ingredient');
 const food = require('./food');
 const category = require('./category');
 const category_detail = require('./category_detail');
+const order_detail = require('./order_detail');
 
 // const firebaseService = require('./firebaseService');
 // const statistic = require('./statistic')
@@ -26,7 +27,8 @@ const initRoutes = (app) => {
     app.use('/api/v1/ingredients', ingredient);
     app.use('/api/v1/foods', food);
     app.use('/api/v1/categories', category);
-    app.use('/api/v1/categories_detail', category_detail);
+    app.use('/api/v1/categories-detail', category_detail);
+    app.use('/api/v1/order-detail', order_detail);
 
     // app.use('/api/v1', firebaseService);
     // app.use('/api/v1/statistic', statistic);
