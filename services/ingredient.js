@@ -96,19 +96,25 @@ const getAllIngredients = (
     });
 
 
-const createIngredient = (body, fileData) =>
+const createIngredient = ({images, ingredient_name, ...body}) =>
     new Promise(async (resolve, reject) => {
         try {
+            const images_array = [];
+            images.split(",").forEach((image) => {
+                images_array.push(image.trim());
+            });
+
             const ingredient = await db.Ingredient.findOrCreate({
                 where: {
-                    ingredient_name: body?.ingredient_name
+                    ingredient_name: ingredient_name
                 },
                 defaults: {
+                    ingredient_name: ingredient_name,
                     ...body,
                 },
             });
 
-            const createImagePromises = fileData.map(async (image) => {
+            const createImagePromises = images_array.map(async (image) => {
                 await db.Image.create({
                   image: image,
                   ingredient_id: ingredient[0].ingredient_id, 
