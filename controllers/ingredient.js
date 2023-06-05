@@ -15,7 +15,6 @@ const getAllIngredients = async (req, res) => {
 
 const createIngredient = async (req, res) => {
     try {
-        const fileData = req.file_image;
         const {ingredient_name, price, quantity, quantitative} = req.body;
         if(!ingredient_name) {
             throw new BadRequestError('Please provide ingredient_name');
@@ -29,7 +28,7 @@ const createIngredient = async (req, res) => {
         if(!quantitative) {
             throw new BadRequestError('Please provide quantitative');
         }
-        const response = await services.createIngredient(req.body, fileData);
+        const response = await services.createIngredient(req.body);
         return res.status(200).json(response);
     } catch (error) {
         console.log(error);

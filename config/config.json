@@ -5,7 +5,8 @@
     "database": "y50ho8pakfawp4pm",
     "host": "rwo5jst0d7dgy0ri.cbetxkdyhwsb.us-east-1.rds.amazonaws.com",
     "dialect": "mysql",
-    "logging": false
+    "logging": false,
+    "timezone": "+07:00"
   },
   "test": {
     "username": "root",
@@ -20,6 +21,7 @@
     "database": "y50ho8pakfawp4pm",
     "host": "rwo5jst0d7dgy0ri.cbetxkdyhwsb.us-east-1.rds.amazonaws.com",
     "dialect": "mysql",
-    "logging": false
+    "logging": false,
+    "timezone": "+07:00"
   }
 }

@@ -202,22 +202,51 @@ router.post("/", verifyToken, isAdminOrSeller, controllers.createIngredient);
  *     summary: Update the ingredient by id
  *     tags: [ingredient-controller]
  *     requestBody:
- *        required: true
- *        content:
- *          application/json:
+ *       content:
+ *          application/x-www-form-urlencoded:
  *            schema:
- *              $ref: '#/components/schemas/Ingredient'
- *            example:
- *               ingredient_id: 8c382e13-8620-460a-bd95-96b1152c1368
- *               ingredient_name: Football Field Booking Management System
- *               description: The system to manage field of the field owner and the field booking schedule of customer in Ho Chi Minh city
- *               price: 20000
- *               quantity: 10
- *               quantitative: 2 người
- *               store_id: b84a02a8-1b39-4ebf-bc5b-4255df846818
- *               promotion_id: 9a3dbef2-a705-45aa-9dcd-b23b3d7c12f9
- *               cate_detail_id: 9a3dbef2-a705-45aa-9dcd-b23b3d7c12f9
- *               status: Active
+ *              type: object
+ *              properties:  
+ *                ingredient_id:            
+ *                  type: string
+ *                  format: string
+ *                  example: 8c382e13-8620-460a-bd95-96b1152c1368
+ *                ingredient_name:            
+ *                  type: string
+ *                  format: string
+ *                  example: Cà chua
+ *                description:             
+ *                  type: string
+ *                  format: string
+ *                  example: Đồ tươi
+ *                price:            
+ *                  type: number
+ *                  format: number
+ *                  example: 20000
+ *                quantity:            
+ *                  type: number
+ *                  format: number
+ *                  example: 20
+ *                quantitative:            
+ *                  type: string
+ *                  format: string
+ *                  example: 200 g
+ *                store_id:            
+ *                  type: string
+ *                  format: uuid
+ *                  example: c5aca043-dfd6-47ae-a8ad-5fbf830c295e
+ *                cate_detail_id:            
+ *                  type: string
+ *                  format: uuid
+ *                  example: d45e5fd1-cdc6-4b83-8365-d3cab24b0e10
+ *                status:            
+ *                  type: string
+ *                  format: uuid
+ *                  example: Active
+ *                images:
+ *                  type: array
+ *                  items:
+ *                    type: string
  *     responses:
  *       200:
  *         description: For update the ingredient

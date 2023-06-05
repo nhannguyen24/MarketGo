@@ -3,14 +3,14 @@ const { Op } = require("sequelize");
 const redisClient = require("../config/redis_config");
 
 const getAllFoods = (
-    { page, limit, order, food_name, user_id, cate_detail_id, ...query },
+    { page, limit, order, food_name, user_id, cate_detail_id, min_price, max_price, ...query },
     role_name
 ) =>
     new Promise(async (resolve, reject) => {
         try {
-            redisClient.get(`foods_${page}_${limit}_${order}_${food_name}_${user_id}_${cate_detail_id}`, async (error, food) => {
+            redisClient.get(`foods_${page}_${limit}_${order}_${food_name}_${user_id}_${cate_detail_id}_${min_price}_${max_price}`, async (error, food) => {
                 if (error) console.error(error);
-                if (food != null && food != "") {
+                if (food != null && food != ""  && role_name != 'Admin') {
                     resolve({
                         msg: "Got foods",
                         foods: JSON.parse(food),
@@ -28,6 +28,19 @@ const getAllFoods = (
                             const flimit = +limit || +process.env.LIMIT_POST;
                             queries.offset = offset * flimit;
                             queries.limit = flimit;
+                            if (min_price && max_price) {
+                                query.price = {
+                                  [Op.between]: [min_price, max_price]
+                                };
+                              } else if (min_price) {
+                                query.price = {
+                                  [Op.gte]: min_price
+                                };
+                              } else if (max_price) {
+                                query.price = {
+                                  [Op.lte]: max_price
+                                };
+                              }
                             if (order) queries.order = [order]
                             else queries.order = [['updatedAt', 'DESC']];
                             if (food_name) query.food_name = { [Op.substring]: food_name };
@@ -151,10 +164,15 @@ const createFood = ({images, food_name, ...body}) =>
         }
     });
 
-const updateFood = ({ food_id, ...body }) =>
+const updateFood = ({ images, food_id, ...body }) =>
     new Promise(async (resolve, reject) => {
         try {
-            const food = await db.Foods.findAll({
+            const images_array = [];
+            images.split(",").forEach((image) => {
+                images_array.push(image.trim());
+            });
+
+            const food = await db.Foods.findOne({
                 where: { 
                     food_name: body?.food_name,
                     food_id: {
@@ -162,7 +180,8 @@ const updateFood = ({ food_id, ...body }) =>
                     }
                 }
             })
-            if (food.length > 0) {
+
+            if (food !== null) {
                 resolve({
                     msg: "Food name already exists"
                 });
@@ -170,6 +189,22 @@ const updateFood = ({ food_id, ...body }) =>
                 const foods = await db.Foods.update(body, {
                     where: { food_id },
                 });
+
+                await db.Image.destroy({
+                    where: {
+                        food_id: food_id,
+                    }
+                });
+
+                const createImagePromises = images_array.map(async (image) => {
+                    await db.Image.create({
+                        image: image,
+                        food_id: food_id,
+                    });
+                });
+    
+                await Promise.all(createImagePromises);
+
                 resolve({
                     msg:
                         foods[0] > 0
