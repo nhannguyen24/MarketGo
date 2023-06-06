@@ -8,6 +8,8 @@ const { updateFood, deleteFood, getFoodById, createFood, getAllFoods, } = requir
 const { updateCategory, deleteCategory, getCategoryById, createCategory, getAllCategories, } = require("./category");
 const { updateCategoryDetail, deleteCategoryDetail, getCategoryDetailById, createCategoryDetail, getAllCategoryDetail, } = require("./category_detail");
 const {createOrderDetail, test,} = require("./order_detail");
+const {updateStep, deleteStep, createStep,} = require("./guild_step");
+
 module.exports = {
   loginGoogle,
   logout,
@@ -53,4 +55,8 @@ module.exports = {
   getAllCategoryDetail,
   createOrderDetail,
   test,
+  updateStep, 
+  deleteStep, 
+  createStep,
+
 };

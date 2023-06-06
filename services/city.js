@@ -19,7 +19,7 @@ const getAllCities = (
         where: query,
         ...queries,
         attributes: {
-          exclude: ["createdAt", "updatedAt"],
+          // exclude: ["createdAt", "updatedAt"],
         },
       });
 

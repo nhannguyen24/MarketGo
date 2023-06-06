@@ -78,6 +78,14 @@ const food_ids = joi.array().required().messages({
   'any.required': 'user_ids are required'
 });
 
+const step_id = joi.string().required().messages({
+  "string.empty": `major_id is not allowed to be empty`,
+});
+
+const step_ids = joi.array().required().messages({
+  'any.required': 'user_ids are required'
+});
+
 const ingredient_id = joi.string().required().messages({
   "string.empty": `major_id is not allowed to be empty`,
 });
@@ -153,5 +161,7 @@ module.exports = {
   recipe_ids,
   food_id, 
   food_ids,
-  
+  step_id, 
+  step_ids,
+
 };

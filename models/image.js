@@ -21,6 +21,11 @@ module.exports = (sequelize, DataTypes) => {
         targetKey: 'food_id',
         as: "image_food",
       });
+      Image.belongsTo(models.Guild_step, {
+        foreignKey: "step_id",
+        targetKey: 'step_id',
+        as: "image_step",
+      });
     }
   }
   Image.init({
@@ -34,6 +39,9 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.UUID,
     },
     food_id: {
+      type: DataTypes.UUID,
+    },
+    step_id: {
       type: DataTypes.UUID,
     },
     status: {
