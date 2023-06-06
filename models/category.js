@@ -35,5 +35,11 @@ module.exports = (sequelize, DataTypes) => {
     sequelize,
     modelName: 'Category',
   });
+  Category.beforeCreate((category, options) => {
+    const currentDate = new Date();
+    currentDate.setHours(currentDate.getHours() + 7);
+    category.createdAt = currentDate;
+    category.updatedAt = currentDate;
+  });
   return Category;
 };

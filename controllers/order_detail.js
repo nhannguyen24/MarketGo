@@ -1,14 +1,15 @@
 const services = require('../services');
-
+var msg = "OK"
 const createOrderDetail = async (req, res) => {
-    const { orderDetail } = req.body;
-    const response = await services.createOrderDetail(orderDetail);
-    if(!response.created){
-        return res.status(400).json(response.msg);
-    }
-    return res.status(201).json(response);
+    const response = await services.createOrderDetail(req);
+    return res.status(response.status).json(response);
 };
 
+const test = async (req, res) => {
+    return res.status(200).json(msg);
+}
+
 module.exports = {
-    createOrderDetail
+    createOrderDetail,
+    test
 }

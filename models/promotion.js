@@ -39,5 +39,11 @@ module.exports = (sequelize, DataTypes) => {
     sequelize,
     modelName: 'Promotion',
   });
+  Promotion.beforeCreate((promotion, options) => {
+    const currentDate = new Date();
+    currentDate.setHours(currentDate.getHours() + 7);
+    promotion.createdAt = currentDate;
+    promotion.updatedAt = currentDate;
+  });
   return Promotion;
 };

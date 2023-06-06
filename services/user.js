@@ -99,7 +99,7 @@ const updateUser = ({ user_id, email, ...body }) =>
   new Promise(async (resolve, reject) => {
     try {
       const user = await db.User.findAll({
-        where: { 
+        where: {
           email: email,
           user_id: {
             [Op.ne]: user_id
@@ -264,6 +264,38 @@ const getUserById = (user_id) =>
     }
   });
 
+const getUserByEmail = (email) =>
+  new Promise(async (resolve, reject) => {
+    try {
+      const user = await db.User.findOne({
+        where: { email: email },
+        raw: true,
+        nest: true,
+        attributes: {
+          exclude: [
+            "role_id",
+            "createdAt",
+            "updatedAt",
+            "refresh_token",
+          ],
+        },
+        include: [
+          {
+            model: db.Role,
+            as: "user_role",
+            attributes: ["role_id", "role_name"],
+          },
+        ],
+      });
+      resolve({
+        msg: user ? "Found user" : `Not found user with email: ${email}`,
+        user: user,
+      });
+    } catch (error) {
+      reject(error);
+    }
+  });
+
 
 module.exports = {
   updateUser,
@@ -272,6 +304,6 @@ module.exports = {
   createUser,
   getAllUsers,
   updateProfile,
-  
+  getUserByEmail,
 };
 
