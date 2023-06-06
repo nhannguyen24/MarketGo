@@ -60,5 +60,11 @@ module.exports = (sequelize, DataTypes) => {
     sequelize,
     modelName: 'Feedback',
   });
+  Feedback.beforeCreate((feedback, options) => {
+    const currentDate = new Date();
+    currentDate.setHours(currentDate.getHours() + 7);
+    feedback.createdAt = currentDate;
+    feedback.updatedAt = currentDate;
+  });
   return Feedback;
 };

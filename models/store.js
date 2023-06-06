@@ -51,5 +51,11 @@ module.exports = (sequelize, DataTypes) => {
     sequelize,
     modelName: 'Store',
   });
+  Store.beforeCreate((store, options) => {
+    const currentDate = new Date();
+    currentDate.setHours(currentDate.getHours() + 7);
+    store.createdAt = currentDate;
+    store.updatedAt = currentDate;
+  });
   return Store;
 };

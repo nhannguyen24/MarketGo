@@ -50,5 +50,11 @@ module.exports = (sequelize, DataTypes) => {
     sequelize,
     modelName: 'Image',
   });
+  Image.beforeCreate((image, options) => {
+    const currentDate = new Date();
+    currentDate.setHours(currentDate.getHours() + 7);
+    image.createdAt = currentDate;
+    image.updatedAt = currentDate;
+  });
   return Image;
 };

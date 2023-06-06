@@ -52,5 +52,11 @@ module.exports = (sequelize, DataTypes) => {
     sequelize,
     modelName: 'User',
   });
+  User.beforeCreate((user, options) => {
+    const currentDate = new Date();
+    currentDate.setHours(currentDate.getHours() + 7);
+    user.createdAt = currentDate;
+    user.updatedAt = currentDate;
+  });
   return User;
 };

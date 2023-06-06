@@ -35,5 +35,11 @@ module.exports = (sequelize, DataTypes) => {
     sequelize,
     modelName: 'Transaction',
   });
+  Transaction.beforeCreate((transaction, options) => {
+    const currentDate = new Date();
+    currentDate.setHours(currentDate.getHours() + 7);
+    transaction.createdAt = currentDate;
+    transaction.updatedAt = currentDate;
+  });
   return Transaction;
 };

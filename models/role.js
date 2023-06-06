@@ -35,5 +35,11 @@ module.exports = (sequelize, DataTypes) => {
     sequelize,
     modelName: 'Role',
   });
+  Role.beforeCreate((role, options) => {
+    const currentDate = new Date();
+    currentDate.setHours(currentDate.getHours() + 7);
+    role.createdAt = currentDate;
+    role.updatedAt = currentDate;
+  });
   return Role;
 };

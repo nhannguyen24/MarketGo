@@ -43,18 +43,27 @@ const router = express.Router();
  *   post:
  *     security: 
  *         - BearerAuth: []
- *     summary: Create order
- *     description: Create a new order with a map of order details
+ *     summary: Create cart order
+ *     description: Create a new cart order 
  *     tags: [order-detail-controller]
+ *     responses:
+ *          200:
+ *              description: Successful operation
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                              type: object
  *     requestBody:
  *        required: true
- *        description: Map of order details
+ *        description: User email and List of Order Details
  *        content:
  *          application/json: 
  *            schema:
  *              properties:
  *                  email:
  *                      type: string
+ *                  total_price:
+ *                      type: double
  *                  OrderDetails:
  *                      type: array
  *                      items:
@@ -62,18 +71,69 @@ const router = express.Router();
  *  
  *            example:
  *              {
+ *                  "email": "dnhan2426@gmail.com",
+ *                  "total_price": 152000.0,
  *                  "OrderDetails": [
  *                      {
  *                          order_detail_id: "",
  *                          order: {},
- *                          ingredient: {},
+ *                          ingredient: {
+ *                              ingredient_id:  "937a3a3d-ccc1-4155-a2c6-956b5c5dca48",
+ *                              ingredient_name: "Cá mú",
+ *                              description: "Đồ tươi",
+ *                              price: 20000,
+ *                              quantitative: "200 g",
+ *                              quantity: 20,
+ *                              store: {},
+ *                              promotion: {},
+ *                              cate_detail: {},
+ *                              status: "Active",
+ *                          },
  *                          price: 32000,
- *                          quantity: 10,
+ *                          quantity: 1,
  *                          status: "Active"
  *                      },
+ *                      {
+ *                          order_detail_id: "",
+ *                          order: {},
+ *                          ingredient: {
+ *                              ingredient_id:  "77a76f11-1649-4c84-ad69-bab1cdc6161f",
+ *                              ingredient_name: "Cà chua",
+ *                              description: "Đồ tươi",
+ *                              price: 20000,
+ *                              quantitative: "200 g",
+ *                              quantity: 20,
+ *                              store: {},
+ *                              promotion: {},
+ *                              cate_detail: {},
+ *                              status: "Active",
+ *                          },
+ *                          price: 15000,
+ *                          quantity: 1,
+ *                          status: "Active"
+ *                      }
  *                  ] 
  *              }
  */
 router.post("/", verifyToken, controllers.createOrderDetail);
+
+/**
+ * @swagger
+ *  paths:
+ *      /api/v1/order-detail:
+ *          get:
+ *              summary: Test
+ *              description: Test
+ *              tags: [order-detail-controller]
+ *              responses:
+ *                  200:
+ *                      description: Successful operation
+ *                      content:
+ *                          application/json:
+ *                              schema:
+ *                                  msg:
+ *                                      type: string
+ * */
+router.get("/", controllers.test)
 
 module.exports = router;
