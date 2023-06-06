@@ -79,7 +79,19 @@ const getAllFoods = (
                                         attributes: {
                                             exclude: [
                                                 "ingredient_id",
-                                                "food_id",
+                                                "food_id",,
+                                                "step_id",
+                                                "createdAt",
+                                                "updatedAt",
+                                                "status",
+                                            ],
+                                        },
+                                    },
+                                    {
+                                        model: db.Guild_step,
+                                        as: "food_step",
+                                        attributes: {
+                                            exclude: [
                                                 "createdAt",
                                                 "updatedAt",
                                                 "status",
@@ -112,10 +124,6 @@ const getAllFoods = (
 const createFood = ({images, food_name, ...body}) =>
     new Promise(async (resolve, reject) => {
         try {
-            const images_array = [];
-            images.split(",").forEach((image) => {
-                images_array.push(image.trim());
-            });
 
             const food = await db.Foods.findOrCreate({
                 where: {
@@ -127,7 +135,7 @@ const createFood = ({images, food_name, ...body}) =>
                 },
             });
 
-            const createImagePromises = images_array.map(async (image) => {
+            const createImagePromises = images.map(async ({image}) => {
                 await db.Image.create({
                     image: image,
                     food_id: food[0].food_id,
@@ -167,10 +175,6 @@ const createFood = ({images, food_name, ...body}) =>
 const updateFood = ({ images, food_id, ...body }) =>
     new Promise(async (resolve, reject) => {
         try {
-            const images_array = [];
-            images.split(",").forEach((image) => {
-                images_array.push(image.trim());
-            });
 
             const food = await db.Foods.findOne({
                 where: { 
@@ -196,7 +200,7 @@ const updateFood = ({ images, food_id, ...body }) =>
                     }
                 });
 
-                const createImagePromises = images_array.map(async (image) => {
+                const createImagePromises = images.map(async ({image}) => {
                     await db.Image.create({
                         image: image,
                         food_id: food_id,

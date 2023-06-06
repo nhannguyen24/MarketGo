@@ -7,6 +7,7 @@ const role = require('./role');
 const ingredient = require('./ingredient');
 const food = require('./food');
 const category = require('./category');
+const step = require('./guild_step');
 const category_detail = require('./category_detail');
 const order_detail = require('./order_detail');
 const upload_image = require('./uploadFile');
@@ -27,6 +28,7 @@ const initRoutes = (app) => {
     app.use('/api/v1/roles', role);
     app.use('/api/v1/ingredients', ingredient);
     app.use('/api/v1/foods', food);
+    app.use('/api/v1/steps', step);
     app.use('/api/v1/categories', category);
     app.use('/api/v1/categories-detail', category_detail);
     app.use('/api/v1/order-detail', order_detail);

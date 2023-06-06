@@ -109,10 +109,6 @@ const getAllIngredients = (
 const createIngredient = ({ images, ingredient_name, ...body }) =>
     new Promise(async (resolve, reject) => {
         try {
-            const images_array = [];
-            images.split(",").forEach((image) => {
-                images_array.push(image.trim());
-            });
 
             const ingredient = await db.Ingredient.findOrCreate({
                 where: {
@@ -124,7 +120,7 @@ const createIngredient = ({ images, ingredient_name, ...body }) =>
                 },
             });
 
-            const createImagePromises = images_array.map(async (image) => {
+            const createImagePromises = images.map(async ({image}) => {
                 await db.Image.create({
                     image: image,
                     ingredient_id: ingredient[0].ingredient_id,
@@ -164,11 +160,6 @@ const createIngredient = ({ images, ingredient_name, ...body }) =>
 const updateIngredient = ({ images, ingredient_id, ...body }) =>
     new Promise(async (resolve, reject) => {
         try {
-            const images_array = [];
-            images.split(",").forEach((image) => {
-                images_array.push(image.trim());
-            });
-
             const ingredient = await db.Ingredient.findOne({
                 where: {
                   ingredient_name: body?.ingredient_name,
@@ -193,7 +184,7 @@ const updateIngredient = ({ images, ingredient_id, ...body }) =>
                     }
                 });
 
-                const createImagePromises = images_array.map(async (image) => {
+                const createImagePromises = images.map(async ({image}) => {
                     await db.Image.create({
                         image: image,
                         ingredient_id: ingredient_id,

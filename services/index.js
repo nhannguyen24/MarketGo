@@ -9,6 +9,8 @@ const { updateCategory, deleteCategory, getCategoryById, createCategory, getAllC
 const { updateCategoryDetail, deleteCategoryDetail, getCategoryDetailById, createCategoryDetail, getAllCategoryDetail, } = require("./category_detail");
 const {createOrderDetail,} = require("./order_detail");
 const {createOrder,} = require("./order");
+const {updateStep, deleteStep, createStep,} = require("./guild_step");
+
 module.exports = {
   loginGoogle,
   logout,
@@ -54,5 +56,8 @@ module.exports = {
   getAllCategoryDetail,
   createOrderDetail,
   createOrder,
+  updateStep, 
+  deleteStep, 
+  createStep,
   
 };

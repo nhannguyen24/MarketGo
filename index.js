@@ -7,9 +7,10 @@ const initRoutes = require("./routes");
 const swaggerUi = require("swagger-ui-express");
 const swaggerJSDoc = require("swagger-jsdoc");
 require("./config/connection_database");
-const controllers = require('./controllers');
+const bodyParser = require('body-parser');
 
-app.use(express.urlencoded({ extended: true }));
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
 app.use(express.static("client"));
 
 app.use(
@@ -49,8 +50,6 @@ app.use(
   app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(specs));
 
   const PORT = process.env.PORT || 3000;
-
-app.use(express.json());
 
 initRoutes(app);
 

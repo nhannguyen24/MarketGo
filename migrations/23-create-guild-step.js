@@ -2,38 +2,21 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('Foods', {
-      food_id: {
+    await queryInterface.createTable('Guild_steps', {
+      step_id: {
         type: Sequelize.UUID,
         defaultValue: Sequelize.UUIDV4,
         primaryKey: true,
       },
-      food_name: {
-        type: Sequelize.STRING,
-        allowNull: false,
-      },
-      description: {
-        type: Sequelize.STRING
-      },
-      quantitative: {
-        type: Sequelize.STRING
-      },
-      ingredient_description: {
+      implementation_guide: {
         type: Sequelize.STRING,
         allowNull: false
       },
-      user_id: {
+      food_id: {
         type: Sequelize.UUID,
         references: {
-          model: 'users',
-          key: 'user_id'
-        }
-      },
-      cate_detail_id: {
-        type: Sequelize.UUID,
-        references: {
-          model: 'category_details',
-          key: 'cate_detail_id'
+          model: 'foods',
+          key: 'food_id'
         }
       },
       status: {
@@ -51,9 +34,10 @@ module.exports = {
         type: "TIMESTAMP",
         defaultValue: Sequelize.literal("CURRENT_TIMESTAMP"),
       },
+      
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('Foods');
+    await queryInterface.dropTable('Guild_steps');
   }
 };

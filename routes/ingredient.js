@@ -145,42 +145,19 @@ router.get("/:id", verifyToken, controllers.getIngredientById);
  *     tags: [ingredient-controller]
  *     requestBody:
  *       content:
- *          application/x-www-form-urlencoded:
- *            schema:
- *              type: object
- *              properties:   
- *                ingredient_name:            
- *                  type: string
- *                  format: string
- *                  example: Cà chua
- *                description:             
- *                  type: string
- *                  format: string
- *                  example: Đồ tươi
- *                price:            
- *                  type: number
- *                  format: number
- *                  example: 20000
- *                quantity:            
- *                  type: number
- *                  format: number
- *                  example: 20
- *                quantitative:            
- *                  type: string
- *                  format: string
- *                  example: 200 g
- *                store_id:            
- *                  type: string
- *                  format: uuid
- *                  example: c5aca043-dfd6-47ae-a8ad-5fbf830c295e
- *                cate_detail_id:            
- *                  type: string
- *                  format: uuid
- *                  example: d45e5fd1-cdc6-4b83-8365-d3cab24b0e10
- *                images:
- *                  type: array
- *                  items:
- *                    type: string
+ *          application/json:
+ *            schema:                     
+ *                  example:
+ *                    ingredient_name: Cà chua
+ *                    description: Đồ tươi
+ *                    price: 20000
+ *                    quantity: 20
+ *                    quantitative: 2 người
+ *                    store_id: c5aca043-dfd6-47ae-a8ad-5fbf830c295e
+ *                    cate_detail_id: d45e5fd1-cdc6-4b83-8365-d3cab24b0e10
+ *                    images:
+ *                          - image: string
+ *                          - image: string
  *     responses:
  *       200:
  *         description: Create new ingredient successfully
@@ -203,50 +180,21 @@ router.post("/", verifyToken, isAdminOrSeller, controllers.createIngredient);
  *     tags: [ingredient-controller]
  *     requestBody:
  *       content:
- *          application/x-www-form-urlencoded:
- *            schema:
- *              type: object
- *              properties:  
- *                ingredient_id:            
- *                  type: string
- *                  format: string
- *                  example: 8c382e13-8620-460a-bd95-96b1152c1368
- *                ingredient_name:            
- *                  type: string
- *                  format: string
- *                  example: Cà chua
- *                description:             
- *                  type: string
- *                  format: string
- *                  example: Đồ tươi
- *                price:            
- *                  type: number
- *                  format: number
- *                  example: 20000
- *                quantity:            
- *                  type: number
- *                  format: number
- *                  example: 20
- *                quantitative:            
- *                  type: string
- *                  format: string
- *                  example: 200 g
- *                store_id:            
- *                  type: string
- *                  format: uuid
- *                  example: c5aca043-dfd6-47ae-a8ad-5fbf830c295e
- *                cate_detail_id:            
- *                  type: string
- *                  format: uuid
- *                  example: d45e5fd1-cdc6-4b83-8365-d3cab24b0e10
- *                status:            
- *                  type: string
- *                  format: uuid
- *                  example: Active
- *                images:
- *                  type: array
- *                  items:
- *                    type: string
+ *          application/json:
+ *            schema:                     
+ *                  example:
+ *                    ingredient_id: 8c382e13-8620-460a-bd95-96b1152c1368
+ *                    ingredient_name: Cà chua
+ *                    description: Đồ tươi
+ *                    price: 20000
+ *                    quantity: 20
+ *                    quantitative: 2 người
+ *                    store_id: c5aca043-dfd6-47ae-a8ad-5fbf830c295e
+ *                    cate_detail_id: d45e5fd1-cdc6-4b83-8365-d3cab24b0e10
+ *                    status: Active
+ *                    images:
+ *                          - image: string
+ *                          - image: string
  *     responses:
  *       200:
  *         description: For update the ingredient

@@ -3,7 +3,7 @@ const {
   Model
 } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
-  class Image extends Model {
+  class Guild_step extends Model {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
@@ -11,37 +11,22 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      Image.belongsTo(models.Ingredient, {
-        foreignKey: "ingredient_id",
-        targetKey: 'ingredient_id',
-        as: "image_ingredient",
-      });
-      Image.belongsTo(models.Foods, {
+      Guild_step.belongsTo(models.Foods, {
         foreignKey: "food_id",
         targetKey: 'food_id',
-        as: "image_food",
+        as: "step_food",
       });
-      Image.belongsTo(models.Guild_step, {
-        foreignKey: "step_id",
-        targetKey: 'step_id',
-        as: "image_step",
-      });
+      Guild_step.hasMany(models.Image, { as: 'step_image', foreignKey: 'step_id'});
     }
   }
-  Image.init({
-    image_id: {
+  Guild_step.init({
+    step_id: {
       type: DataTypes.UUID,
       defaultValue: DataTypes.UUIDV4,
       primaryKey: true,
     },
-    image: DataTypes.STRING,
-    ingredient_id: {
-      type: DataTypes.UUID,
-    },
+    implementation_guide: DataTypes.STRING,
     food_id: {
-      type: DataTypes.UUID,
-    },
-    step_id: {
       type: DataTypes.UUID,
     },
     status: {
@@ -50,13 +35,13 @@ module.exports = (sequelize, DataTypes) => {
       validate: {
         isIn: {
           args: [['Active', 'Deactive']],
-          msg: 'Invalid value for image.status (Active, Deactive)'
+          msg: 'Invalid value for step.status (Active, Deactive)'
         }
       }
     }
   }, {
     sequelize,
-    modelName: 'Image',
+    modelName: 'Guild_step',
   });
-  return Image;
+  return Guild_step;
 };
