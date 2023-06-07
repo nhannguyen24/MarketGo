@@ -75,6 +75,7 @@ const getAllIngredients = (
                                         as: "ingredient_image",
                                         attributes: {
                                             exclude: [
+                                                "step_id",
                                                 "ingredient_id",
                                                 "food_id",
                                                 "createdAt",

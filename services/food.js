@@ -79,7 +79,7 @@ const getAllFoods = (
                                         attributes: {
                                             exclude: [
                                                 "ingredient_id",
-                                                "food_id",,
+                                                "food_id",
                                                 "step_id",
                                                 "createdAt",
                                                 "updatedAt",
@@ -92,11 +92,18 @@ const getAllFoods = (
                                         as: "food_step",
                                         attributes: {
                                             exclude: [
+                                                "food_id",
                                                 "createdAt",
                                                 "updatedAt",
                                                 "status",
                                             ],
                                         },
+                                        include: [
+                                            {
+                                                model: db.Image,
+                                                as: "step_image",
+                                            },
+                                        ]
                                     },
                                 ],
                             });
