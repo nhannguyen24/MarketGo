@@ -60,20 +60,21 @@ const router = express.Router();
  *          application/json: 
  *            schema:
  *              properties:
- *                  email:
+ *                  userId:
  *                      type: string
- *                  total_price:
+ *                      format: uuid
+ *                  totalPrice:
  *                      type: double
- *                  OrderDetails:
+ *                  orderDetails:
  *                      type: array
  *                      items:
  *                          $ref: '#/components/schemas/OrderDetail'
  *  
  *            example:
  *              {
- *                  "email": "dnhan2426@gmail.com",
- *                  "total_price": 152000.0,
- *                  "OrderDetails": [
+ *                  "userId": "3a767297-1bf9-4734-8e60-668331e02672",
+ *                  "totalPrice": 152000.0,
+ *                  "orderDetails": [
  *                      {
  *                          order_detail_id: "",
  *                          order: {},
