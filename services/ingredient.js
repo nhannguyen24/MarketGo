@@ -10,7 +10,7 @@ const getAllIngredients = (
         try {
             redisClient.get(`ingredients_${page}_${limit}_${order}_${ingredient_name}_${store_id}_${promotion_id}_${cate_detail_id}`, async (error, ingredient) => {
                 if (error) console.error(error);
-                if (ingredient != null && ingredient != "") {
+                if (ingredient != null && ingredient != "" && role_name != 'Admin') {
                     resolve({
                         msg: "Got ingredients",
                         ingredients: JSON.parse(ingredient),
@@ -48,6 +48,16 @@ const getAllIngredients = (
                                         model: db.Store,
                                         as: "ingredient_store",
                                         attributes: ["store_id", "store_name", "address"],
+                                        include: [
+                                            {
+                                                model: db.User,
+                                                as: "store_user",
+                                            },
+                                            {
+                                                model: db.City,
+                                                as: "store_city",
+                                            }
+                                        ]
                                     },
                                     {
                                         model: db.Category_detail,
@@ -65,6 +75,7 @@ const getAllIngredients = (
                                         as: "ingredient_image",
                                         attributes: {
                                             exclude: [
+                                                "step_id",
                                                 "ingredient_id",
                                                 "food_id",
                                                 "createdAt",
@@ -96,13 +107,9 @@ const getAllIngredients = (
     });
 
 
-const createIngredient = ({images, ingredient_name, ...body}) =>
+const createIngredient = ({ images, ingredient_name, ...body }) =>
     new Promise(async (resolve, reject) => {
         try {
-            const images_array = [];
-            images.split(",").forEach((image) => {
-                images_array.push(image.trim());
-            });
 
             const ingredient = await db.Ingredient.findOrCreate({
                 where: {
@@ -114,15 +121,15 @@ const createIngredient = ({images, ingredient_name, ...body}) =>
                 },
             });
 
-            const createImagePromises = images_array.map(async (image) => {
+            const createImagePromises = images.map(async ({image}) => {
                 await db.Image.create({
-                  image: image,
-                  ingredient_id: ingredient[0].ingredient_id, 
+                    image: image,
+                    ingredient_id: ingredient[0].ingredient_id,
                 });
-              });
-        
+            });
+
             await Promise.all(createImagePromises);
-              
+
             resolve({
                 msg: ingredient[1]
                     ? "Create new ingredient successfully"
@@ -151,18 +158,19 @@ const createIngredient = ({images, ingredient_name, ...body}) =>
         }
     });
 
-const updateIngredient = ({ ingredient_id, ...body }) =>
+const updateIngredient = ({ images, ingredient_id, ...body }) =>
     new Promise(async (resolve, reject) => {
         try {
-            const ingredient = await db.Ingredient.findAll({
-                where: { 
-                    ingredient_name: body?.ingredient_name,
-                    ingredient_id: {
-                        [Op.ne]: ingredient_id
-                    }
+            const ingredient = await db.Ingredient.findOne({
+                where: {
+                  ingredient_name: body?.ingredient_name,
+                  ingredient_id: {
+                    [Op.ne]: ingredient_id
+                  }
                 }
-            })
-            if (ingredient) {
+              });
+              
+            if (ingredient !== null) {
                 resolve({
                     msg: "Ingredient name already exists"
                 });
@@ -170,6 +178,22 @@ const updateIngredient = ({ ingredient_id, ...body }) =>
                 const ingredients = await db.Ingredient.update(body, {
                     where: { ingredient_id },
                 });
+
+                await db.Image.destroy({
+                    where: {
+                        ingredient_id: ingredient_id,
+                    }
+                });
+
+                const createImagePromises = images.map(async ({image}) => {
+                    await db.Image.create({
+                        image: image,
+                        ingredient_id: ingredient_id,
+                    });
+                });
+
+                await Promise.all(createImagePromises);
+
                 resolve({
                     msg:
                         ingredients[0] > 0

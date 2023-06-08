@@ -25,6 +25,13 @@ module.exports = {
           key: 'food_id'
         }
       },
+      step_id: {
+        type: Sequelize.UUID,
+        references: {
+          model: 'guild_steps',
+          key: 'step_id'
+        }
+      },
       status: {
         type: Sequelize.ENUM,
         values: ['Active', 'Deactive'],

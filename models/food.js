@@ -23,6 +23,7 @@ module.exports = (sequelize, DataTypes) => {
       });
       Food.hasMany(models.Feedback, { as: 'food_feedback', foreignKey: 'food_id'});
       Food.hasMany(models.Image, { as: 'food_image', foreignKey: 'food_id'});
+      Food.hasMany(models.Guild_step, { as: 'food_step', foreignKey: 'food_id'});
     }
   }
   Food.init({
@@ -35,7 +36,6 @@ module.exports = (sequelize, DataTypes) => {
     description: DataTypes.STRING,
     quantitative: DataTypes.STRING,
     ingredient_description: DataTypes.STRING,
-    implementation_guide: DataTypes.STRING,
     user_id: {
       type: DataTypes.UUID,
     },
