@@ -11,6 +11,7 @@ const step = require('./guild_step');
 const category_detail = require('./category_detail');
 const order_detail = require('./order_detail');
 const upload_image = require('./uploadFile');
+const stripe = require('./payment');
 
 // const firebaseService = require('./firebaseService');
 // const statistic = require('./statistic')
@@ -34,6 +35,7 @@ const initRoutes = (app) => {
     app.use('/api/v1/order-detail', order_detail);
     app.use('/api/v1/categories_detail', category_detail);
     app.use('/api/v1/upload-image', upload_image);
+    app.use('/api/v1/stripe', stripe);
 
     // app.use('/api/v1', firebaseService);
     // app.use('/api/v1/statistic', statistic);

@@ -33,6 +33,7 @@
     "nodemon": "^2.0.22",
     "redis": "^4.6.6",
     "sequelize": "^6.31.1",
+    "stripe": "^12.9.0",
     "swagger-jsdoc": "^6.2.8",
     "swagger-ui-express": "^4.6.3"
   }

@@ -7,9 +7,10 @@ const initRoutes = require("./routes");
 const swaggerUi = require("swagger-ui-express");
 const swaggerJSDoc = require("swagger-jsdoc");
 require("./config/connection_database");
+const controllers = require('./controllers');
 
 app.use(express.urlencoded({ extended: false }));
-app.use(express.json());
+
 app.use(express.static("client"));
 
 app.use(
@@ -49,6 +50,10 @@ app.use(
   app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(specs));
 
   const PORT = process.env.PORT || 3000;
+
+  app.post('/api/v1/stripe/webhook', express.raw({type: "*/*"}), controllers.stripeWebhook);
+
+  app.use(express.json());
 
 initRoutes(app);
 
