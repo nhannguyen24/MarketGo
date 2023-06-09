@@ -9,6 +9,7 @@ const { updateCategory, deleteCategory, getCategoryById, createCategory, getAllC
 const { updateCategoryDetail, deleteCategoryDetail, getCategoryDetailById, createCategoryDetail, getAllCategoryDetail, } = require("./category_detail");
 const {createOrderDetail, test,} = require("./order_detail");
 const {updateStep, deleteStep, createStep,} = require("./guild_step");
+const {payment, stripeWebhook} = require('./payment');
 
 module.exports = {
   loginGoogle,
@@ -58,5 +59,5 @@ module.exports = {
   updateStep, 
   deleteStep, 
   createStep,
-
+  payment, stripeWebhook
 };
