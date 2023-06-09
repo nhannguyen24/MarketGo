@@ -22,13 +22,29 @@ const createStep = (body) =>
               
                 await db.Image.bulkCreate(imageObjects, { transaction });
               }
-
               await transaction.commit();
               
-
             resolve({
                 msg: step[1] ? "Create new step successfully" : "Cannot create new step/Step has already exist"
             });
+
+            redisClient.keys('*foods_*', (error, keys) => {
+                if (error) {
+                    console.error('Error retrieving keys:', error);
+                    return;
+                }
+                // Delete each key individually
+                keys.forEach((key) => {
+                    redisClient.del(key, (deleteError, reply) => {
+                        if (deleteError) {
+                            console.error(`Error deleting key ${key}:`, deleteError);
+                        } else {
+                            console.log(`Key ${key} deleted successfully`);
+                        }
+                    });
+                });
+            });
+
         } catch (error) {
             reject(error);
         }

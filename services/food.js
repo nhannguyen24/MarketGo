@@ -42,7 +42,12 @@ const getAllFoods = (
                                 };
                               }
                             if (order) queries.order = [order]
-                            else queries.order = [['updatedAt', 'DESC']];
+                            else {
+                                queries.order = [
+                                    ['updatedAt', 'DESC'],
+                                    [{ model: db.Guild_step, as: 'food_step' }, 'createdAt', 'ASC']
+                                  ];
+                            }
                             if (food_name) query.food_name = { [Op.substring]: food_name };
                             if (user_id) query.user_id = { [Op.eq]: user_id };
                             if (cate_detail_id) query.cate_detail_id = { [Op.eq]: cate_detail_id };
@@ -102,6 +107,16 @@ const getAllFoods = (
                                             {
                                                 model: db.Image,
                                                 as: "step_image",
+                                                attributes: {
+                                                    exclude: [
+                                                        "ingredient_id",
+                                                        "food_id",
+                                                        "step_id",
+                                                        "createdAt",
+                                                        "updatedAt",
+                                                        "status",
+                                                    ],
+                                                },
                                             },
                                         ]
                                     },
@@ -132,7 +147,7 @@ const createFood = ({images, food_name, ...body}) =>
     new Promise(async (resolve, reject) => {
         try {
 
-            const food = await db.Foods.findOrCreate({
+            const createFood = await db.Foods.findOrCreate({
                 where: {
                     food_name: food_name
                 },
@@ -145,16 +160,26 @@ const createFood = ({images, food_name, ...body}) =>
             const createImagePromises = images.map(async ({image}) => {
                 await db.Image.create({
                     image: image,
-                    food_id: food[0].food_id,
+                    food_id: createFood[0].food_id,
                 });
             });
 
             await Promise.all(createImagePromises);
 
+            const food = await db.Foods.findOne({
+                where: {
+                    food_id: createFood[0].food_id
+                },
+                attributes: {
+                    exclude: ["createdAt", "updatedAt"],
+                },
+            })
+
             resolve({
-                msg: food[1]
+                msg: createFood[1]
                     ? "Create new food successfully"
                     : "Cannot create new food/Food already exists",
+                food: createFood[1] ? food : null,
             });
 
             redisClient.keys('*foods_*', (error, keys) => {
