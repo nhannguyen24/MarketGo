@@ -4,7 +4,7 @@ const createOrderDetail = (req) => new Promise(async (resolve, reject) => {
         await db.sequelize.transaction(async (transaction) => {
             const totalPrice = req.body.totalPrice
             const listItem = req.body.orderDetails
-            const currentDate = new Date(new Date().getTime() + 7 * 60 * 60 * 1000);
+            const currentDate = new Date();
             const user = await db.User.findOne({ where: { user_id: req.body.userId } })
 
             const order = { user_id: user.user_id, order_date: currentDate, total_price: totalPrice, status: "Active" }
