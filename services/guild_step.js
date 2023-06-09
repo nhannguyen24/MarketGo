@@ -17,14 +17,14 @@ const createStep = (body) =>
                 
                 const imageObjects = images.map(({image}) => ({
                   image,
-                  step_id: step[1].step_id,
+                  step_id: step[0].step_id,
                 }));
               
                 await db.Image.bulkCreate(imageObjects, { transaction });
               }
 
               await transaction.commit();
-              console.log(step[1]);
+              
 
             resolve({
                 msg: step[1] ? "Create new step successfully" : "Cannot create new step/Step has already exist"
