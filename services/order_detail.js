@@ -2,7 +2,7 @@ const db = require("../models");
 const createOrderDetail = (req) => new Promise(async (resolve, reject) => {
     try {
         await db.sequelize.transaction(async (transaction) => {
-            const total_price = req.body.totalPrice
+            const totalPrice = req.body.totalPrice
             const listItem = req.body.orderDetails
             const user = await db.User.findOne({ where: { user_id: req.body.userId } })
 
@@ -39,7 +39,7 @@ const createOrderDetail = (req) => new Promise(async (resolve, reject) => {
                     { where: { ingredient_id: element.ingredient.ingredient_id }, transaction }
                 );
             }        
-            const transaction_setup = {price: total_price, order_id: createdOrder.order_id, status: "Active" }
+            const transaction_setup = {price: totalPrice, order_id: createdOrder.order_id, status: "Active" }
             await db.Transaction.create(transaction_setup, { transaction })
             resolve({
                 msg: "Order created",
