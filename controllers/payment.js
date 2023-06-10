@@ -35,8 +35,8 @@ const payment = async (req, res) => {
         line_items,
         customer: customer.id,
         mode: 'payment',
-        success_url: 'your-flutter-app-scheme://success',
-        cancel_url: 'your-flutter-app-scheme://cancel',
+        success_url: `${process.env.CLIENT_URL}/success.html`,
+        cancel_url: `${process.env.CLIENT_URL}/cancel.html`,
       });
       res.send({url: session.url});
       
