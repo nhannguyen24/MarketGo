@@ -38,7 +38,7 @@ const payment = async (req, res) => {
         success_url: `${process.env.CLIENT_URL}/success.html`,
         cancel_url: `${process.env.CLIENT_URL}/cancel.html`,
       });
-      res.send({url: session.url});
+      res.send({url: session.url, id: session.id});
       
     } catch (error) {
       console.log(error);
