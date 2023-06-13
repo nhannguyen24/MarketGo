@@ -10,6 +10,7 @@ const category = require('./category');
 const step = require('./guild_step');
 const category_detail = require('./category_detail');
 const order_detail = require('./order_detail');
+const order = require('./order');
 const upload_image = require('./uploadFile');
 const stripe = require('./payment');
 
@@ -33,6 +34,7 @@ const initRoutes = (app) => {
     app.use('/api/v1/categories', category);
     app.use('/api/v1/categories-detail', category_detail);
     app.use('/api/v1/order-detail', order_detail);
+    app.use('/api/v1/order', order);
     app.use('/api/v1/categories_detail', category_detail);
     app.use('/api/v1/upload-image', upload_image);
     app.use('/api/v1/stripe', stripe);
@@ -43,7 +45,7 @@ const initRoutes = (app) => {
     // app.use('/api/v1/forgotpass', mail);
 
     app.use('/', (req, res) => {
-        res.status(200).send('Hello!')
+        res.status(403).send('msg: Unauthorized')
     });
 
     app.use(notFoundMiddleware);

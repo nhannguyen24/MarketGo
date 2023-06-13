@@ -55,7 +55,28 @@ const createOrderDetail = (req) => new Promise(async (resolve, reject) => {
     }
 });
 
+const getOrderDetailByOrderId = (req) => new Promise(async (resolve, reject) => {
+    try {
+        const orderId = req.query.orderId;
+        const orderDetail = await db.Order_detail.findAll({
+            where: { order_id: orderId },
+            include:                                     
+            {
+                model: db.Ingredient,
+                as: "order_detail_ingredient",
+                attributes: ["ingredient_name", "quantitative"],
+            },
+          });
+        resolve({
+            msg: orderDetail ? "Order detail found!" : "No order detail found!",
+            status: orderDetail ? 200 : 400,
+            orderDetails: orderDetail,
+        });
+    } catch (error) {
+        reject(error);
+    }
+});
 
 module.exports = {
-    createOrderDetail,
+    createOrderDetail, getOrderDetailByOrderId
 };

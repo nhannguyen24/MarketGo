@@ -7,7 +7,8 @@ const { updateIngredient, deleteIngredient, getIngredientById, createIngredient,
 const { updateFood, deleteFood, getFoodById, createFood, getAllFoods, } = require("./food");
 const { updateCategory, deleteCategory, getCategoryById, createCategory, getAllCategories, } = require("./category");
 const { updateCategoryDetail, deleteCategoryDetail, getCategoryDetailById, createCategoryDetail, getAllCategoryDetail, } = require("./category_detail");
-const {createOrderDetail, test,} = require("./order_detail");
+const {createOrderDetail, getOrderDetailByOrderId,} = require("./order_detail");
+const {getOrdersByUserId,} = require("./order");
 const {updateStep, deleteStep, createStep,} = require("./guild_step");
 const {payment, stripeWebhook} = require('./payment');
 
@@ -55,9 +56,8 @@ module.exports = {
   createCategoryDetail,
   getAllCategoryDetail,
   createOrderDetail,
-  test,
   updateStep, 
   deleteStep, 
   createStep,
-  payment, stripeWebhook
+  payment, stripeWebhook, getOrdersByUserId, getOrderDetailByOrderId,
 };
