@@ -147,7 +147,7 @@ router.post("/", verifyToken, controllers.createOrderDetail);
  *                              items:
  *                                  $ref: '#/components/schemas/OrderDetail'
  * */
-router.get("/", verifyToken, controllers.getOrderDetailByOrderId);
+router.get("/", verifyToken, controllers.getOrderDetailsByOrderId);
 
 
 module.exports = router;
