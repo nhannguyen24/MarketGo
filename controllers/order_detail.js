@@ -5,12 +5,12 @@ const createOrderDetail = async (req, res) => {
     return res.status(response.status).json(response);
 };
 
-const getOrderDetailByOrderId = async (req, res) => {
-    const response = await services.getOrderDetailByOrderId(req);
+const getOrderDetailsByOrderId = async (req, res) => {
+    const response = await services.getOrderDetailsByOrderId(req);
     return res.status(response.status).json(response);
 };
 
 
 module.exports = {
-    createOrderDetail, getOrderDetailByOrderId,
+    createOrderDetail, getOrderDetailsByOrderId,
 }
