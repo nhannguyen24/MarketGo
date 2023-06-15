@@ -34,8 +34,12 @@ module.exports = (sequelize, DataTypes) => {
     user_id: {
       type: DataTypes.UUID
     },
+    city_id: {
+      type: DataTypes.UUID
+    },
     total_price: DataTypes.DOUBLE,
     order_date: DataTypes.DATE,
+    address: DataTypes.STRING,
     status: {
       type: DataTypes.ENUM,
       values: ['Active', 'Deactive'],

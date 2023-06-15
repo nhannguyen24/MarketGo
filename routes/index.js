@@ -37,14 +37,9 @@ const initRoutes = (app) => {
     app.use('/api/v1/upload-image', upload_image);
     app.use('/api/v1/stripe', stripe);
 
-    // app.use('/api/v1', firebaseService);
     // app.use('/api/v1/statistic', statistic);
     // app.use('/api/v1/stripe', stripe);
     // app.use('/api/v1/forgotpass', mail);
-
-    app.use('/', (req, res) => {
-        res.status(200).send('Hello!')
-    });
 
     app.use(notFoundMiddleware);
     app.use(errorHandlerMiddleware);
