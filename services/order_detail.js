@@ -13,7 +13,7 @@ const createOrderDetail = (req) => new Promise(async (resolve, reject) => {
             for (const element of listItem) {
                 //checking whether quantity is available
                 const ingredient = await db.Ingredient.findOne({ where: { ingredient_id: element.ingredient.ingredient_id }, transaction });
-                if(!ingredient){
+                if (!ingredient) {
                     return resolve({
                         msg: 'No ingredient found for: ' + ingredient.ingredient_name,
                         status: 400
@@ -36,11 +36,11 @@ const createOrderDetail = (req) => new Promise(async (resolve, reject) => {
                 //update quantity of ingredients
                 const updatedQuantity = ingredient.quantity - element.quantity;
                 await db.Ingredient.update(
-                    { quantity: updatedQuantity},
+                    { quantity: updatedQuantity },
                     { where: { ingredient_id: element.ingredient.ingredient_id }, transaction }
                 );
-            }        
-            const transaction_setup = {price: totalPrice, order_id: createdOrder.order_id, status: "Active" }
+            }
+            const transaction_setup = { price: totalPrice, order_id: createdOrder.order_id, status: "Active" }
             await db.Transaction.create(transaction_setup, { transaction })
             resolve({
                 msg: "Order created",
@@ -55,7 +55,48 @@ const createOrderDetail = (req) => new Promise(async (resolve, reject) => {
     }
 });
 
+const getOrderDetailsByOrderId = (req) => new Promise(async (resolve, reject) => {
+    try {
+        const orderId = req.query.orderId;
+        const orderDetail = await db.Order_detail.findAll({
+            where: { order_id: orderId },
+            include:
+            {
+                model: db.Ingredient,
+                as: "order_detail_ingredient",
+                attributes: {
+                    exclude: ["promotion_id", "createdAt", "updatedAt"]
+                },
+                include: {
+                    model: db.Image,
+                    as: "ingredient_image",
+                    attributes: {
+                        exclude: [
+                            "step_id",
+                            "ingredient_id",
+                            "food_id",
+                            "createdAt",
+                            "updatedAt",
+                            "status",
+                        ],
+                    },
+                },
+            },
+
+            attributes: {
+                exclude: ["ingredient_id", "createdAt", "updatedAt"]
+            }
+        });
+        resolve({
+            msg: orderDetail ? "Order detail found!" : "No order detail found!",
+            status: orderDetail ? 200 : 400,
+            orderDetails: orderDetail,
+        });
+    } catch (error) {
+        reject(error);
+    }
+});
 
 module.exports = {
-    createOrderDetail,
+    createOrderDetail, getOrderDetailsByOrderId
 };

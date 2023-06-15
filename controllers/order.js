@@ -1,14 +1,10 @@
 const services = require('../services');
 
-const createOrder = async (req, res) => {
-    const { order } = req.body;
-    const response = await services.newOrder(order);
-    if(!response.created){
-        return res.status(400).json(response.msg);
-    }
-    return res.status(201).json(response);
+const getOrdersByUserId = async (req, res) => {
+    const response = await services.getOrdersByUserId(req);
+    return res.status(response.status).json(response);
 };
 
 module.exports = {
-    createOrder
+    getOrdersByUserId
 }

@@ -7,8 +7,8 @@ const { updateIngredient, deleteIngredient, getIngredientById, createIngredient,
 const { updateFood, deleteFood, getFoodById, createFood, getAllFoods, } = require("./food");
 const { updateCategory, deleteCategory, getCategoryById, createCategory, getAllCategories, } = require("./category");
 const { updateCategoryDetail, deleteCategoryDetail, getCategoryDetailById, createCategoryDetail, getAllCategoryDetail, } = require("./category_detail");
-const {createOrderDetail,} = require("./order_detail");
-const {createOrder,} = require("./order");
+const {createOrderDetail, getOrderDetailsByOrderId} = require("./order_detail");
+const {getOrdersByUserId} = require("./order");
 const {updateStep, deleteStep, createStep,} = require("./guild_step");
 
 module.exports = {
@@ -55,10 +55,9 @@ module.exports = {
   createCategoryDetail,
   getAllCategoryDetail,
   createOrderDetail,
-  createOrder,
   getUserByEmail,
   updateStep, 
   deleteStep, 
   createStep,
-  
+  getOrdersByUserId, getOrderDetailsByOrderId
 };

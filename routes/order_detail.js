@@ -24,7 +24,7 @@ const router = express.Router();
  *           type: object
  *           description: The Ingredient Object
  *         price:
- *           type: double
+ *           type: integer
  *           description: The price
  *         quantity:
  *           type: integer
@@ -118,23 +118,36 @@ const router = express.Router();
  */
 router.post("/", verifyToken, controllers.createOrderDetail);
 
+
 /**
  * @swagger
- *  paths:
- *      /api/v1/order-detail:
- *          get:
- *              summary: Test
- *              description: Test
- *              tags: [order-detail-controller]
- *              responses:
- *                  200:
- *                      description: Successful operation
- *                      content:
- *                          application/json:
- *                              schema:
- *                                  msg:
- *                                      type: string
+ *  /api/v1/order-detail:
+ *      get:
+ *          security: 
+ *              - BearerAuth: []
+ *          summary: Get order detail with order id
+ *          description: Return an array of OrderDetail of orderId
+ *          tags: [order-detail-controller]
+ *          parameters:
+ *            - in: query
+ *              name: orderId
+ *              schema:
+ *                  type: string
+ *              required: true
+ *              description: Order ID
+ *              example:
+ *                  b1c7fff4-4cc5-413e-aaa0-8c0641a0a327
+ *          responses:
+ *              200:
+ *                  description: Order detail found!
+ *                  content:
+ *                      application/json:
+ *                          schema:
+ *                              type: array
+ *                              items:
+ *                                  $ref: '#/components/schemas/OrderDetail'
  * */
-router.get("/", controllers.test)
+router.get("/", verifyToken, controllers.getOrderDetailsByOrderId);
+
 
 module.exports = router;
