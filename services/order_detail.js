@@ -2,12 +2,14 @@ const db = require("../models");
 const createOrderDetail = (req) => new Promise(async (resolve, reject) => {
     try {
         await db.sequelize.transaction(async (transaction) => {
-            const totalPrice = req.body.totalPrice
+            const totalPrice = req.body.orderDetails[0].order.totalPrice;
+            const city_id = req.body.orderDetails[0].order.cityId;
+            const address = req.body.orderDetails[0].order.address;
             const listItem = req.body.orderDetails
             const currentDate = new Date();
-            const user = await db.User.findOne({ where: { user_id: req.body.userId } })
+            const user = await db.User.findOne({ where: { user_id: req.body.orderDetails[0].order.user.userId } })
 
-            const order = { user_id: user.user_id, order_date: currentDate, total_price: totalPrice, status: "Active" }
+            const order = { user_id: user.user_id, order_date: currentDate, total_price: totalPrice, city_id: city_id, address: address, status: "Active", delivery_status: "On-Going" }
             //begin to insert order 
             const createdOrder = await db.Order.create(order, { transaction })
             for (const element of listItem) {
@@ -81,10 +83,21 @@ const getOrderDetailsByOrderId = (req) => new Promise(async (resolve, reject) =>
                         ],
                     },
                 },
+                model: db.Order,
+                as: "detail_order",
+                attributes: {
+                    exclude: ["createdAt", "updatedAt", "city_id"]
+                },
+                include: {
+                    model: db.City,
+                    as: "order_city",
+                    attributes: {
+                        exclude: ["createdAt", "updatedAt"]
+                    },
+                }
             },
-
             attributes: {
-                exclude: ["ingredient_id", "createdAt", "updatedAt"]
+                exclude: ["ingredient_id", "createdAt", "updatedAt", "order_id"]
             }
         });
         resolve({

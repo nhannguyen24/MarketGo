@@ -11,6 +11,11 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      Order.belongsTo(models.City, {
+        foreignKey: "city_id",
+        targetKey: 'city_id',
+        as: "order_city",
+      });
       Order.belongsTo(models.User, {
         foreignKey: "user_id",
         targetKey: 'user_id',
