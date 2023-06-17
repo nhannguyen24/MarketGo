@@ -49,6 +49,16 @@ module.exports = (sequelize, DataTypes) => {
           msg: 'Invalid value for order.status (Active, Deactive)'
         }
       }
+    },
+    delivery_status: {
+      type: DataTypes.ENUM,
+      values: ['On-Going', 'Cancel', 'Delivered'],
+      validate: {
+        isIn: {
+          args: [['On-Going', 'Cancel', 'Delivered']],
+          msg: 'Invalid value for order.status (On-Going, Cancel, Delivered)'
+        }
+      }
     }
   }, {
     sequelize,
