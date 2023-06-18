@@ -2,14 +2,14 @@ const db = require("../models");
 const createOrderDetail = (req) => new Promise(async (resolve, reject) => {
     try {
         await db.sequelize.transaction(async (transaction) => {
-            const totalPrice = req.body.orderDetails[0].order.totalPrice;
-            const city_id = req.body.orderDetails[0].order.cityId;
-            const address = req.body.orderDetails[0].order.address;
+            const totalPrice = req.body.totalPrice;
+            const cityId = req.body.cityId;
+            const address = req.body.address;
             const listItem = req.body.orderDetails
             const currentDate = new Date();
-            const user = await db.User.findOne({ where: { user_id: req.body.orderDetails[0].order.user.userId } })
+            const user = await db.User.findOne({ where: { user_id: req.body.userId } })
 
-            const order = { user_id: user.user_id, order_date: currentDate, total_price: totalPrice, city_id: city_id, address: address, status: "Active", delivery_status: "On-Going" }
+            const order = { user_id: user.user_id, order_date: currentDate, total_price: totalPrice, city_id: cityId, address: address, status: "Active", delivery_status: "On_Going" }
             //begin to insert order 
             const createdOrder = await db.Order.create(order, { transaction })
             for (const element of listItem) {

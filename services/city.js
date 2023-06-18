@@ -15,11 +15,11 @@ const getAllCities = (
       if (role_name !== "Admin") {
         query.status = { [Op.notIn]: ['Deactive'] };
       }
-      const cities = await db.City.findAndCountAll({
+      const cities = await db.City.findAll({
         where: query,
         ...queries,
         attributes: {
-          // exclude: ["createdAt", "updatedAt"],
+           exclude: ["createdAt", "updatedAt"],
         },
       });
 
