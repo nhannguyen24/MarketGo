@@ -60,10 +60,10 @@ const router = express.Router();
  *          application/json: 
  *            schema:
  *              properties:
- *                  cityId: 
+ *                  cityName: 
  *                      type: string
  *                  totalPrice: 
- *                      type: string
+ *                      type: integer
  *                  address: 
  *                      type: string
  *                  userId: 
@@ -75,8 +75,8 @@ const router = express.Router();
  *  
  *            example:
  *              {
- *                  cityId: "1720906f-9b88-48d1-863e-485d266f0b11",
- *                  totalPrice: 152000.0,
+ *                  cityName: "Hồ Chí Minh",
+ *                  totalPrice: 152000,
  *                  address: "Abc 12/123 p.14 Nguyen Van Luu",
  *                  userId: "3a767297-1bf9-4734-8e60-668331e02672",
  *                  "orderDetails": [
