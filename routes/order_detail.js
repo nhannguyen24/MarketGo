@@ -60,6 +60,14 @@ const router = express.Router();
  *          application/json: 
  *            schema:
  *              properties:
+ *                  cityId: 
+ *                      type: string
+ *                  totalPrice: 
+ *                      type: string
+ *                  address: 
+ *                      type: string
+ *                  userId: 
+ *                      type: string
  *                  orderDetails:
  *                      type: array
  *                      items:
@@ -67,20 +75,14 @@ const router = express.Router();
  *  
  *            example:
  *              {
+ *                  cityId: "1720906f-9b88-48d1-863e-485d266f0b11",
+ *                  totalPrice: 152000.0,
+ *                  address: "Abc 12/123 p.14 Nguyen Van Luu",
+ *                  userId: "3a767297-1bf9-4734-8e60-668331e02672",
  *                  "orderDetails": [
  *                      {
  *                          order_detail_id: "",
- *                          order: {
- *                              orderId: "",
- *                              user: {
- *                                  userId: "3a767297-1bf9-4734-8e60-668331e02672",
- *                              },
- *                              cityId: "1720906f-9b88-48d1-863e-485d266f0b11",
- *                              orderDate: "",
- *                              totalPrice: 152000.0,
- *                              address: "Abc 12/123 p.14 Nguyen Van Luu",
- *                              status: ""
- *                          },
+ *                          order: {},
  *                          ingredient: {
  *                              ingredient_id:  "937a3a3d-ccc1-4155-a2c6-956b5c5dca48",
  *                              ingredient_name: "Cá mú",
