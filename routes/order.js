@@ -37,7 +37,7 @@ const router = express.Router();
 
 /**
  * @swagger
- *  /api/v1/orders:
+ *  /api/v1/order:
  *      get:
  *          security: 
  *              - BearerAuth: []
