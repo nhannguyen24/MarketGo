@@ -34,7 +34,7 @@ const initRoutes = (app) => {
     app.use('/api/v1/categories', category);
     app.use('/api/v1/categories-detail', category_detail);
     app.use('/api/v1/order-detail', order_detail);
-    app.use('/api/v1/order', order);
+    app.use('/api/v1/orders', order);
     app.use('/api/v1/categories_detail', category_detail);
     app.use('/api/v1/upload-image', upload_image);
     app.use('/api/v1/stripe', stripe);
