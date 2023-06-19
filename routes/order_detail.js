@@ -141,7 +141,7 @@ router.post("/", verifyToken, controllers.createOrderDetail);
  *              required: true
  *              description: Order ID
  *              example:
- *                  b1c7fff4-4cc5-413e-aaa0-8c0641a0a327
+ *                  8ac199c0-fbb0-40e6-80d1-d8c07c9f47b5
  *          responses:
  *              200:
  *                  description: Order detail found!

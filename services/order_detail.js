@@ -7,10 +7,12 @@ const createOrderDetail = (req) => new Promise(async (resolve, reject) => {
             const listItem = req.body.orderDetails
             const currentDate = new Date();
             const user = await db.User.findOne({ where: { user_id: req.body.userId } })
-            const city = await db.City.findOne({where: {city_name: req.body.cityName}})
+            const city = await db.City.findOne({ where: { city_name: req.body.cityName } })
 
-            const order = { user_id: user.user_id, order_date: currentDate, total_price: totalPrice, 
-                city_id: city.city_id, address: address, status: "Active", delivery_status: "On Going" }
+            const order = {
+                user_id: user.user_id, order_date: currentDate, total_price: totalPrice,
+                city_id: city.city_id, address: address, status: "Active", delivery_status: "On Going"
+            }
             //begin to insert order 
             const createdOrder = await db.Order.create(order, { transaction })
             for (const element of listItem) {
@@ -64,39 +66,43 @@ const getOrderDetailsByOrderId = (req) => new Promise(async (resolve, reject) =>
         const orderDetail = await db.Order_detail.findAll({
             where: { order_id: orderId },
             include:
-            {
-                model: db.Ingredient,
-                as: "order_detail_ingredient",
-                attributes: {
-                    exclude: ["promotion_id", "createdAt", "updatedAt"]
-                },
-                include: {
-                    model: db.Image,
-                    as: "ingredient_image",
-                    attributes: {
-                        exclude: [
-                            "step_id",
-                            "ingredient_id",
-                            "food_id",
-                            "createdAt",
-                            "updatedAt",
-                            "status",
-                        ],
+                [
+                    {
+                        model: db.Ingredient,
+                        as: "order_detail_ingredient",
+                        attributes: {
+                            exclude: ["promotion_id", "createdAt", "updatedAt"]
+                        },
+                        include: {
+                            model: db.Image,
+                            as: "ingredient_image",
+                            attributes: {
+                                exclude: [
+                                    "step_id",
+                                    "ingredient_id",
+                                    "food_id",
+                                    "createdAt",
+                                    "updatedAt",
+                                    "status",
+                                ],
+                            },
+                        },
                     },
-                },
-                model: db.Order,
-                as: "detail_order",
-                attributes: {
-                    exclude: ["createdAt", "updatedAt", "city_id"]
-                },
-                include: {
-                    model: db.City,
-                    as: "order_city",
-                    attributes: {
-                        exclude: ["createdAt", "updatedAt"]
-                    },
-                }
-            },
+                    {
+                        model: db.Order,
+                        as: "detail_order",
+                        attributes: {
+                            exclude: ["createdAt", "updatedAt", "city_id"]
+                        },
+                        include: {
+                            model: db.City,
+                            as: "order_city",
+                            attributes: {
+                                exclude: ["createdAt", "updatedAt"]
+                            },
+                        }
+                    }
+                ],
             attributes: {
                 exclude: ["ingredient_id", "createdAt", "updatedAt", "order_id"]
             }
