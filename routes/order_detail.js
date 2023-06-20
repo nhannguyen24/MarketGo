@@ -66,6 +66,8 @@ const router = express.Router();
  *                      type: integer
  *                  address: 
  *                      type: string
+ *                  phone: 
+ *                      type: string
  *                  userId: 
  *                      type: string
  *                  orderDetails:
@@ -78,6 +80,7 @@ const router = express.Router();
  *                  cityName: "Hồ Chí Minh",
  *                  totalPrice: 152000,
  *                  address: "Abc 12/123 p.14 Nguyen Van Luu",
+ *                  phone: "0125468799",
  *                  userId: "3a767297-1bf9-4734-8e60-668331e02672",
  *                  "orderDetails": [
  *                      {

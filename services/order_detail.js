@@ -7,6 +7,17 @@ const createOrderDetail = (req) => new Promise(async (resolve, reject) => {
             const listItem = req.body.orderDetails
             const currentDate = new Date();
             const user = await db.User.findOne({ where: { user_id: req.body.userId } })
+            if(user){
+                await db.User.update(
+                    { phone: req.body.phone },
+                    { where: { user_id: user.user_id } }
+                  );
+            } else {
+                return resolve({
+                    msg: 'User not found!',
+                    status: 404
+                })
+            }
             const city = await db.City.findOne({ where: { city_name: req.body.cityName } })
 
             const order = {
@@ -92,19 +103,29 @@ const getOrderDetailsByOrderId = (req) => new Promise(async (resolve, reject) =>
                         model: db.Order,
                         as: "detail_order",
                         attributes: {
-                            exclude: ["createdAt", "updatedAt", "city_id"]
+                            exclude: ["createdAt", "updatedAt", "city_id", "user_id"]
                         },
-                        include: {
-                            model: db.City,
-                            as: "order_city",
-                            attributes: {
-                                exclude: ["createdAt", "updatedAt"]
+                        include: [
+                            {
+                                model: db.City,
+                                as: "order_city",
+                                attributes: {
+                                    exclude: ["createdAt", "updatedAt"]
+                                },
                             },
-                        }
+                            {
+                                model: db.User,
+                                as: "order_user",
+                                attributes: {
+                                    exclude: ["createdAt", "updatedAt"]
+                                },
+                            },
+
+                        ]
                     }
                 ],
             attributes: {
-                exclude: ["ingredient_id", "createdAt", "updatedAt", "order_id"]
+                exclude: ["user_id", "ingredient_id", "createdAt", "updatedAt", "order_id"]
             }
         });
         resolve({
