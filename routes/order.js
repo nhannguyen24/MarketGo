@@ -2,7 +2,7 @@ const controllers = require('../controllers');
 const express = require('express');
 const verifyToken = require('../middlewares/verify_token');
 const router = express.Router();
-
+const {isAdminOrSeller} = require('../middlewares/verify_role');
 
 /**
  * @swagger
@@ -64,5 +64,71 @@ const router = express.Router();
  *                                  $ref: '#/components/schemas/Order'
  * */
 router.get("/", verifyToken, controllers.getOrdersByUserId);
+
+/**
+ * @swagger
+ *  /api/v1/orders:
+ *      post:
+ *          security: 
+ *              - BearerAuth: []
+ *          summary: Get orders with filter of date and store id
+ *          description: Get orders for admin
+ *          tags: [order-controller]
+ *          parameters:
+ *            - in: query
+ *              name: page
+ *              required: true
+ *              schema:
+ *                  type: integer
+ *              description: Page number
+ *              example:
+ *                  1
+ *            - in: query
+ *              name: limit
+ *              required: true
+ *              schema:
+ *                  type: integer
+ *              description: Limit of orders in a page
+ *              example:
+ *                  15
+ *            - in: query
+ *              name: startDate
+ *              schema:
+ *                  type: string
+ *              description: From Date
+ *              example:
+ *                  2023-06-20
+ *            - in: query
+ *              name: endDate
+ *              schema:
+ *                  type: string
+ *              description: To Date
+ *              example:
+ *                  2023-07-01
+ *            - in: query
+ *              name: storeId
+ *              schema:
+ *                  type: string
+ *              description: Store ID 
+ *              example:
+ *                  c5aca043-dfd6-47ae-a8ad-5fbf830c295e
+ *            - in: query
+ *              name: sort
+ *              schema:
+ *                  type: string
+ *              description: Sort with Ascending or Descending
+ *              example:
+ *                  ASC or DESC
+ *          responses:
+ *              200:
+ *                  description: Orders found!
+ *                  content:
+ *                      application/json:
+ *                          schema:
+ *                              type: array
+ *                              items:
+ *                                  $ref: '#/components/schemas/Order'
+ * */
+router.post("/", verifyToken, controllers.getOrders);
 
 module.exports = router;
