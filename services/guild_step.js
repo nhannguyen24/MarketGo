@@ -6,12 +6,17 @@ const createStep = (body) =>
         try {
             const transaction = await db.sequelize.transaction();
             let step;
+            let count = 0;
             for (const stepData of body.step) {
                 const { images, ...stepAttributes } = stepData;
-                
+                count += 1;
+
                 step = await db.Guild_step.findOrCreate({
                   where: stepAttributes,
-                  defaults: stepAttributes,
+                  defaults: {
+                    ...stepAttributes,
+                    step: count,
+                  },
                   transaction,
                 });
                 

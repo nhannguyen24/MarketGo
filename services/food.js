@@ -45,7 +45,7 @@ const getAllFoods = (
                             else {
                                 queries.order = [
                                     ['updatedAt', 'DESC'],
-                                    [{ model: db.Guild_step, as: 'food_step' }, 'createdAt', 'ASC']
+                                    [{ model: db.Guild_step, as: 'food_step' }, 'step', 'ASC']
                                   ];
                             }
                             if (food_name) query.food_name = { [Op.substring]: food_name };
