@@ -16,7 +16,7 @@ const getAllCategoryDetail = (
                         categories: JSON.parse(category),
                     });
                 } else {
-                    redisClient.get(`categories_detail_${cate_detail_name}_${cate_id}`, async (error, adminCategory) => {
+                    redisClient.get(`admin_categories_detail_${cate_detail_name}_${cate_id}`, async (error, adminCategory) => {
                         if (adminCategory != null && adminCategory != "") {
                             resolve({
                                 msg: "Got categories",
