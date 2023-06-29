@@ -111,7 +111,7 @@ router.get("/", verifyToken, controllers.getOrdersByUserId);
  *                  type: string
  *              description: Store ID 
  *              example:
- *                  189b6058-6e24-439e-b14b-693b25f6a375
+ *                  c5aca043-dfd6-47ae-a8ad-5fbf830c295e
  *            - in: query
  *              name: sort
  *              schema:
