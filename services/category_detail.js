@@ -8,21 +8,21 @@ const getAllCategoryDetail = (
 ) =>
     new Promise(async (resolve, reject) => {
         try {
-            redisClient.get(`categories_detail_${cate_detail_name}_${cate_id}`, async (error, category) => {
-                if (error) console.error(error);
-                if (category != null && category != "") {
-                    resolve({
-                        msg: "Got categories",
-                        categories: JSON.parse(category),
-                    });
-                } else {
-                    redisClient.get(`admin_categories_detail_${cate_detail_name}_${cate_id}`, async (error, adminCategory) => {
-                        if (adminCategory != null && adminCategory != "") {
-                            resolve({
-                                msg: "Got categories",
-                                categories: JSON.parse(adminCategory),
-                            });
-                        } else {
+            // redisClient.get(`categories_detail_${cate_detail_name}_${cate_id}`, async (error, category) => {
+            //     if (error) console.error(error);
+            //     if (category != null && category != "" && role_name != 'Admin') {
+            //         resolve({
+            //             msg: "Got categories",
+            //             categories: JSON.parse(category),
+            //         });
+            //     } else {
+            //         redisClient.get(`admin_categories_detail_${cate_detail_name}_${cate_id}`, async (error, adminCategory) => {
+            //             if (adminCategory != null && adminCategory != "") {
+            //                 resolve({
+            //                     msg: "Got categories",
+            //                     categories: JSON.parse(adminCategory),
+            //                 });
+            //             } else {
                             const queries = { raw: true, nest: true };
                             queries.order = [['updatedAt', 'DESC']];
                             if (cate_detail_name)
@@ -53,26 +53,25 @@ const getAllCategoryDetail = (
                                 ],
                             });
 
-                            if (role_name !== "Admin") {
-                                redisClient.setEx(`categories_detail_${cate_detail_name}_${cate_id}`, 3600, JSON.stringify(categories_detail));
-                            } else {
-                                redisClient.setEx(`admin_categories_detail_${cate_detail_name}_${cate_id}`, 3600, JSON.stringify(categories_detail));
-                            }
+                            // if (role_name !== "Admin") {
+                            //     redisClient.setEx(`categories_detail_${cate_detail_name}_${cate_id}`, 3600, JSON.stringify(categories_detail));
+                            // } else {
+                            //     redisClient.setEx(`admin_categories_detail_${cate_detail_name}_${cate_id}`, 3600, JSON.stringify(categories_detail));
+                            // }
                             resolve({
                                 msg: categories_detail ? "Got categories_detail" : "Cannot find categories_detail",
                                 categories_detail: categories_detail,
                             });
-                        }
-                    })
-                }
-            })
+                        // }
+            //         })
+            //     }
+            // })
 
         } catch (error) {
             console.log(error);
             reject(error);
         }
     });
-
 
 const createCategoryDetail = (body) =>
     new Promise(async (resolve, reject) => {
