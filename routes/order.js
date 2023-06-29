@@ -67,8 +67,8 @@ router.get("/", verifyToken, controllers.getOrdersByUserId);
 
 /**
  * @swagger
- *  /api/v1/orders:
- *      post:
+ *  /api/v1/orders/admin:
+ *      get:
  *          security: 
  *              - BearerAuth: []
  *          summary: Get orders with filter of date and store id
@@ -129,6 +129,6 @@ router.get("/", verifyToken, controllers.getOrdersByUserId);
  *                              items:
  *                                  $ref: '#/components/schemas/Order'
  * */
-router.post("/", verifyToken, controllers.getOrders);
+router.get("/admin", verifyToken, controllers.getOrders);
 
 module.exports = router;
