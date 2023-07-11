@@ -53,11 +53,11 @@ const getAllCategoryDetail = (
                                 ],
                             });
 
-                            if (role_name !== "Admin") {
-                                redisClient.setEx(`categories_detail_${cate_detail_name}_${cate_id}`, 3600, JSON.stringify(categories_detail));
-                            } else {
-                                redisClient.setEx(`admin_categories_detail_${cate_detail_name}_${cate_id}`, 3600, JSON.stringify(categories_detail));
-                            }
+                            // if (role_name !== "Admin") {
+                            //     redisClient.setEx(`categories_detail_${cate_detail_name}_${cate_id}`, 3600, JSON.stringify(categories_detail));
+                            // } else {
+                            //     redisClient.setEx(`admin_categories_detail_${cate_detail_name}_${cate_id}`, 3600, JSON.stringify(categories_detail));
+                            // }
                             resolve({
                                 msg: categories_detail ? "Got categories_detail" : "Cannot find categories_detail",
                                 categories_detail: categories_detail,
