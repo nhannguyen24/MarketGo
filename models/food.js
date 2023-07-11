@@ -24,6 +24,13 @@ module.exports = (sequelize, DataTypes) => {
       Food.hasMany(models.Feedback, { as: 'food_feedback', foreignKey: 'food_id'});
       Food.hasMany(models.Image, { as: 'food_image', foreignKey: 'food_id'});
       Food.hasMany(models.Guild_step, { as: 'food_step', foreignKey: 'food_id'});
+
+      Food.belongsToMany(models.Ingredient, {
+        through: 'Food_detail',
+        foreignKey: 'food_id',
+        otherKey: 'ingredient_id',
+        as: "food_detail",
+      });
     }
   }
   Food.init({
@@ -36,6 +43,12 @@ module.exports = (sequelize, DataTypes) => {
     description: DataTypes.STRING,
     quantitative: DataTypes.STRING,
     ingredient_description: DataTypes.STRING,
+    price: DataTypes.DOUBLE,
+    calories: DataTypes.INTEGER,
+    proteins: DataTypes.DOUBLE,
+    fats: DataTypes.DOUBLE,
+    carbohydrates: DataTypes.DOUBLE,
+    fibers: DataTypes.DOUBLE,
     user_id: {
       type: DataTypes.UUID,
     },

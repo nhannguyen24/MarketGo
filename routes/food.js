@@ -142,6 +142,12 @@ router.get("/:id", verifyToken, controllers.getFoodById);
  *                    food_name: Canh Chua Chay
  *                    description: Đã bao giờ bạn chờ mong đến ngày rằm hằng tháng, ghé qua chùa ăn bữa cơm chay với tô Canh chua nóng hổi nghi ngút khói? Ắt hẳn tuổi thơ bạn đã từng ít nhất một lần như thế đúng không. Thôi thì, ăn "chùa" mãi cũng ngại, hay là, mình thử đặt hàng Pack nguyên liệu sơ chế Canh chua chay về trổ tài chiêu đãi cả nhà, sẵn dịp ôn lại tí kỷ niệm xưa nhé.
  *                    quantitative: 2 người
+ *                    price: 100000
+ *                    calories: 37
+ *                    proteins: 1.7
+ *                    fats: 1
+ *                    carbohydrates: 5.2
+ *                    fibers: 1.18
  *                    user_id: d3b5161f-5c19-4c6b-8604-2ad540ec6b3c
  *                    cate_detail_id: d45e5fd1-cdc6-4b83-8365-d3cab24b0e10
  *                    ingredient_description: |

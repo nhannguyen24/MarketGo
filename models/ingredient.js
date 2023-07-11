@@ -36,6 +36,13 @@ module.exports = (sequelize, DataTypes) => {
         otherKey: 'order_id',
         as: "ingredient_order_detail",
       });
+
+      Ingredient.belongsToMany(models.Foods, {
+        through: 'Food_detail',
+        foreignKey: 'ingredient_id',
+        otherKey: 'food_id',
+        as: "ingredient_detail",
+      });
     }
   }
   Ingredient.init({

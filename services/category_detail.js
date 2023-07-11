@@ -8,21 +8,21 @@ const getAllCategoryDetail = (
 ) =>
     new Promise(async (resolve, reject) => {
         try {
-            redisClient.get(`categories_detail_${cate_detail_name}_${cate_id}`, async (error, category) => {
-                if (error) console.error(error);
-                if (category != null && category != "" && role_name != 'Admin') {
-                    resolve({
-                        msg: "Got categories",
-                        categories: JSON.parse(category),
-                    });
-                } else {
-                    redisClient.get(`admin_categories_detail_${cate_detail_name}_${cate_id}`, async (error, adminCategory) => {
-                        if (adminCategory != null && adminCategory != "") {
-                            resolve({
-                                msg: "Got categories",
-                                categories: JSON.parse(adminCategory),
-                            });
-                        } else {
+            // redisClient.get(`categories_detail_${cate_detail_name}_${cate_id}`, async (error, category) => {
+            //     if (error) console.error(error);
+            //     if (category != null && category != "" && role_name != 'Admin') {
+            //         resolve({
+            //             msg: "Got categories",
+            //             categories: JSON.parse(category),
+            //         });
+            //     } else {
+            //         redisClient.get(`admin_categories_detail_${cate_detail_name}_${cate_id}`, async (error, adminCategory) => {
+            //             if (adminCategory != null && adminCategory != "") {
+            //                 resolve({
+            //                     msg: "Got categories",
+            //                     categories: JSON.parse(adminCategory),
+            //                 });
+            //             } else {
                             const queries = { raw: true, nest: true };
                             queries.order = [['updatedAt', 'DESC']];
                             if (cate_detail_name)
@@ -62,10 +62,10 @@ const getAllCategoryDetail = (
                                 msg: categories_detail ? "Got categories_detail" : "Cannot find categories_detail",
                                 categories_detail: categories_detail,
                             });
-                        }
-                    })
-                }
-            })
+                        // }
+            //         })
+            //     }
+            // })
 
         } catch (error) {
             console.log(error);
@@ -88,22 +88,22 @@ const createCategoryDetail = (body) =>
                     ? "Create new cate_detail successfully"
                     : "Cannot create new cate_detail/Category_detail name already exists",
             });
-            redisClient.keys('*categories_*', (error, keys) => {
-                if (error) {
-                    console.error('Error retrieving keys:', error);
-                    return;
-                }
-                // Delete each key individually
-                keys.forEach((key) => {
-                    redisClient.del(key, (deleteError, reply) => {
-                        if (deleteError) {
-                            console.error(`Error deleting key ${key}:`, deleteError);
-                        } else {
-                            console.log(`Key ${key} deleted successfully`);
-                        }
-                    });
-                });
-            });
+            // redisClient.keys('*categories_*', (error, keys) => {
+            //     if (error) {
+            //         console.error('Error retrieving keys:', error);
+            //         return;
+            //     }
+            //     // Delete each key individually
+            //     keys.forEach((key) => {
+            //         redisClient.del(key, (deleteError, reply) => {
+            //             if (deleteError) {
+            //                 console.error(`Error deleting key ${key}:`, deleteError);
+            //             } else {
+            //                 console.log(`Key ${key} deleted successfully`);
+            //             }
+            //         });
+            //     });
+            // });
         } catch (error) {
             reject(error);
         }
@@ -134,22 +134,22 @@ const updateCategoryDetail = ({ cate_detail_id, ...body }) =>
                             ? `${categories_detail[0]} cate_detail update`
                             : "Cannot update cate_detail/ cate_detail_id not found",
                 });
-                redisClient.keys('*categories_*', (error, keys) => {
-                    if (error) {
-                        console.error('Error retrieving keys:', error);
-                        return;
-                    }
-                    // Delete each key individually
-                    keys.forEach((key) => {
-                        redisClient.del(key, (deleteError, reply) => {
-                            if (deleteError) {
-                                console.error(`Error deleting key ${key}:`, deleteError);
-                            } else {
-                                console.log(`Key ${key} deleted successfully`);
-                            }
-                        });
-                    });
-                });
+                // redisClient.keys('*categories_*', (error, keys) => {
+                //     if (error) {
+                //         console.error('Error retrieving keys:', error);
+                //         return;
+                //     }
+                //     // Delete each key individually
+                //     keys.forEach((key) => {
+                //         redisClient.del(key, (deleteError, reply) => {
+                //             if (deleteError) {
+                //                 console.error(`Error deleting key ${key}:`, deleteError);
+                //             } else {
+                //                 console.log(`Key ${key} deleted successfully`);
+                //             }
+                //         });
+                //     });
+                // });
             }
         } catch (error) {
             reject(error.message);
@@ -172,22 +172,22 @@ const deleteCategoryDetail = (cate_detail_ids) =>
                         ? `${categories_detail} cate_detail delete`
                         : "Cannot delete cate_detail/ cate_detail_id not found",
             });
-            redisClient.keys('*categories_*', (error, keys) => {
-                if (error) {
-                    console.error('Error retrieving keys:', error);
-                    return;
-                }
-                // Delete each key individually
-                keys.forEach((key) => {
-                    redisClient.del(key, (deleteError, reply) => {
-                        if (deleteError) {
-                            console.error(`Error deleting key ${key}:`, deleteError);
-                        } else {
-                            console.log(`Key ${key} deleted successfully`);
-                        }
-                    });
-                });
-            });
+            // redisClient.keys('*categories_*', (error, keys) => {
+            //     if (error) {
+            //         console.error('Error retrieving keys:', error);
+            //         return;
+            //     }
+            //     // Delete each key individually
+            //     keys.forEach((key) => {
+            //         redisClient.del(key, (deleteError, reply) => {
+            //             if (deleteError) {
+            //                 console.error(`Error deleting key ${key}:`, deleteError);
+            //             } else {
+            //                 console.log(`Key ${key} deleted successfully`);
+            //             }
+            //         });
+            //     });
+            // });
         } catch (error) {
             reject(error);
         }

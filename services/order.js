@@ -39,62 +39,6 @@ const getOrdersByUserId = (req) => new Promise(async (resolve, reject) => {
     }
 });
 
-// const getOrderWithStoreId = (req) => new Promise(async (resolve, reject) => {
-//     try {
-//         const orders = await db.Order_detail.findAll({
-//             limit,
-//             offset,
-//             order: [
-//                 { model: db.Order, as: 'detail_order' },
-//                 'order_date',
-//                 'DESC'
-//             ],
-//             include: [
-//                 {
-//                     model: db.Ingredient,
-//                     as: 'order_detail_ingredient',
-//                     where: {
-//                         store_id: storeId,
-//                     },
-//                     attributes: [],
-//                 },
-//                 {
-//                     model: db.Order,
-//                     as: 'detail_order',
-//                     where: where,
-//                     include: {
-//                         model: db.City,
-//                         as: "order_city",
-//                         attributes: {
-//                             exclude: ["createdAt", "updatedAt"]
-//                         },
-//                     },
-//                     attributes: {
-//                         exclude: ["createdAt", "updatedAt", "city_id"]
-//                     },
-//                 },
-//             ],
-//             attributes: {
-//                 exclude: ["createdAt", "updatedAt", "order_id", "price", "quantity", "ingredient_id", "order_detail_id", "status"]
-//             },
-//             distinct: true,
-//         })
-//         const processedOrders = orders.map((order) => order.detail_order);
-//         resolve({
-//             msg: orders ? "Orders found!" : "Not orders found!",
-//             status: orders ? 200 : 400,
-//             pagination: {
-//                 totalCount,
-//                 pageCount,
-//                 currentPage: page,
-//             },
-//             orders: processedOrders,
-//         });
-//     } catch (error) {
-//         reject(error)
-//     }
-// });
-
 const getOrders = (req) => new Promise(async (resolve, reject) => {
     try {
         let page = parseInt(req.query.page)
@@ -130,7 +74,7 @@ const getOrders = (req) => new Promise(async (resolve, reject) => {
                 'order_date',
                 'DESC'
             ]];
-            if (sort === 'ASC') {
+            if (sort  === 'ASC') {
                 order = [[
                     { model: db.Order, as: 'detail_order' },
                     'order_date',

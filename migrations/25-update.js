@@ -1,19 +1,35 @@
 module.exports = {
-    up: function(queryInterface, Sequelize) {
-      // logic for transforming into the new state
-      return queryInterface.addColumn(
-        'Guild_steps',
-        'step',
-       Sequelize.INTEGER
-      );
-  
-    },
-  
-    down: function(queryInterface, Sequelize) {
-      // logic for reverting the changes
-      return queryInterface.removeColumn(
-        'Guild_steps',
-        'step'
-      );
-    }
+  up: function (queryInterface, Sequelize) {
+    return Promise.all([
+      queryInterface.addColumn('Foods', 'price', {
+        type: Sequelize.DOUBLE,
+      }),
+      queryInterface.addColumn('Foods', 'calories', {
+        type: Sequelize.INTEGER,
+      }),
+      queryInterface.addColumn('Foods', 'proteins', {
+        type: Sequelize.DOUBLE,
+      }),
+      queryInterface.addColumn('Foods', 'fats', {
+        type: Sequelize.DOUBLE,
+      }),
+      queryInterface.addColumn('Foods', 'carbohydrates', {
+        type: Sequelize.DOUBLE,
+      }),
+      queryInterface.addColumn('Foods', 'fibers', {
+        type: Sequelize.DOUBLE,
+      })
+    ]);
+  },
+
+  down: function (queryInterface, Sequelize) {
+    return Promise.all([
+      queryInterface.removeColumn('Foods', 'price'),
+      queryInterface.removeColumn('Foods', 'calories'),
+      queryInterface.removeColumn('Foods', 'proteins'),
+      queryInterface.removeColumn('Foods', 'fats'),
+      queryInterface.removeColumn('Foods', 'carbohydrates'),
+      queryInterface.removeColumn('Foods', 'fibers')
+    ]);
   }
+};

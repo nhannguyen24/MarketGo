@@ -3,7 +3,7 @@ const {
   Model
 } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
-  class Order_detail extends Model {
+  class Food_detail extends Model {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
@@ -11,24 +11,24 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      Order_detail.belongsTo(models.Order, {
-        foreignKey: 'order_id',
-        as: 'detail_order'
+      Food_detail.belongsTo(models.Foods, {
+        foreignKey: 'food_id',
+        as: 'detail_food'
       });
       
-      Order_detail.belongsTo(models.Ingredient, {
+      Food_detail.belongsTo(models.Ingredient, {
         foreignKey: 'ingredient_id',
-        as: 'order_detail_ingredient'
+        as: 'detail_ingredient'
       });
     }
   }
-  Order_detail.init({
-    order_detail_id: {
+  Food_detail.init({
+    food_detail_id: {
       type: DataTypes.UUID,
       defaultValue: DataTypes.UUIDV4,
       primaryKey: true,
     },
-    order_id: {
+    food_id: {
       type: DataTypes.UUID
     },
     ingredient_id: {
@@ -42,19 +42,13 @@ module.exports = (sequelize, DataTypes) => {
       validate: {
         isIn: {
           args: [['Active', 'Deactive']],
-          msg: 'Invalid value for order_detail.status (Active, Deactive)'
+          msg: 'Invalid value for food_detail.status (Active, Deactive)'
         }
       }
     }
   }, {
     sequelize,
-    modelName: 'Order_detail',
+    modelName: 'Food_detail',
   });
-  Order_detail.beforeCreate((order_detail, options) => {
-    const currentDate = new Date();
-    currentDate.setHours(currentDate.getHours() + 7);
-    order_detail.createdAt = currentDate;
-    order_detail.updatedAt = currentDate;
-  });
-  return Order_detail;
+  return Food_detail;
 };
