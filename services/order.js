@@ -110,12 +110,12 @@ const getOrders = (req) => new Promise(async (resolve, reject) => {
                             model: db.User,
                             as: "order_user",
                             attributes: {
-                                exclude: ["createdAt", "updatedAt", "password"]
+                                exclude: ["createdAt", "updatedAt", "password", "refresh_token", "accessChangePassword"]
                             },
                         },
                         ],
                         attributes: {
-                            exclude: ["createdAt", "updatedAt", "city_id", "user_id", "refresh_token", "accessChangePassword"]
+                            exclude: ["createdAt", "updatedAt", "city_id", "user_id"]
                         },
                     },
                 ],
