@@ -74,7 +74,7 @@ const getOrders = (req) => new Promise(async (resolve, reject) => {
                 'order_date',
                 'DESC'
             ]];
-            if (sort  === 'ASC') {
+            if (sort === 'ASC') {
                 order = [[
                     { model: db.Order, as: 'detail_order' },
                     'order_date',
@@ -98,15 +98,24 @@ const getOrders = (req) => new Promise(async (resolve, reject) => {
                         model: db.Order,
                         as: 'detail_order',
                         where: where,
-                        include: {
+                        include: [
+                            {
                             model: db.City,
                             as: "order_city",
                             attributes: {
                                 exclude: ["createdAt", "updatedAt"]
                             },
                         },
+                        {
+                            model: db.User,
+                            as: "order_user",
+                            attributes: {
+                                exclude: ["createdAt", "updatedAt", "password", "refresh_token", "accessChangePassword"]
+                            },
+                        },
+                        ],
                         attributes: {
-                            exclude: ["createdAt", "updatedAt", "city_id"]
+                            exclude: ["createdAt", "updatedAt", "city_id", "user_id"]
                         },
                     },
                 ],
@@ -149,7 +158,7 @@ const getOrders = (req) => new Promise(async (resolve, reject) => {
         });
 
         resolve({
-            msg: orders ? "Orders found!" : "Not orders found!",
+            msg: orders ? "Orders found!" : "No orders found!",
             status: orders ? 200 : 400,
             pagination: {
                 totalCount,
