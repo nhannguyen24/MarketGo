@@ -291,6 +291,20 @@ const getIngredientById = (ingredient_id) =>
                             ],
                         },
                     },
+                    {
+                        model: db.Image,
+                        as: "ingredient_image",
+                        attributes: {
+                            exclude: [
+                                "step_id",
+                                "ingredient_id",
+                                "food_id",
+                                "createdAt",
+                                "updatedAt",
+                                "status",
+                            ],
+                        },
+                    },
                 ],
             });
             resolve({

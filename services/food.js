@@ -345,6 +345,48 @@ const getFoodById = (food_id) =>
                             ],
                         },
                     },
+                    {
+                        model: db.Image,
+                        as: "food_image",
+                        attributes: {
+                            exclude: [
+                                "ingredient_id",
+                                "food_id",
+                                "step_id",
+                                "createdAt",
+                                "updatedAt",
+                                "status",
+                            ],
+                        },
+                    },
+                    {
+                        model: db.Guild_step,
+                        as: "food_step",
+                        attributes: {
+                            exclude: [
+                                "food_id",
+                                "createdAt",
+                                "updatedAt",
+                                "status",
+                            ],
+                        },
+                        include: [
+                            {
+                                model: db.Image,
+                                as: "step_image",
+                                attributes: {
+                                    exclude: [
+                                        "ingredient_id",
+                                        "food_id",
+                                        "step_id",
+                                        "createdAt",
+                                        "updatedAt",
+                                        "status",
+                                    ],
+                                },
+                            },
+                        ]
+                    },
                 ],
             });
             resolve({
