@@ -1,4 +1,4 @@
-const { refreshAccessToken, logout, login, register, loginGoogle} = require("./auth");
+const { refreshAccessToken, logout, login, register, loginGoogle } = require("./auth");
 const { updateUser, deleteUser, getUserById, createUser, getAllUsers, updateProfile, getUserByEmail, } = require("./user");
 const { updateCity, deleteCity, getCityById, createCity, getAllCities } = require("./city");
 const { updateStore, deleteStore, getStoreById, createStore, getAllStores, } = require("./store");
@@ -7,9 +7,10 @@ const { updateIngredient, deleteIngredient, getIngredientById, createIngredient,
 const { updateFood, deleteFood, getFoodById, createFood, getAllFoods, } = require("./food");
 const { updateCategory, deleteCategory, getCategoryById, createCategory, getAllCategories, } = require("./category");
 const { updateCategoryDetail, deleteCategoryDetail, getCategoryDetailById, createCategoryDetail, getAllCategoryDetail, } = require("./category_detail");
-const {createOrderDetail, getOrderDetailsByOrderId} = require("./order_detail");
-const {getOrdersByUserId, getOrders} = require("./order");
-const {updateStep, deleteStep, createStep,} = require("./guild_step");
+const { createOrderDetail, getOrderDetailsByOrderId } = require("./order_detail");
+const { getOrdersByUserId, getOrders } = require("./order");
+const { updateStep, deleteStep, createStep, } = require("./guild_step");
+const { updateBlog, deleteBlog, getBlogById, createBlog, getAllBlogs } = require("./blog");
 
 module.exports = {
   loginGoogle,
@@ -56,8 +57,16 @@ module.exports = {
   getAllCategoryDetail,
   createOrderDetail,
   getUserByEmail,
-  updateStep, 
-  deleteStep, 
+  updateStep,
+  deleteStep,
   createStep,
-  getOrdersByUserId, getOrderDetailsByOrderId, getOrders,
+  getOrdersByUserId, 
+  getOrderDetailsByOrderId, 
+  getOrders,
+  updateBlog,
+  deleteBlog,
+  getBlogById,
+  createBlog,
+  getAllBlogs,
+
 };

@@ -121,7 +121,7 @@ const createIngredient = ({ images, ingredient_name, ...body }) =>
                 },
             });
 
-            const createImagePromises = images.map(async ({image}) => {
+            const createImagePromises = images.map(async ({ image }) => {
                 await db.Image.create({
                     image: image,
                     ingredient_id: ingredient[0].ingredient_id,
@@ -158,18 +158,60 @@ const createIngredient = ({ images, ingredient_name, ...body }) =>
         }
     });
 
+// const createIngredientForFood = (body) =>
+//     new Promise(async (resolve, reject) => {
+//         try {
+//             const transaction = await db.sequelize.transaction();
+//             const { food_id, ingredients, quantity } = body;
+
+//             try {
+//                 for (let i = 0; i < ingredients.length; i++) {
+//                     const { ingredient_id } = ingredients[i];
+
+//                     const [foodDetail, created] = await db.Food_detail.findOrCreate({
+//                         where: { food_id, ingredient_id },
+//                         defaults: {
+//                             food_id,
+//                             ingredient_id,
+//                             quantity: quantity || 1,
+//                           },
+//                         transaction,
+//                     });
+
+//                     if (!created) {
+//                         console.log(`Food detail with food_id ${food_id} and ingredient_id ${ingredient_id} already exists.`);
+//                     }
+//                 }
+//                 await transaction.commit();
+
+//                 resolve({
+//                     msg: "Create new food detail successfully",
+//                 });
+//             } catch (error) {
+//                 resolve({
+//                     msg: "Create new food detail error",
+//                 });
+//                 await transaction.rollback();
+//                 throw error;
+//             }
+
+//         } catch (error) {
+//             reject(error);
+//         }
+//     });
+
 const updateIngredient = ({ images, ingredient_id, ...body }) =>
     new Promise(async (resolve, reject) => {
         try {
             const ingredient = await db.Ingredient.findOne({
                 where: {
-                  ingredient_name: body?.ingredient_name,
-                  ingredient_id: {
-                    [Op.ne]: ingredient_id
-                  }
+                    ingredient_name: body?.ingredient_name,
+                    ingredient_id: {
+                        [Op.ne]: ingredient_id
+                    }
                 }
-              });
-              
+            });
+
             if (ingredient !== null) {
                 resolve({
                     msg: "Ingredient name already exists"
@@ -185,7 +227,7 @@ const updateIngredient = ({ images, ingredient_id, ...body }) =>
                     }
                 });
 
-                const createImagePromises = images.map(async ({image}) => {
+                const createImagePromises = images.map(async ({ image }) => {
                     await db.Image.create({
                         image: image,
                         ingredient_id: ingredient_id,

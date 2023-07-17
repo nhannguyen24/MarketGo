@@ -11,6 +11,7 @@ const {createOrderDetail, getOrderDetailsByOrderId,} = require("./order_detail")
 const {getOrdersByUserId, getOrders, } = require("./order");
 const {updateStep, deleteStep, createStep,} = require("./guild_step");
 const {payment, stripeWebhook} = require('./payment');
+const { updateBlog, deleteBlog, getBlogById, createBlog, getAllBlogs } = require("./blog");
 
 module.exports = {
   loginGoogle,
@@ -64,4 +65,10 @@ module.exports = {
   getOrdersByUserId, 
   getOrderDetailsByOrderId,
   getOrders,
+  updateBlog,
+  deleteBlog,
+  getBlogById,
+  createBlog,
+  getAllBlogs,
+  
 };

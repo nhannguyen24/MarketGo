@@ -13,6 +13,7 @@ const order_detail = require('./order_detail');
 const order = require('./order');
 const upload_image = require('./uploadFile');
 const stripe = require('./payment');
+const blog = require('./blog');
 
 // const firebaseService = require('./firebaseService');
 // const statistic = require('./statistic')
@@ -38,6 +39,7 @@ const initRoutes = (app) => {
     app.use('/api/v1/categories_detail', category_detail);
     app.use('/api/v1/upload-image', upload_image);
     app.use('/api/v1/stripe', stripe);
+    app.use('/api/v1/blogs', blog);
 
     // app.use('/api/v1/statistic', statistic);
     // app.use('/api/v1/stripe', stripe);

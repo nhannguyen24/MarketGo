@@ -158,7 +158,8 @@ router.post('/login', controllers.login);
  *            example:
  *              email: dnhan2426@gmail.com
  *              password: "123456"
- *              confirm_pass: "123456" 
+ *              confirm_pass: "123456"
+ *              role_id: 58c10546-5d71-47a6-842e-84f5d2f72ec3
  *     responses:
  *       200:
  *         description: For register new account

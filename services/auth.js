@@ -5,7 +5,7 @@ const bcrypt = require('bcryptjs');
 
 const hashPassword = password => bcrypt.hashSync(password, bcrypt.genSaltSync(8));
 
-const register = ({ email, password, confirm_pass }) => new Promise(async (resolve, reject) => {
+const register = ({ email, password, confirm_pass, role_id }) => new Promise(async (resolve, reject) => {
   try {
     if (confirm_pass !== password) {
       resolve({
@@ -19,7 +19,7 @@ const register = ({ email, password, confirm_pass }) => new Promise(async (resol
           password: hashPassword(password),
           email,
           avatar: 'https://t3.ftcdn.net/jpg/01/18/01/98/360_F_118019822_6CKXP6rXmVhDOzbXZlLqEM2ya4HhYzSV.jpg',
-          role_id: "58c10546-5d71-47a6-842e-84f5d2f72ec3",
+          role_id: role_id ? role_id : "58c10546-5d71-47a6-842e-84f5d2f72ec3",
         }
       })
       resolve({

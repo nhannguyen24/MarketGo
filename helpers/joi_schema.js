@@ -33,65 +33,72 @@ const cate_id = joi.string().required().messages({
   "string.empty": `cate_id is not allowed to be empty`,
 });
 
-
 const user_id = joi.string().required().messages({
-  "string.empty": `major_id is not allowed to be empty`,
+  "string.empty": `user_id is not allowed to be empty`,
 });
 
 const city_id = joi.string().required().messages({
-  "string.empty": `major_id is not allowed to be empty`,
+  "string.empty": `city_id is not allowed to be empty`,
 });
 
 const city_ids = joi.array().required().messages({
-  'any.required': 'user_ids are required'
+  'any.required': 'city_ids are required'
+});
+
+const blog_id = joi.string().required().messages({
+  "string.empty": `blog_id is not allowed to be empty`,
+});
+
+const blog_ids = joi.array().required().messages({
+  'any.required': 'blog_ids are required'
 });
 
 const category_id = joi.string().required().messages({
-  "string.empty": `major_id is not allowed to be empty`,
+  "string.empty": `category_id is not allowed to be empty`,
 });
 
 const category_ids = joi.array().required().messages({
-  'any.required': 'user_ids are required'
+  'any.required': 'category_ids are required'
 });
 
 const cate_detail_id = joi.string().required().messages({
-  "string.empty": `major_id is not allowed to be empty`,
+  "string.empty": `cate_detail_id is not allowed to be empty`,
 });
 
 const cate_detail_ids = joi.array().required().messages({
-  'any.required': 'user_ids are required'
+  'any.required': 'cate_detail_ids are required'
 });
 
 const recipe_id = joi.string().required().messages({
-  "string.empty": `major_id is not allowed to be empty`,
+  "string.empty": `recipe_id is not allowed to be empty`,
 });
 
 const recipe_ids = joi.array().required().messages({
-  'any.required': 'user_ids are required'
+  'any.required': 'recipe_ids are required'
 });
 
 const food_id = joi.string().required().messages({
-  "string.empty": `major_id is not allowed to be empty`,
+  "string.empty": `food_id is not allowed to be empty`,
 });
 
 const food_ids = joi.array().required().messages({
-  'any.required': 'user_ids are required'
+  'any.required': 'food_ids are required'
 });
 
 const step_id = joi.string().required().messages({
-  "string.empty": `major_id is not allowed to be empty`,
+  "string.empty": `step_id is not allowed to be empty`,
 });
 
 const step_ids = joi.array().required().messages({
-  'any.required': 'user_ids are required'
+  'any.required': 'step_ids are required'
 });
 
 const ingredient_id = joi.string().required().messages({
-  "string.empty": `major_id is not allowed to be empty`,
+  "string.empty": `ingredient_id is not allowed to be empty`,
 });
 
 const ingredient_ids = joi.array().required().messages({
-  'any.required': 'user_ids are required'
+  'any.required': 'ingredient_ids are required'
 });
 
 const user_ids = joi.array().required().messages({
@@ -163,5 +170,7 @@ module.exports = {
   food_ids,
   step_id, 
   step_ids,
+  blog_id,
+  blog_ids,
 
 };
