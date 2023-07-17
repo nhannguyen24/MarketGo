@@ -48,6 +48,6 @@ const router = express.Router();
  *               items:
  *                 $ref: '#/components/schemas/Role'
  */
-router.get("/", verifyToken, controllers.getAllRoles);
+router.get("/", controllers.getAllRoles);
 
 module.exports = router;
