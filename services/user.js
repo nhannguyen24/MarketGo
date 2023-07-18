@@ -150,40 +150,32 @@ const updateProfile = (body, user_id) =>
           msg: "Can't update other people's account"
         });
       } else {
-        const user = await db.User.findAll({
-          where: { email: body?.email }
-        })
-        if (user) {
-          resolve({
-            msg: "Email already exists"
-          });
-        } else {
-          const users = await db.User.update(body, {
-            where: { user_id: user_id },
-          });
-          resolve({
-            msg:
-              users[0] > 0
-                ? "Update profile successfully"
-                : "Cannot update user/ user_id not found",
-          });
-          redisClient.keys('user_paging*', (error, keys) => {
-            if (error) {
-              console.error('Error retrieving keys:', error);
-              return;
-            }
-            // Delete each key individually
-            keys.forEach((key) => {
-              redisClient.del(key, (deleteError, reply) => {
-                if (deleteError) {
-                  console.error(`Error deleting key ${key}:`, deleteError);
-                } else {
-                  console.log(`Key ${key} deleted successfully`);
-                }
-              });
+        const users = await db.User.update(body, {
+          where: { user_id: user_id },
+        });
+        resolve({
+          msg:
+            users[0] > 0
+              ? "Update profile successfully"
+              : "Cannot update user/ user_id not found",
+        });
+        redisClient.keys('user_paging*', (error, keys) => {
+          if (error) {
+            console.error('Error retrieving keys:', error);
+            return;
+          }
+          // Delete each key individually
+          keys.forEach((key) => {
+            redisClient.del(key, (deleteError, reply) => {
+              if (deleteError) {
+                console.error(`Error deleting key ${key}:`, deleteError);
+              } else {
+                console.log(`Key ${key} deleted successfully`);
+              }
             });
           });
-        }
+        });
+
       }
     } catch (error) {
       reject(error.message);
