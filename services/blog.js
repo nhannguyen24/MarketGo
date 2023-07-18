@@ -47,7 +47,6 @@ const getAllBlogs = (
                                         as: "blog_user",
                                         attributes: {
                                             exclude: [
-                                                "createdAt",
                                                 "updatedAt",
                                                 "status",
                                             ],
@@ -224,7 +223,6 @@ const getBlogById = (blog_id) =>
                         as: "blog_user",
                         attributes: {
                             exclude: [
-                                "createdAt",
                                 "updatedAt",
                                 "status",
                             ],
