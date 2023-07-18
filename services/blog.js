@@ -39,7 +39,7 @@ const getAllBlogs = (
                                 where: query,
                                 ...queries,
                                 attributes: {
-                                    exclude: ["user_id", "createdAt", "updatedAt"],
+                                    exclude: ["user_id", "updatedAt"],
                                 },
                                 include: [
                                     {
@@ -47,6 +47,7 @@ const getAllBlogs = (
                                         as: "blog_user",
                                         attributes: {
                                             exclude: [
+                                                "createdAt",
                                                 "updatedAt",
                                                 "status",
                                             ],
@@ -214,7 +215,7 @@ const getBlogById = (blog_id) =>
                 nest: true,
                 attributes: {
                     exclude: [
-                        ["store_id", "promotion_id", "cate_detail_id", "createdAt", "updatedAt"]
+                        ["store_id", "promotion_id", "cate_detail_id", "updatedAt"]
                     ],
                 },
                 include: [
@@ -223,6 +224,7 @@ const getBlogById = (blog_id) =>
                         as: "blog_user",
                         attributes: {
                             exclude: [
+                                "createdAt",
                                 "updatedAt",
                                 "status",
                             ],
