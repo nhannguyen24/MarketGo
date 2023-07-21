@@ -39,7 +39,7 @@ const logout = async (req, res) => {
         // if (error) {
         //     return res.status(400).json({msg: error.details[0].message});
         // }
-        const {user_id: user_id} = req.query;
+        const {user_id: user_id} = req.params;
         if(!user_id) {
             throw new BadRequestError('Please provide user_id');
         }
