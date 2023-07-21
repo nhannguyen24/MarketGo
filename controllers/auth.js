@@ -39,11 +39,11 @@ const logout = async (req, res) => {
         // if (error) {
         //     return res.status(400).json({msg: error.details[0].message});
         // }
-        const {student_id: student_id} = req.query;
-        if(!student_id) {
-            throw new BadRequestError('Please provide student_id');
+        const {user_id: user_id} = req.query;
+        if(!user_id) {
+            throw new BadRequestError('Please provide user_id');
         }
-        const response = await services.logout(req.query.student_id);
+        const response = await services.logout(req.query.user_id);
         return res.status(200).json(response);
     } catch (error) {
         throw new InternalServerError(error);
