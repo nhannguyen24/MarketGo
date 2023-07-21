@@ -98,19 +98,19 @@ const createUser = ({ password, ...body }) =>
 const updateUser = ({ user_id, email, ...body }) =>
   new Promise(async (resolve, reject) => {
     try {
-      const user = await db.User.findAll({
-        where: {
-          email: email,
-          user_id: {
-            [Op.ne]: user_id
-          }
-        }
-      })
-      if (user) {
-        resolve({
-          msg: "Email already exists"
-        });
-      } else {
+      // const user = await db.User.findAll({
+      //   where: {
+      //     email: email,
+      //     user_id: {
+      //       [Op.ne]: user_id
+      //     }
+      //   }
+      // })
+      // if (user) {
+      //   resolve({
+      //     msg: "Email already exists"
+      //   });
+      // } else {
         const users = await db.User.update(body, {
           where: { user_id },
         });
@@ -136,7 +136,7 @@ const updateUser = ({ user_id, email, ...body }) =>
             });
           });
         });
-      }
+      
     } catch (error) {
       reject(error.message);
     }
