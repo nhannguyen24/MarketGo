@@ -43,7 +43,7 @@ const uploadFile = async (req, res, next) => {
 
         blob.getSignedUrl({
           action: "read",
-          expires: "10-17-2023", // expiration date in mm-dd-yyyy format
+          expires: "10-17-2024", // expiration date in mm-dd-yyyy format
         })
           .then(([url]) => {
             resolve(url);
